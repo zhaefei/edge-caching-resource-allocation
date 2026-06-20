@@ -6,6 +6,7 @@ venv/
 .vscode/
 .pytest_cache/
 results/data/*.csv
+results/data/*.md
 results/figures/*.png
 !results/data/.gitkeep
 !results/figures/.gitkeep

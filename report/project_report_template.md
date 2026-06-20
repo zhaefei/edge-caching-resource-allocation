@@ -246,6 +246,12 @@ average wireless transmission rate.
 After running the simulation, insert the generated figures from
 `results/figures/` into this section.
 
+The script `summarize_results.py` can be used to generate
+`results/data/key_findings.md`, which provides a short numerical summary of the
+default simulation and multi-seed experiment. Use those values to support the
+discussion below, while noting that they depend on the simplified simulation
+configuration.
+
 ### 8.1 Average Latency
 
 Discuss how average latency differs among random caching, popularity-based

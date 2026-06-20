@@ -7,6 +7,7 @@ from experiments.run_multi_seed_cache_capacity_experiment import (
 )
 from experiments.run_user_density_experiment import main as run_user_density
 from experiments.run_zipf_experiment import main as run_zipf
+from summarize_results import main as summarize_results
 
 
 def main() -> None:
@@ -15,6 +16,7 @@ def main() -> None:
     run_user_density()
     run_zipf()
     run_multi_seed_cache_capacity()
+    summarize_results()
     print("\nAll experiments completed.")
 
 
