@@ -8,6 +8,7 @@ import pandas as pd
 from config import SimulationConfig
 from src.caching_algorithms import (
     greedy_latency_aware_caching,
+    local_popularity_based_caching,
     popularity_based_caching,
     random_caching,
 )
@@ -36,6 +37,12 @@ def run_strategy_comparison(config: SimulationConfig) -> pd.DataFrame:
 
     random_cache = random_caching(config, np.random.default_rng(config.seed + 100))
     popularity_cache = popularity_based_caching(config, trace.popularity)
+    local_popularity_cache = local_popularity_based_caching(
+        config,
+        network,
+        trace.user_ids,
+        trace.file_ids,
+    )
     greedy_cache = greedy_latency_aware_caching(
         config,
         network,
@@ -60,6 +67,15 @@ def run_strategy_comparison(config: SimulationConfig) -> pd.DataFrame:
             trace.user_ids,
             trace.file_ids,
             popularity_cache,
+            equal_bandwidth,
+        ),
+        evaluate_strategy(
+            "Local popularity caching + equal BW",
+            config,
+            network,
+            trace.user_ids,
+            trace.file_ids,
+            local_popularity_cache,
             equal_bandwidth,
         ),
         evaluate_strategy(

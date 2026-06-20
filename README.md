@@ -135,12 +135,17 @@ heuristics rather than solving the full combinatorial optimization problem.
    - Caches the globally most popular files according to the Zipf distribution.
    - Uses equal bandwidth allocation.
 
-3. **Greedy latency-aware caching + equal bandwidth**
+3. **Local popularity caching + equal bandwidth**
+   - Each edge server caches the files most frequently requested by its own
+     associated users in the simulated trace.
+   - Uses equal bandwidth allocation.
+
+4. **Greedy latency-aware caching + equal bandwidth**
    - Iteratively chooses server-file cache placements that save the largest
      estimated backhaul latency.
    - Uses equal bandwidth allocation.
 
-4. **Greedy caching + demand-aware bandwidth allocation**
+5. **Greedy caching + demand-aware bandwidth allocation**
    - Uses the same greedy caching result.
    - Allocates more bandwidth to users that generate more requests.
 
@@ -293,6 +298,8 @@ Typical trends should include:
 - The topology figure should show users associated with nearby edge servers.
 - The content popularity figure should show the expected Zipf long-tail pattern.
 - Popularity-based and greedy caching should outperform random caching.
+- Local popularity caching should be competitive with global popularity caching
+  when local request traces reflect the global Zipf pattern.
 - Larger cache capacity should improve cache hit ratio and reduce backhaul load.
 - When Zipf alpha is larger, popular files dominate requests, so caching becomes
   more effective.

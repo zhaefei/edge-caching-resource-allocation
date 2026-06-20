@@ -47,6 +47,32 @@ def popularity_based_caching(
     }
 
 
+def local_popularity_based_caching(
+    config: SimulationConfig,
+    network: NetworkState,
+    user_ids: np.ndarray,
+    file_ids: np.ndarray,
+) -> CacheState:
+    """Cache the most requested files observed near each edge server.
+
+    This heuristic uses local demand information. It is still simple enough for
+    an undergraduate simulation project, but it captures the idea that different
+    edge servers may see slightly different request patterns.
+    """
+
+    capacity = min(config.cache_capacity, config.num_files)
+    request_servers = network.associations[user_ids]
+    caches: CacheState = {}
+
+    for server_id in range(config.num_edge_servers):
+        local_files = file_ids[request_servers == server_id]
+        local_counts = np.bincount(local_files, minlength=config.num_files)
+        most_requested_files = np.argsort(-local_counts)[:capacity]
+        caches[server_id] = set(int(file_id) for file_id in most_requested_files)
+
+    return caches
+
+
 def greedy_latency_aware_caching(
     config: SimulationConfig,
     network: NetworkState,

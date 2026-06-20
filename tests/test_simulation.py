@@ -15,6 +15,7 @@ import numpy as np
 from config import SimulationConfig
 from src.caching_algorithms import (
     greedy_latency_aware_caching,
+    local_popularity_based_caching,
     popularity_based_caching,
     random_caching,
 )
@@ -52,6 +53,12 @@ class SimulationSanityTests(unittest.TestCase):
         caches_to_check = [
             random_caching(self.config, np.random.default_rng(100)),
             popularity_based_caching(self.config, self.trace.popularity),
+            local_popularity_based_caching(
+                self.config,
+                self.network,
+                self.trace.user_ids,
+                self.trace.file_ids,
+            ),
             greedy_latency_aware_caching(
                 self.config,
                 self.network,
@@ -104,7 +111,7 @@ class SimulationSanityTests(unittest.TestCase):
             "avg_wireless_rate_mbps",
         }
         self.assertTrue(expected_columns.issubset(set(results.columns)))
-        self.assertEqual(len(results), 4)
+        self.assertEqual(len(results), 5)
         self.assertTrue(np.all(results["avg_latency_ms"] > 0.0))
         self.assertTrue(np.all(results["avg_wireless_rate_mbps"] > 0.0))
         self.assertTrue(np.all(results["cache_hit_ratio"].between(0.0, 1.0)))

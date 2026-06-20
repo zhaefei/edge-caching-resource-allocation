@@ -10,14 +10,15 @@ This project investigates a simplified wireless edge network where mobile users
 request content from a finite library and edge servers cache a limited number of
 files. The objective is to reduce average content delivery latency by comparing
 several caching and resource allocation strategies, including random caching,
-popularity-based caching, greedy latency-aware caching, and greedy caching with
-demand-aware bandwidth allocation. User requests are generated according to a
-Zipf distribution, wireless rates are modeled using a Shannon capacity formula,
-and cache misses incur additional backhaul delay. Simulation results are used to
-evaluate average latency, cache hit ratio, backhaul traffic, and wireless
-transmission rate under varying cache capacities, user densities, and popularity
-parameters. The project demonstrates an undergraduate-level research exploration
-of edge computing and wireless network optimization for 5G/6G systems.
+global popularity-based caching, local popularity-based caching, greedy
+latency-aware caching, and greedy caching with demand-aware bandwidth
+allocation. User requests are generated according to a Zipf distribution,
+wireless rates are modeled using a Shannon capacity formula, and cache misses
+incur additional backhaul delay. Simulation results are used to evaluate average
+latency, cache hit ratio, backhaul traffic, and wireless transmission rate under
+varying cache capacities, user densities, and popularity parameters. The project
+demonstrates an undergraduate-level research exploration of edge computing and
+wireless network optimization for 5G/6G systems.
 
 ## 1. Introduction
 
@@ -182,7 +183,15 @@ edge server. This strategy is simple and effective when the popularity
 distribution is strongly skewed. However, it does not adapt to local differences
 in user demand near different edge servers.
 
-### 5.3 Greedy Latency-Aware Caching
+### 5.3 Local Popularity-Based Caching
+
+Local popularity-based caching uses the simulated request trace to estimate the
+most frequently requested files among users associated with each edge server.
+Each edge server then caches its own local top `C` files. This remains a simple
+heuristic, but it captures the idea that edge servers may observe different
+local demand patterns.
+
+### 5.4 Greedy Latency-Aware Caching
 
 The greedy caching strategy estimates the backhaul latency saved by placing each
 candidate file at each edge server. It then iteratively chooses the server-file
@@ -240,12 +249,12 @@ After running the simulation, insert the generated figures from
 ### 8.1 Average Latency
 
 Discuss how average latency differs among random caching, popularity-based
-caching, greedy caching, and greedy caching with demand-aware bandwidth
-allocation. A reasonable expected result is that random caching performs worst,
-while popularity-based and greedy caching reduce latency by increasing cache hit
-ratio and reducing backhaul delay. If using the multi-seed experiment, discuss
-whether the standard deviation bands are small enough to support the observed
-trend.
+caching, local popularity-based caching, greedy caching, and greedy caching with
+demand-aware bandwidth allocation. A reasonable expected result is that random
+caching performs worst, while popularity-based, local popularity-based, and
+greedy caching reduce latency by increasing cache hit ratio and reducing
+backhaul delay. If using the multi-seed experiment, discuss whether the standard
+deviation bands are small enough to support the observed trend.
 
 ### 8.2 Cache Hit Ratio
 
