@@ -218,6 +218,11 @@ Three parameter sweeps are performed:
 3. **Zipf experiment:** evaluates latency and cache hit ratio as content
    popularity becomes more or less concentrated.
 
+In addition, a multi-seed cache capacity experiment repeats the simulation over
+several random seeds. This reports the mean and standard deviation of the main
+metrics, which helps distinguish stable performance trends from artifacts of a
+single random network realization.
+
 The main metrics are average latency, cache hit ratio, backhaul traffic, and
 average wireless transmission rate.
 
@@ -232,7 +237,9 @@ Discuss how average latency differs among random caching, popularity-based
 caching, greedy caching, and greedy caching with demand-aware bandwidth
 allocation. A reasonable expected result is that random caching performs worst,
 while popularity-based and greedy caching reduce latency by increasing cache hit
-ratio and reducing backhaul delay.
+ratio and reducing backhaul delay. If using the multi-seed experiment, discuss
+whether the standard deviation bands are small enough to support the observed
+trend.
 
 ### 8.2 Cache Hit Ratio
 

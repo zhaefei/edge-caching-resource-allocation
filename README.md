@@ -159,6 +159,7 @@ The experiment scripts generate:
 
 - Latency vs cache capacity
 - Cache hit ratio vs cache capacity
+- Multi-seed latency and cache hit ratio trends with standard deviation bands
 - Latency vs number of users
 - Wireless rate vs number of users
 - Latency vs Zipf popularity parameter
@@ -183,6 +184,7 @@ edge-caching-resource-allocation/
 |   `-- simulation.py
 |-- experiments/
 |   |-- run_cache_capacity_experiment.py
+|   |-- run_multi_seed_cache_capacity_experiment.py
 |   |-- run_user_density_experiment.py
 |   `-- run_zipf_experiment.py
 |-- results/
@@ -235,6 +237,7 @@ Or run each experiment separately:
 
 ```bash
 python experiments/run_cache_capacity_experiment.py
+python experiments/run_multi_seed_cache_capacity_experiment.py
 python experiments/run_user_density_experiment.py
 python experiments/run_zipf_experiment.py
 ```
@@ -256,6 +259,16 @@ results/data/
 Because the random seed is fixed in `config.py`, the results are reproducible
 unless you change the configuration.
 
+For a more robust view of trends, run:
+
+```bash
+python experiments/run_multi_seed_cache_capacity_experiment.py
+```
+
+This repeats the cache capacity experiment over five random seeds and saves both
+raw results and mean/std summary tables. The corresponding figures include
+one-standard-deviation shaded bands.
+
 ## Expected Results
 
 Typical trends should include:
@@ -268,6 +281,8 @@ Typical trends should include:
   increase average latency.
 - Demand-aware bandwidth allocation may reduce request-weighted latency when
   traffic demand is uneven across users.
+- Multi-seed results should preserve the same broad trends while showing how
+  much variation comes from random user placement and request traces.
 
 ## Portfolio Relevance
 
