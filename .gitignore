@@ -1,0 +1,11 @@
+__pycache__/
+*.py[cod]
+.venv/
+venv/
+.idea/
+.vscode/
+.pytest_cache/
+results/data/*.csv
+results/figures/*.png
+!results/data/.gitkeep
+!results/figures/.gitkeep
