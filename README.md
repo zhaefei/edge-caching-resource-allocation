@@ -201,6 +201,7 @@ edge-caching-resource-allocation/
 |-- main.py
 |-- run_all_experiments.py
 |-- summarize_results.py
+|-- check_project.py
 |-- config.py
 |-- src/
 |   |-- network.py
@@ -286,6 +287,15 @@ python -m unittest discover -s tests
 These checks verify basic model assumptions such as valid Zipf probabilities,
 cache capacity constraints, bandwidth conservation, and reasonable metric
 ranges.
+
+For a quick project health check, run:
+
+```bash
+python check_project.py
+```
+
+This runs the sanity tests, executes the default simulation, and regenerates the
+key findings summary.
 
 ## Summarizing Results
 
