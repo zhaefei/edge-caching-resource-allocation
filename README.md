@@ -246,6 +246,19 @@ python experiments/run_user_density_experiment.py
 python experiments/run_zipf_experiment.py
 ```
 
+## Running Sanity Tests
+
+The project includes lightweight tests based on Python's standard `unittest`
+module:
+
+```bash
+python -m unittest discover -s tests
+```
+
+These checks verify basic model assumptions such as valid Zipf probabilities,
+cache capacity constraints, bandwidth conservation, and reasonable metric
+ranges.
+
 ## Reproducing Figures
 
 All figures are saved automatically in:
