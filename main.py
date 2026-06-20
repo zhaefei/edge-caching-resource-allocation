@@ -1,8 +1,17 @@
 """Run the default edge caching and resource allocation simulation."""
 
+import numpy as np
+
 from config import SimulationConfig
+from src.network import generate_network
+from src.request_model import generate_request_trace
 from src.simulation import run_strategy_comparison
-from src.visualization import ensure_results_dirs, plot_metric_bar
+from src.visualization import (
+    ensure_results_dirs,
+    plot_content_popularity,
+    plot_metric_bar,
+    plot_network_topology,
+)
 
 
 def main() -> None:
@@ -14,6 +23,19 @@ def main() -> None:
     data_dir, figure_dir = ensure_results_dirs(config.results_dir)
     results.to_csv(data_dir / "main_summary.csv", index=False)
 
+    rng = np.random.default_rng(config.seed)
+    network = generate_network(config, rng)
+    trace = generate_request_trace(config, rng)
+
+    plot_network_topology(
+        network,
+        area_size_m=config.area_size_m,
+        output_path=figure_dir / "network_topology.png",
+    )
+    plot_content_popularity(
+        trace.popularity,
+        output_path=figure_dir / "content_popularity_zipf.png",
+    )
     plot_metric_bar(
         results,
         metric="avg_latency_ms",

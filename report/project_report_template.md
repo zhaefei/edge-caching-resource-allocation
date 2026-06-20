@@ -71,6 +71,9 @@ stored at the associated edge server, the request is a cache hit and avoids
 backhaul transmission. If not, the file must be fetched through the backhaul or
 core network.
 
+Insert `results/figures/network_topology.png` here to illustrate the simulated
+user positions, edge server positions, and nearest-server association rule.
+
 Wireless transmission rate depends on allocated bandwidth, transmit power,
 channel gain, noise, and simplified interference. The system model is
 implemented in the `src/` directory of the repository.
@@ -89,6 +92,9 @@ p_f = \frac{f^{-\alpha}}{\sum_{j=1}^{N} j^{-\alpha}}, \quad f = 1, 2, ..., N.
 Here, `p_f` is the probability that file `f` is requested and `alpha` controls
 the skewness of the popularity distribution. A larger `alpha` means that a small
 number of popular files dominate the request traffic.
+
+Insert `results/figures/content_popularity_zipf.png` here to show the long-tail
+request distribution used in the simulation.
 
 ### 4.2 Cache Placement
 

@@ -157,6 +157,8 @@ The simulator computes:
 
 The experiment scripts generate:
 
+- Wireless edge network topology visualization
+- Zipf content popularity visualization
 - Latency vs cache capacity
 - Cache hit ratio vs cache capacity
 - Multi-seed latency and cache hit ratio trends with standard deviation bands
@@ -220,6 +222,8 @@ python main.py
 This generates:
 
 - `results/data/main_summary.csv`
+- `results/figures/network_topology.png`
+- `results/figures/content_popularity_zipf.png`
 - `results/figures/main_average_latency.png`
 - `results/figures/main_cache_hit_ratio.png`
 - `results/figures/main_backhaul_traffic.png`
@@ -273,6 +277,8 @@ one-standard-deviation shaded bands.
 
 Typical trends should include:
 
+- The topology figure should show users associated with nearby edge servers.
+- The content popularity figure should show the expected Zipf long-tail pattern.
 - Popularity-based and greedy caching should outperform random caching.
 - Larger cache capacity should improve cache hit ratio and reduce backhaul load.
 - When Zipf alpha is larger, popular files dominate requests, so caching becomes

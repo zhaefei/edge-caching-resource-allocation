@@ -11,6 +11,8 @@ matplotlib.use("Agg")
 import matplotlib.pyplot as plt
 import pandas as pd
 
+from src.network import NetworkState
+
 
 def ensure_results_dirs(results_dir: Path) -> tuple[Path, Path]:
     """Create data and figure output folders if they do not exist."""
@@ -34,6 +36,79 @@ def plot_metric_bar(
     plt.bar(results["strategy"], results[metric], color="#4c78a8")
     plt.ylabel(ylabel)
     plt.xticks(rotation=20, ha="right")
+    plt.grid(axis="y", alpha=0.3)
+    plt.tight_layout()
+    plt.savefig(output_path, dpi=200)
+    plt.close()
+
+
+def plot_network_topology(
+    network: NetworkState,
+    area_size_m: float,
+    output_path: Path,
+) -> None:
+    """Plot user locations, edge server locations, and user associations."""
+
+    plt.figure(figsize=(8, 7))
+
+    for server_id in range(network.server_positions.shape[0]):
+        users = network.associations == server_id
+        plt.scatter(
+            network.user_positions[users, 0],
+            network.user_positions[users, 1],
+            s=22,
+            alpha=0.65,
+            label=f"Users served by edge {server_id}",
+        )
+
+    plt.scatter(
+        network.server_positions[:, 0],
+        network.server_positions[:, 1],
+        marker="s",
+        s=180,
+        color="black",
+        label="Edge servers",
+    )
+
+    for server_id, (x_pos, y_pos) in enumerate(network.server_positions):
+        plt.text(
+            x_pos + 8,
+            y_pos + 8,
+            f"Edge {server_id}",
+            fontsize=9,
+            weight="bold",
+        )
+
+    plt.xlim(0, area_size_m)
+    plt.ylim(0, area_size_m)
+    plt.xlabel("x position (m)")
+    plt.ylabel("y position (m)")
+    plt.title("Simulated Wireless Edge Network Topology")
+    plt.grid(alpha=0.25)
+    plt.legend(loc="center left", bbox_to_anchor=(1.02, 0.5), fontsize=8)
+    plt.gca().set_aspect("equal", adjustable="box")
+    plt.tight_layout()
+    plt.savefig(output_path, dpi=200)
+    plt.close()
+
+
+def plot_content_popularity(
+    popularity: pd.Series | list[float],
+    output_path: Path,
+    top_n: int = 30,
+) -> None:
+    """Plot the most popular files under the Zipf request model."""
+
+    popularity_series = pd.Series(popularity).reset_index(drop=True)
+    top_popularity = popularity_series.iloc[:top_n]
+    file_ranks = range(1, len(top_popularity) + 1)
+
+    plt.figure(figsize=(9, 5))
+    plt.bar(file_ranks, top_popularity, color="#59a14f")
+    plt.xlim(0.5, len(top_popularity) + 0.5)
+    plt.xlabel("File rank")
+    plt.ylabel("Request probability")
+    plt.title("Zipf Content Popularity Distribution")
     plt.grid(axis="y", alpha=0.3)
     plt.tight_layout()
     plt.savefig(output_path, dpi=200)
