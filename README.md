@@ -226,6 +226,7 @@ edge-caching-resource-allocation/
 |   `-- data/
 `-- report/
     |-- project_report_template.md
+    |-- references.md
     `-- project_report_draft.md
 ```
 
@@ -391,6 +392,13 @@ portfolio because it connects several important areas:
 
 It is best presented as a solid undergraduate-level research exploration rather
 than as a novel optimization algorithm.
+
+## Selected References
+
+The report draft includes selected background references on edge caching, mobile
+edge computing, Zipf-distributed requests, and wireless rate modeling. See:
+
+- `report/references.md`
 
 ## Possible Future Improvements
 
