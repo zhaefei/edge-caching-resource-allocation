@@ -201,6 +201,7 @@ edge-caching-resource-allocation/
 |-- main.py
 |-- run_all_experiments.py
 |-- summarize_results.py
+|-- generate_report_assets.py
 |-- check_project.py
 |-- config.py
 |-- src/
@@ -310,6 +311,16 @@ python summarize_results.py
 This writes:
 
 - `results/data/key_findings.md`
+
+To generate report-ready tables and figure references, run:
+
+```bash
+python generate_report_assets.py
+```
+
+This writes:
+
+- `report/generated_results.md`
 
 ## Reproducing Figures
 

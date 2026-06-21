@@ -228,6 +228,9 @@ wireless rate, wireless delay, and backhaul delay.
 
 ## 7. Results and Discussion
 
+Report-ready tables are generated in `report/generated_results.md`. The tables
+can be copied into this section after rerunning the experiments.
+
 ### 7.1 Default Scenario
 
 In the default scenario, random caching has the highest average latency because

@@ -30,6 +30,10 @@ def main() -> None:
         "Generating key findings summary",
         [python, "summarize_results.py"],
     )
+    _run_step(
+        "Generating report assets",
+        [python, "generate_report_assets.py"],
+    )
 
     print("\nProject health check completed successfully.", flush=True)
 

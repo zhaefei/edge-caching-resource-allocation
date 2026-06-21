@@ -252,6 +252,10 @@ default simulation and multi-seed experiment. Use those values to support the
 discussion below, while noting that they depend on the simplified simulation
 configuration.
 
+The script `generate_report_assets.py` can also generate
+`report/generated_results.md`, including Markdown tables and figure references
+that can be copied into the report.
+
 ### 8.1 Average Latency
 
 Discuss how average latency differs among random caching, popularity-based
