@@ -222,7 +222,8 @@ edge-caching-resource-allocation/
 |   |-- figures/
 |   `-- data/
 `-- report/
-    `-- project_report_template.md
+    |-- project_report_template.md
+    `-- project_report_draft.md
 ```
 
 ## Installation
