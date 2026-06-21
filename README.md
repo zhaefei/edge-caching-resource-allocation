@@ -1,5 +1,7 @@
 # Edge Caching and Resource Allocation for Latency Reduction in 5G/6G Wireless Networks
 
+[![Project health check](https://github.com/zhaefei/edge-caching-resource-allocation/actions/workflows/ci.yml/badge.svg)](https://github.com/zhaefei/edge-caching-resource-allocation/actions/workflows/ci.yml)
+
 This repository contains a reproducible Python simulation project for studying
 edge caching and bandwidth allocation in a simplified 5G/6G wireless edge
 network. The project is designed as an undergraduate-level research exploration
