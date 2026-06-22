@@ -1,6 +1,9 @@
 """Run the default simulation and all experiment sweeps."""
 
 from main import main as run_main
+from experiments.run_backhaul_sensitivity_experiment import (
+    main as run_backhaul_sensitivity,
+)
 from experiments.run_cache_capacity_experiment import main as run_cache_capacity
 from experiments.run_multi_seed_cache_capacity_experiment import (
     main as run_multi_seed_cache_capacity,
@@ -16,6 +19,7 @@ def main() -> None:
     run_cache_capacity()
     run_user_density()
     run_zipf()
+    run_backhaul_sensitivity()
     run_multi_seed_cache_capacity()
     summarize_results()
     generate_report_assets()

@@ -232,6 +232,8 @@ Three parameter sweeps are performed:
    number of users increases.
 3. **Zipf experiment:** evaluates latency and cache hit ratio as content
    popularity becomes more or less concentrated.
+4. **Backhaul sensitivity experiment:** evaluates how latency changes when
+   cache misses become more or less expensive.
 
 In addition, a multi-seed cache capacity experiment repeats the simulation over
 several random seeds. This reports the mean and standard deviation of the main
@@ -286,6 +288,12 @@ As the number of users increases, each edge server must share bandwidth among
 more users. Therefore, average wireless rate may decrease and wireless
 transmission delay may increase. This illustrates why resource allocation is an
 important part of latency reduction.
+
+### 8.5 Backhaul Sensitivity
+
+Discuss how the performance gap between caching strategies changes as backhaul
+latency increases. A reasonable expected trend is that edge caching becomes more
+valuable when cache misses are more expensive.
 
 ## 9. Limitations
 

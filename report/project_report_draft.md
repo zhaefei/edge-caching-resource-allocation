@@ -221,6 +221,7 @@ The project includes the following experiments:
 - Cache capacity sweep
 - Number of users sweep
 - Zipf popularity parameter sweep
+- Backhaul latency sensitivity sweep
 - Multi-seed cache capacity sweep with mean and standard deviation
 
 The main metrics are average latency, cache hit ratio, backhaul load, average
@@ -275,6 +276,12 @@ Second, local demand information can be useful, although in this simplified
 setting local popularity and greedy caching are often similar because both are
 driven mainly by local request counts. Third, bandwidth allocation can further
 improve latency when user demand is uneven.
+
+The backhaul latency sensitivity experiment provides an additional way to
+interpret the system. When backhaul latency is low, a cache miss is less
+expensive, so the gap between random caching and caching-aware strategies is
+smaller. When backhaul latency is high, avoiding cloud or core-network retrieval
+becomes more important, so cache placement has a clearer impact on latency.
 
 ## 8. Limitations
 

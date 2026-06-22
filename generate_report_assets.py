@@ -123,6 +123,7 @@ def main() -> None:
         "- Zipf content popularity: `docs/figures/content_popularity_zipf.png`",
         "- Latency vs cache capacity: `docs/figures/latency_vs_cache_capacity.png`",
         "- Multi-seed latency trend: `docs/figures/multi_seed_latency_vs_cache_capacity.png`",
+        "- Backhaul sensitivity: `docs/figures/latency_vs_backhaul_latency.png`",
         "",
         "## Suggested Discussion Sentence",
         "",

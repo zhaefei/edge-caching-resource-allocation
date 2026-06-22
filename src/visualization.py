@@ -122,6 +122,7 @@ def plot_experiment_line(
     ylabel: str,
     title: str,
     output_path: Path,
+    xlabel: str | None = None,
 ) -> None:
     """Create a line plot for an experiment sweep."""
 
@@ -137,7 +138,7 @@ def plot_experiment_line(
             label=strategy,
         )
 
-    plt.xlabel(x_column.replace("_", " ").title())
+    plt.xlabel(xlabel or x_column.replace("_", " ").title())
     plt.ylabel(ylabel)
     plt.title(title)
     plt.grid(alpha=0.3)
@@ -155,6 +156,7 @@ def plot_experiment_mean_std(
     ylabel: str,
     title: str,
     output_path: Path,
+    xlabel: str | None = None,
 ) -> None:
     """Create a line plot with one standard-deviation error band."""
 
@@ -181,7 +183,7 @@ def plot_experiment_mean_std(
             alpha=0.15,
         )
 
-    plt.xlabel(x_column.replace("_", " ").title())
+    plt.xlabel(xlabel or x_column.replace("_", " ").title())
     plt.ylabel(ylabel)
     plt.title(title)
     plt.grid(alpha=0.3)
