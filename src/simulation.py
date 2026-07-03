@@ -26,7 +26,7 @@ def run_strategy_comparison(config: SimulationConfig) -> pd.DataFrame:
 
     rng = np.random.default_rng(config.seed)
     network = generate_network(config, rng)
-    trace = generate_request_trace(config, rng)
+    trace = generate_request_trace(config, rng, network)
 
     equal_bandwidth = equal_bandwidth_allocation(config, network)
     demand_aware_bandwidth = demand_aware_bandwidth_allocation(

@@ -36,6 +36,7 @@ The simulated network contains:
 - `K` edge base stations or edge servers
 - Limited cache capacity at each edge server
 - Zipf-distributed content requests
+- Mild server-specific request locality around the global Zipf trend
 - Nearest-server user association
 - Wireless transmission rate based on a simplified SINR model
 - Extra backhaul delay when requested content is not cached locally
@@ -58,6 +59,11 @@ p_f = \frac{f^{-\alpha}}{\sum_{j=1}^{N} j^{-\alpha}},
 
 where `alpha` is the Zipf popularity parameter. Larger `alpha` means requests are
 more concentrated on a small number of popular files.
+
+To make local caching policies more meaningful, the simulator also supports a
+lightweight spatial-locality model. Each edge server has a mildly boosted subset
+of files, and users associated with that server draw requests from a mixture of
+the global Zipf distribution and the server-specific profile.
 
 ### Cache Capacity Constraint
 
@@ -379,7 +385,7 @@ Typical trends should include:
 - The content popularity figure should show the expected Zipf long-tail pattern.
 - Popularity-based and greedy caching should outperform random caching.
 - Local popularity caching should be competitive with global popularity caching
-  when local request traces reflect the global Zipf pattern.
+  and can outperform it when server-specific request locality is present.
 - Larger cache capacity should improve cache hit ratio and reduce backhaul load.
 - When Zipf alpha is larger, popular files dominate requests, so caching becomes
   more effective.

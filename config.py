@@ -26,6 +26,8 @@ class SimulationConfig:
     num_requests: int = 5000
     zipf_alpha: float = 0.9
     user_activity_alpha: float = 0.4
+    spatial_locality_strength: float = 0.35
+    local_preference_boost: float = 3.0
 
     # Wireless channel and resource model
     bandwidth_hz: float = 20e6  # total downlink bandwidth per edge server

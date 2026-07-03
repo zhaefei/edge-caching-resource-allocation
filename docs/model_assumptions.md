@@ -7,6 +7,7 @@ system simulator.
 ## What the Model Includes
 
 - A finite content library with Zipf-distributed request popularity.
+- Mild server-specific request locality layered on top of the global popularity.
 - Randomly placed users in a square service area.
 - Grid-placed edge servers with limited cache capacity.
 - Nearest-edge-server user association.
@@ -24,6 +25,8 @@ The model keeps the main engineering tradeoffs visible:
   affects hit ratio and backhaul load.
 - **Popularity tradeoff:** Zipf-distributed requests make popular-content
   caching meaningful.
+- **Locality tradeoff:** nearby users may prefer slightly different subsets of
+  content, which creates a reason to compare global and local caching rules.
 - **Wireless tradeoff:** limited bandwidth and channel quality affect delivery
   latency even when content is cached.
 - **Backhaul tradeoff:** cache misses become more expensive when backhaul
@@ -50,6 +53,8 @@ specified assumptions.
 ## Main Simplifications
 
 - Users are static during each run.
+- Spatial locality is modeled with simple server-specific popularity boosts
+  rather than a learned or measured traffic dataset.
 - All files have the same size.
 - The channel model uses large-scale path loss without detailed fading.
 - Interference is represented by a simple scaling factor.

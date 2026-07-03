@@ -25,7 +25,7 @@ def main() -> None:
 
     rng = np.random.default_rng(config.seed)
     network = generate_network(config, rng)
-    trace = generate_request_trace(config, rng)
+    trace = generate_request_trace(config, rng, network)
 
     plot_network_topology(
         network,
