@@ -42,6 +42,10 @@ The simulated network contains:
 
 The default parameters are defined in `config.py`.
 
+The modeling assumptions and scope are documented in:
+
+- `docs/model_assumptions.md`
+
 ## Mathematical Formulation
 
 ### Content Popularity
@@ -226,6 +230,7 @@ edge-caching-resource-allocation/
 |   |-- run_user_density_experiment.py
 |   `-- run_zipf_experiment.py
 |-- docs/
+|   |-- model_assumptions.md
 |   `-- figures/
 |-- results/
 |   |-- figures/
