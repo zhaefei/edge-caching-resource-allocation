@@ -234,6 +234,8 @@ Three parameter sweeps are performed:
    popularity becomes more or less concentrated.
 4. **Backhaul sensitivity experiment:** evaluates how latency changes when
    cache misses become more or less expensive.
+5. **Bandwidth sensitivity experiment:** evaluates how wireless resource
+   availability changes latency and transmission rate.
 
 In addition, a multi-seed cache capacity experiment repeats the simulation over
 several random seeds. This reports the mean and standard deviation of the main
@@ -294,6 +296,12 @@ important part of latency reduction.
 Discuss how the performance gap between caching strategies changes as backhaul
 latency increases. A reasonable expected trend is that edge caching becomes more
 valuable when cache misses are more expensive.
+
+### 8.6 Bandwidth Sensitivity
+
+Discuss how increasing edge server bandwidth changes average wireless rate and
+average latency. This helps separate wireless bottlenecks from caching and
+backhaul effects.
 
 ## 9. Limitations
 

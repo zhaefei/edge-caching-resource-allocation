@@ -222,6 +222,7 @@ The project includes the following experiments:
 - Number of users sweep
 - Zipf popularity parameter sweep
 - Backhaul latency sensitivity sweep
+- Bandwidth sensitivity sweep
 - Multi-seed cache capacity sweep with mean and standard deviation
 
 The main metrics are average latency, cache hit ratio, backhaul load, average
@@ -282,6 +283,12 @@ interpret the system. When backhaul latency is low, a cache miss is less
 expensive, so the gap between random caching and caching-aware strategies is
 smaller. When backhaul latency is high, avoiding cloud or core-network retrieval
 becomes more important, so cache placement has a clearer impact on latency.
+
+The bandwidth sensitivity experiment focuses on the wireless resource side of
+the system. When bandwidth is limited, wireless transmission delay dominates a
+larger share of total latency. As bandwidth increases, wireless delay decreases,
+and the remaining latency difference among strategies is more strongly related
+to cache misses and backhaul delay.
 
 ## 8. Limitations
 

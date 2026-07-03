@@ -30,6 +30,7 @@ help copy tables and figure references into the project report.
 - Latency vs cache capacity: `docs/figures/latency_vs_cache_capacity.png`
 - Multi-seed latency trend: `docs/figures/multi_seed_latency_vs_cache_capacity.png`
 - Backhaul sensitivity: `docs/figures/latency_vs_backhaul_latency.png`
+- Bandwidth sensitivity: `docs/figures/latency_vs_bandwidth.png`
 
 ## Suggested Discussion Sentence
 
