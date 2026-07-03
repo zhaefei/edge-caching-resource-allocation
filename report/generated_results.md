@@ -7,11 +7,11 @@ help copy tables and figure references into the project report.
 
 | Strategy | Avg. latency (ms) | Cache hit ratio | Backhaul load ratio | Avg. wireless rate (Mbps) |
 | --- | --- | --- | --- | --- |
-| Random caching + equal BW | 1251.89 | 0.181 | 0.819 | 5.59 |
-| Popularity caching + equal BW | 1204.49 | 0.546 | 0.454 | 5.59 |
-| Local popularity caching + equal BW | 1204.26 | 0.548 | 0.452 | 5.59 |
-| Greedy caching + equal BW | 1204.26 | 0.548 | 0.452 | 5.59 |
-| Greedy caching + demand-aware BW | 1198.24 | 0.548 | 0.452 | 7.00 |
+| Random caching + equal BW | 1251.09 | 0.188 | 0.812 | 5.59 |
+| Popularity caching + equal BW | 1205.79 | 0.536 | 0.464 | 5.59 |
+| Local popularity caching + equal BW | 1205.33 | 0.540 | 0.460 | 5.59 |
+| Greedy caching + equal BW | 1205.33 | 0.540 | 0.460 | 5.59 |
+| Greedy caching + demand-aware BW | 1199.31 | 0.540 | 0.460 | 7.00 |
 
 ## Multi-Seed Results at Default Cache Capacity
 
