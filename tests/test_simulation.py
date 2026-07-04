@@ -23,6 +23,7 @@ from src.metrics import evaluate_strategy
 from src.network import generate_network
 from src.request_model import (
     build_server_popularity_profiles,
+    generate_file_size_profile,
     generate_request_trace,
     zipf_probabilities,
 )
@@ -55,27 +56,34 @@ class SimulationSanityTests(unittest.TestCase):
         self.assertTrue(np.all(probabilities[:-1] >= probabilities[1:]))
 
     def test_caching_strategies_respect_capacity(self) -> None:
+        file_sizes = self.trace.file_sizes_mbits
         caches_to_check = [
-            random_caching(self.config, np.random.default_rng(100)),
-            popularity_based_caching(self.config, self.trace.popularity),
+            random_caching(self.config, np.random.default_rng(100), file_sizes),
+            popularity_based_caching(self.config, self.trace.popularity, file_sizes),
             local_popularity_based_caching(
                 self.config,
                 self.network,
                 self.trace.user_ids,
                 self.trace.file_ids,
+                file_sizes,
             ),
             greedy_latency_aware_caching(
                 self.config,
                 self.network,
                 self.trace.user_ids,
                 self.trace.file_ids,
+                file_sizes,
             ),
         ]
 
         for caches in caches_to_check:
             self.assertEqual(len(caches), self.config.num_edge_servers)
             for cached_files in caches.values():
-                self.assertLessEqual(len(cached_files), self.config.cache_capacity)
+                cached_budget = float(np.sum(file_sizes[list(cached_files)]))
+                self.assertLessEqual(
+                    cached_budget,
+                    self.config.cache_budget_mbits + 1e-9,
+                )
                 self.assertTrue(
                     all(0 <= file_id < self.config.num_files for file_id in cached_files)
                 )
@@ -110,6 +118,9 @@ class SimulationSanityTests(unittest.TestCase):
         expected_columns = {
             "strategy",
             "avg_latency_ms",
+            "median_latency_ms",
+            "p95_latency_ms",
+            "latency_std_ms",
             "cache_hit_ratio",
             "backhaul_traffic_mbits",
             "backhaul_load_ratio",
@@ -118,16 +129,38 @@ class SimulationSanityTests(unittest.TestCase):
         self.assertTrue(expected_columns.issubset(set(results.columns)))
         self.assertEqual(len(results), 5)
         self.assertTrue(np.all(results["avg_latency_ms"] > 0.0))
+        self.assertTrue(np.all(results["p95_latency_ms"] >= results["avg_latency_ms"]))
+        self.assertTrue(np.all(results["latency_std_ms"] >= 0.0))
         self.assertTrue(np.all(results["avg_wireless_rate_mbps"] > 0.0))
         self.assertTrue(np.all(results["cache_hit_ratio"].between(0.0, 1.0)))
         self.assertTrue(np.all(results["backhaul_load_ratio"].between(0.0, 1.0)))
 
     def test_cache_capacity_larger_than_library_is_handled(self) -> None:
         config = replace(self.config, cache_capacity=self.config.num_files + 10)
-        caches = popularity_based_caching(config, self.trace.popularity)
+        caches = popularity_based_caching(
+            config,
+            self.trace.popularity,
+            self.trace.file_sizes_mbits,
+        )
 
         for cached_files in caches.values():
             self.assertEqual(len(cached_files), config.num_files)
+
+    def test_file_size_profile_matches_target_scale(self) -> None:
+        config = replace(
+            self.config,
+            num_files=200,
+            file_size_mbits=5.0,
+            file_size_sigma=0.8,
+            min_file_size_mbits=1.0,
+            max_file_size_mbits=12.0,
+        )
+        sizes = generate_file_size_profile(config, np.random.default_rng(config.seed))
+
+        self.assertEqual(len(sizes), config.num_files)
+        self.assertTrue(np.all(sizes >= config.min_file_size_mbits))
+        self.assertTrue(np.all(sizes <= config.max_file_size_mbits))
+        self.assertLess(abs(float(np.mean(sizes)) - config.file_size_mbits), 0.3)
 
     def test_server_popularity_profiles_boost_distinct_file_groups(self) -> None:
         config = replace(
@@ -165,12 +198,14 @@ class SimulationSanityTests(unittest.TestCase):
         trace = generate_request_trace(config, rng, network)
         equal_bandwidth = equal_bandwidth_allocation(config, network)
 
-        global_cache = popularity_based_caching(config, trace.popularity)
+        file_sizes = trace.file_sizes_mbits
+        global_cache = popularity_based_caching(config, trace.popularity, file_sizes)
         local_cache = local_popularity_based_caching(
             config,
             network,
             trace.user_ids,
             trace.file_ids,
+            file_sizes,
         )
 
         global_metrics = evaluate_strategy(
@@ -179,6 +214,7 @@ class SimulationSanityTests(unittest.TestCase):
             network,
             trace.user_ids,
             trace.file_ids,
+            file_sizes,
             global_cache,
             equal_bandwidth,
         )
@@ -188,6 +224,7 @@ class SimulationSanityTests(unittest.TestCase):
             network,
             trace.user_ids,
             trace.file_ids,
+            file_sizes,
             local_cache,
             equal_bandwidth,
         )
@@ -200,6 +237,30 @@ class SimulationSanityTests(unittest.TestCase):
             local_metrics["avg_latency_ms"],
             global_metrics["avg_latency_ms"],
         )
+
+    def test_metrics_account_for_variable_file_sizes(self) -> None:
+        config = replace(self.config, num_users=2, num_edge_servers=1, num_requests=2)
+        network = generate_network(config, np.random.default_rng(config.seed))
+        user_ids = np.array([0, 1], dtype=int)
+        file_ids = np.array([0, 1], dtype=int)
+        file_sizes = np.array([2.0, 8.0], dtype=float)
+        user_bandwidth = np.full(config.num_users, config.bandwidth_hz / config.num_users)
+        caches = {0: {0}}
+
+        metrics = evaluate_strategy(
+            "manual",
+            config,
+            network,
+            user_ids,
+            file_ids,
+            file_sizes,
+            caches,
+            user_bandwidth,
+        )
+
+        self.assertAlmostEqual(metrics["cache_hit_ratio"], 0.5)
+        self.assertAlmostEqual(metrics["backhaul_traffic_mbits"], 8.0)
+        self.assertAlmostEqual(metrics["avg_requested_file_size_mbits"], 5.0)
 
 
 if __name__ == "__main__":

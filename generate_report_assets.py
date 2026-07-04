@@ -27,6 +27,7 @@ def _default_results_table(main_results: pd.DataFrame) -> str:
             [
                 str(row["strategy"]),
                 _format_float(float(row["avg_latency_ms"]), 2),
+                _format_float(float(row["p95_latency_ms"]), 2),
                 _format_float(float(row["cache_hit_ratio"]), 3),
                 _format_float(float(row["backhaul_load_ratio"]), 3),
                 _format_float(float(row["avg_wireless_rate_mbps"]), 2),
@@ -37,6 +38,7 @@ def _default_results_table(main_results: pd.DataFrame) -> str:
         [
             "Strategy",
             "Avg. latency (ms)",
+            "P95 latency (ms)",
             "Cache hit ratio",
             "Backhaul load ratio",
             "Avg. wireless rate (Mbps)",
@@ -125,6 +127,8 @@ def main() -> None:
         "- Multi-seed latency trend: `docs/figures/multi_seed_latency_vs_cache_capacity.png`",
         "- Backhaul sensitivity: `docs/figures/latency_vs_backhaul_latency.png`",
         "- Bandwidth sensitivity: `docs/figures/latency_vs_bandwidth.png`",
+        "- File-size variability sensitivity: `docs/figures/latency_vs_file_size_variability.png`",
+        "- P95 latency by strategy: `docs/figures/main_p95_latency.png`",
         "",
         "## Suggested Discussion Sentence",
         "",
@@ -132,8 +136,10 @@ def main() -> None:
             "In the default simulation, caching-aware strategies improve cache hit "
             "ratio and reduce backhaul load compared with random caching. The "
             "demand-aware bandwidth allocation variant achieves the lowest average "
-            "latency in the default scenario, while the multi-seed experiment shows "
-            "that the same trend remains visible across random network realizations."
+            "latency in the default scenario, while the reported 95th percentile "
+            "latency helps check whether this average gain also improves tail "
+            "performance. The multi-seed experiment shows that the same trend "
+            "remains visible across random network realizations."
         ),
         "",
     ]

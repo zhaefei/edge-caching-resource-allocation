@@ -44,6 +44,12 @@ def main() -> None:
     )
     plot_metric_bar(
         results,
+        metric="p95_latency_ms",
+        ylabel="95th Percentile Latency (ms)",
+        output_path=figure_dir / "main_p95_latency.png",
+    )
+    plot_metric_bar(
+        results,
         metric="cache_hit_ratio",
         ylabel="Cache Hit Ratio",
         output_path=figure_dir / "main_cache_hit_ratio.png",

@@ -35,19 +35,29 @@ def run_strategy_comparison(config: SimulationConfig) -> pd.DataFrame:
         trace.user_ids,
     )
 
-    random_cache = random_caching(config, np.random.default_rng(config.seed + 100))
-    popularity_cache = popularity_based_caching(config, trace.popularity)
+    random_cache = random_caching(
+        config,
+        np.random.default_rng(config.seed + 100),
+        trace.file_sizes_mbits,
+    )
+    popularity_cache = popularity_based_caching(
+        config,
+        trace.popularity,
+        trace.file_sizes_mbits,
+    )
     local_popularity_cache = local_popularity_based_caching(
         config,
         network,
         trace.user_ids,
         trace.file_ids,
+        trace.file_sizes_mbits,
     )
     greedy_cache = greedy_latency_aware_caching(
         config,
         network,
         trace.user_ids,
         trace.file_ids,
+        trace.file_sizes_mbits,
     )
 
     rows = [
@@ -57,6 +67,7 @@ def run_strategy_comparison(config: SimulationConfig) -> pd.DataFrame:
             network,
             trace.user_ids,
             trace.file_ids,
+            trace.file_sizes_mbits,
             random_cache,
             equal_bandwidth,
         ),
@@ -66,6 +77,7 @@ def run_strategy_comparison(config: SimulationConfig) -> pd.DataFrame:
             network,
             trace.user_ids,
             trace.file_ids,
+            trace.file_sizes_mbits,
             popularity_cache,
             equal_bandwidth,
         ),
@@ -75,6 +87,7 @@ def run_strategy_comparison(config: SimulationConfig) -> pd.DataFrame:
             network,
             trace.user_ids,
             trace.file_ids,
+            trace.file_sizes_mbits,
             local_popularity_cache,
             equal_bandwidth,
         ),
@@ -84,6 +97,7 @@ def run_strategy_comparison(config: SimulationConfig) -> pd.DataFrame:
             network,
             trace.user_ids,
             trace.file_ids,
+            trace.file_sizes_mbits,
             greedy_cache,
             equal_bandwidth,
         ),
@@ -93,6 +107,7 @@ def run_strategy_comparison(config: SimulationConfig) -> pd.DataFrame:
             network,
             trace.user_ids,
             trace.file_ids,
+            trace.file_sizes_mbits,
             greedy_cache,
             demand_aware_bandwidth,
         ),

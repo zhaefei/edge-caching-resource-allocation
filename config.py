@@ -41,8 +41,17 @@ class SimulationConfig:
 
     # Content and backhaul model. A file is interpreted as a video/data chunk.
     file_size_mbits: float = 5.0
+    file_size_sigma: float = 0.6
+    min_file_size_mbits: float = 1.0
+    max_file_size_mbits: float = 12.0
     backhaul_latency_ms: float = 80.0
     backhaul_rate_mbps: float = 100.0
 
     # Output
     results_dir: Path = Path("results")
+
+    @property
+    def cache_budget_mbits(self) -> float:
+        """Cache budget per edge server expressed in Mbits."""
+
+        return self.cache_capacity * self.file_size_mbits

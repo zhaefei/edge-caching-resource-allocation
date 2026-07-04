@@ -19,6 +19,7 @@ class RequestTrace:
 
     user_ids: np.ndarray
     file_ids: np.ndarray
+    file_sizes_mbits: np.ndarray
     popularity: np.ndarray
     user_activity: np.ndarray
     server_popularity: np.ndarray | None = None
@@ -50,6 +51,7 @@ def generate_request_trace(
     popularity = zipf_probabilities(config.num_files, config.zipf_alpha)
     user_activity = zipf_probabilities(config.num_users, config.user_activity_alpha)
     server_popularity = build_server_popularity_profiles(config, popularity)
+    file_sizes_mbits = generate_file_size_profile(config, rng)
 
     user_ids = rng.choice(
         config.num_users,
@@ -68,9 +70,32 @@ def generate_request_trace(
     return RequestTrace(
         user_ids=user_ids,
         file_ids=file_ids,
+        file_sizes_mbits=file_sizes_mbits,
         popularity=popularity,
         user_activity=user_activity,
         server_popularity=server_popularity if network is not None else None,
+    )
+
+
+def generate_file_size_profile(
+    config: SimulationConfig,
+    rng: np.random.Generator,
+) -> np.ndarray:
+    """Generate a lightweight heterogeneous file-size profile."""
+
+    if config.file_size_sigma <= 0.0:
+        return np.full(config.num_files, config.file_size_mbits, dtype=float)
+
+    sizes = rng.lognormal(
+        mean=np.log(config.file_size_mbits),
+        sigma=config.file_size_sigma,
+        size=config.num_files,
+    )
+    sizes *= config.file_size_mbits / float(np.mean(sizes))
+    return np.clip(
+        sizes,
+        config.min_file_size_mbits,
+        config.max_file_size_mbits,
     )
 
 

@@ -8,6 +8,7 @@ system simulator.
 
 - A finite content library with Zipf-distributed request popularity.
 - Mild server-specific request locality layered on top of the global popularity.
+- Bounded heterogeneous file sizes around a configurable mean.
 - Randomly placed users in a square service area.
 - Grid-placed edge servers with limited cache capacity.
 - Nearest-edge-server user association.
@@ -23,6 +24,8 @@ The model keeps the main engineering tradeoffs visible:
 
 - **Caching tradeoff:** edge servers cannot store all files, so cache placement
   affects hit ratio and backhaul load.
+- **Storage tradeoff:** larger files consume more cache budget, so a caching
+  rule must balance popularity against content size.
 - **Popularity tradeoff:** Zipf-distributed requests make popular-content
   caching meaningful.
 - **Locality tradeoff:** nearby users may prefer slightly different subsets of
@@ -55,7 +58,7 @@ specified assumptions.
 - Users are static during each run.
 - Spatial locality is modeled with simple server-specific popularity boosts
   rather than a learned or measured traffic dataset.
-- All files have the same size.
+- File sizes use a simple bounded lognormal profile rather than measured traffic traces.
 - The channel model uses large-scale path loss without detailed fading.
 - Interference is represented by a simple scaling factor.
 - Backhaul latency is modeled with a fixed component and transfer delay.

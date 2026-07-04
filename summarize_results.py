@@ -21,6 +21,7 @@ def main() -> None:
     data_dir, _ = ensure_results_dirs(config.results_dir)
     main_summary_path = data_dir / "main_summary.csv"
     multi_seed_summary_path = data_dir / "multi_seed_cache_capacity_summary.csv"
+    file_size_variability_path = data_dir / "file_size_variability_experiment.csv"
 
     if not main_summary_path.exists():
         raise FileNotFoundError(
@@ -118,6 +119,24 @@ def main() -> None:
                         f"- In the multi-seed experiment at cache capacity {config.cache_capacity}, "
                         "the same best strategy reduces mean latency by "
                         f"{_format_pct(multi_seed_reduction)} relative to random caching."
+                    ),
+                ]
+            )
+
+    if file_size_variability_path.exists():
+        variability_results = pd.read_csv(file_size_variability_path)
+        if not variability_results.empty:
+            max_sigma = variability_results["file_size_sigma"].max()
+            sigma_rows = variability_results[
+                variability_results["file_size_sigma"] == max_sigma
+            ]
+            best_sigma_row = sigma_rows.sort_values("avg_latency_ms").iloc[0]
+            lines.extend(
+                [
+                    "",
+                    (
+                        f"- In the file-size variability sweep at sigma {max_sigma:.1f}, "
+                        f"{best_sigma_row['strategy']} achieves the lowest average latency."
                     ),
                 ]
             )
