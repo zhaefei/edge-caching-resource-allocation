@@ -66,6 +66,12 @@ def main() -> None:
         ylabel="Average Wireless Rate (Mbps)",
         output_path=figure_dir / "main_wireless_rate.png",
     )
+    plot_metric_bar(
+        results,
+        metric="bandwidth_fairness_index",
+        ylabel="Jain's Bandwidth Fairness Index",
+        output_path=figure_dir / "main_bandwidth_fairness.png",
+    )
 
     print("\nDefault simulation results:")
     print(results.round(3).to_string(index=False))

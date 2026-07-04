@@ -19,7 +19,7 @@ from src.caching_algorithms import (
     popularity_based_caching,
     random_caching,
 )
-from src.metrics import evaluate_strategy
+from src.metrics import evaluate_strategy, jain_fairness_index
 from src.network import generate_network
 from src.request_model import (
     build_server_popularity_profiles,
@@ -112,6 +112,12 @@ class SimulationSanityTests(unittest.TestCase):
                     places=5,
                 )
 
+    def test_jain_fairness_index_bounds(self) -> None:
+        self.assertAlmostEqual(jain_fairness_index(np.array([1.0, 1.0, 1.0])), 1.0)
+        self.assertGreater(jain_fairness_index(np.array([3.0, 1.0, 0.0])), 0.0)
+        self.assertLessEqual(jain_fairness_index(np.array([3.0, 1.0, 0.0])), 1.0)
+        self.assertEqual(jain_fairness_index(np.array([0.0, 0.0])), 0.0)
+
     def test_strategy_comparison_outputs_reasonable_metrics(self) -> None:
         results = run_strategy_comparison(self.config)
 
@@ -125,6 +131,8 @@ class SimulationSanityTests(unittest.TestCase):
             "backhaul_traffic_mbits",
             "backhaul_load_ratio",
             "avg_wireless_rate_mbps",
+            "bandwidth_fairness_index",
+            "wireless_rate_fairness_index",
         }
         self.assertTrue(expected_columns.issubset(set(results.columns)))
         self.assertEqual(len(results), 5)
@@ -134,6 +142,8 @@ class SimulationSanityTests(unittest.TestCase):
         self.assertTrue(np.all(results["avg_wireless_rate_mbps"] > 0.0))
         self.assertTrue(np.all(results["cache_hit_ratio"].between(0.0, 1.0)))
         self.assertTrue(np.all(results["backhaul_load_ratio"].between(0.0, 1.0)))
+        self.assertTrue(np.all(results["bandwidth_fairness_index"].between(0.0, 1.0)))
+        self.assertTrue(np.all(results["wireless_rate_fairness_index"].between(0.0, 1.0)))
 
     def test_cache_capacity_larger_than_library_is_handled(self) -> None:
         config = replace(self.config, cache_capacity=self.config.num_files + 10)
@@ -261,6 +271,7 @@ class SimulationSanityTests(unittest.TestCase):
         self.assertAlmostEqual(metrics["cache_hit_ratio"], 0.5)
         self.assertAlmostEqual(metrics["backhaul_traffic_mbits"], 8.0)
         self.assertAlmostEqual(metrics["avg_requested_file_size_mbits"], 5.0)
+        self.assertAlmostEqual(metrics["bandwidth_fairness_index"], 1.0)
 
 
 if __name__ == "__main__":

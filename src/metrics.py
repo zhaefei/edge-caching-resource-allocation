@@ -13,6 +13,22 @@ from src.network import NetworkState, compute_user_rates_mbps
 CacheState = Dict[int, Set[int]]
 
 
+def jain_fairness_index(values: np.ndarray) -> float:
+    """Compute Jain's fairness index for non-negative resource values."""
+
+    values = np.asarray(values, dtype=float)
+    values = values[values > 0.0]
+    if len(values) == 0:
+        return 0.0
+
+    numerator = float(np.sum(values) ** 2)
+    denominator = float(len(values) * np.sum(values**2))
+    if denominator <= 0.0:
+        return 0.0
+
+    return numerator / denominator
+
+
 def evaluate_strategy(
     strategy_name: str,
     config: SimulationConfig,
@@ -55,6 +71,8 @@ def evaluate_strategy(
         "backhaul_traffic_mbits": backhaul_traffic_mbits,
         "backhaul_load_ratio": float(np.mean(~hits)),
         "avg_wireless_rate_mbps": float(np.mean(request_rates)),
+        "bandwidth_fairness_index": jain_fairness_index(user_bandwidth_hz),
+        "wireless_rate_fairness_index": jain_fairness_index(user_rates_mbps),
         "avg_wireless_delay_ms": float(np.mean(wireless_delay_ms)),
         "avg_backhaul_delay_ms": float(np.mean(backhaul_delay_ms)),
         "avg_requested_file_size_mbits": float(np.mean(request_file_sizes_mbits)),

@@ -31,6 +31,7 @@ def _default_results_table(main_results: pd.DataFrame) -> str:
                 _format_float(float(row["cache_hit_ratio"]), 3),
                 _format_float(float(row["backhaul_load_ratio"]), 3),
                 _format_float(float(row["avg_wireless_rate_mbps"]), 2),
+                _format_float(float(row["bandwidth_fairness_index"]), 3),
             ]
         )
 
@@ -42,6 +43,7 @@ def _default_results_table(main_results: pd.DataFrame) -> str:
             "Cache hit ratio",
             "Backhaul load ratio",
             "Avg. wireless rate (Mbps)",
+            "Bandwidth fairness",
         ],
         rows,
     )
@@ -129,6 +131,7 @@ def main() -> None:
         "- Bandwidth sensitivity: `docs/figures/latency_vs_bandwidth.png`",
         "- File-size variability sensitivity: `docs/figures/latency_vs_file_size_variability.png`",
         "- P95 latency by strategy: `docs/figures/main_p95_latency.png`",
+        "- Bandwidth fairness by strategy: `docs/figures/main_bandwidth_fairness.png`",
         "",
         "## Suggested Discussion Sentence",
         "",
@@ -137,9 +140,10 @@ def main() -> None:
             "ratio and reduce backhaul load compared with random caching. The "
             "demand-aware bandwidth allocation variant achieves the lowest average "
             "latency in the default scenario, while the reported 95th percentile "
-            "latency helps check whether this average gain also improves tail "
-            "performance. The multi-seed experiment shows that the same trend "
-            "remains visible across random network realizations."
+            "latency and Jain's bandwidth fairness index help check whether this "
+            "average gain also improves tail performance and preserves a balanced "
+            "resource distribution. The multi-seed experiment shows that the same "
+            "trend remains visible across random network realizations."
         ),
         "",
     ]

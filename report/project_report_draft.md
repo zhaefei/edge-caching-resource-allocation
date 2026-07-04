@@ -230,7 +230,8 @@ The project includes the following experiments:
 - Multi-seed cache capacity sweep with mean and standard deviation
 
 The main metrics are average latency, 95th percentile latency, cache hit ratio,
-backhaul load, average wireless rate, wireless delay, and backhaul delay.
+backhaul load, average wireless rate, Jain's bandwidth fairness index, wireless
+delay, and backhaul delay.
 
 ## 7. Results and Discussion
 
@@ -258,6 +259,15 @@ In the current default configuration, demand-aware bandwidth allocation improves
 average latency but should also be checked against the 95th percentile latency.
 This is useful because resource allocation policies can sometimes improve mean
 performance while leaving a small group of high-latency requests worse off.
+
+![Bandwidth fairness by strategy](../docs/figures/main_bandwidth_fairness.png)
+
+The bandwidth fairness plot reports Jain's fairness index. It helps interpret
+whether demand-aware bandwidth allocation improves request-weighted latency by
+making the bandwidth distribution less uniform across users. In the default
+scenario, demand-aware bandwidth allocation changes Jain's bandwidth fairness
+index from **0.981** under equal bandwidth allocation to **0.755**, which shows
+a clear latency-fairness tradeoff.
 
 ### 7.2 Latency vs Cache Capacity
 
@@ -327,7 +337,7 @@ Possible future improvements include:
 - Using measured content-size traces
 - Adding small-scale fading in the channel model
 - Comparing with exact optimization on small problem instances
-- Studying fairness among users
+- Studying fairness-aware resource allocation objectives
 - Adding a simple multi-armed bandit caching extension
 
 ## 10. Conclusion

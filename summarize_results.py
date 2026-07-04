@@ -38,6 +38,9 @@ def main() -> None:
     local_row = main_results.loc[
         main_results["strategy"] == "Local popularity caching + equal BW"
     ].iloc[0]
+    greedy_equal_row = main_results.loc[
+        main_results["strategy"] == "Greedy caching + equal BW"
+    ].iloc[0]
 
     latency_reduction = (
         (random_row["avg_latency_ms"] - best_row["avg_latency_ms"])
@@ -65,6 +68,10 @@ def main() -> None:
         / random_row["avg_wireless_rate_mbps"]
         * 100.0
     )
+    fairness_change = (
+        best_row["bandwidth_fairness_index"]
+        - greedy_equal_row["bandwidth_fairness_index"]
+    )
 
     lines = [
         "# Key Findings",
@@ -91,6 +98,13 @@ def main() -> None:
         (
             "- Demand-aware bandwidth allocation increases the request-weighted "
             f"average wireless rate by {_format_pct(rate_gain)} in this default scenario."
+        ),
+        (
+            "- Under the same greedy cache placement, demand-aware bandwidth "
+            "allocation changes Jain's bandwidth fairness index from "
+            f"{greedy_equal_row['bandwidth_fairness_index']:.3f} to "
+            f"{best_row['bandwidth_fairness_index']:.3f} "
+            f"({fairness_change:+.3f})."
         ),
     ]
 

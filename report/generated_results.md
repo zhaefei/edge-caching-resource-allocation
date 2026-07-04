@@ -5,13 +5,13 @@ help copy tables and figure references into the project report.
 
 ## Default Scenario Results
 
-| Strategy | Avg. latency (ms) | P95 latency (ms) | Cache hit ratio | Backhaul load ratio | Avg. wireless rate (Mbps) |
-| --- | --- | --- | --- | --- | --- |
-| Random caching + equal BW | 1257.58 | 2866.95 | 0.167 | 0.833 | 5.60 |
-| Popularity caching + equal BW | 1210.70 | 2801.55 | 0.505 | 0.495 | 5.60 |
-| Local popularity caching + equal BW | 1208.96 | 2802.35 | 0.526 | 0.474 | 5.60 |
-| Greedy caching + equal BW | 1206.02 | 2823.16 | 0.579 | 0.421 | 5.60 |
-| Greedy caching + demand-aware BW | 1204.33 | 3230.34 | 0.579 | 0.421 | 7.07 |
+| Strategy | Avg. latency (ms) | P95 latency (ms) | Cache hit ratio | Backhaul load ratio | Avg. wireless rate (Mbps) | Bandwidth fairness |
+| --- | --- | --- | --- | --- | --- | --- |
+| Random caching + equal BW | 1257.58 | 2866.95 | 0.167 | 0.833 | 5.60 | 0.981 |
+| Popularity caching + equal BW | 1210.70 | 2801.55 | 0.505 | 0.495 | 5.60 | 0.981 |
+| Local popularity caching + equal BW | 1208.96 | 2802.35 | 0.526 | 0.474 | 5.60 | 0.981 |
+| Greedy caching + equal BW | 1206.02 | 2823.16 | 0.579 | 0.421 | 5.60 | 0.981 |
+| Greedy caching + demand-aware BW | 1204.33 | 3230.34 | 0.579 | 0.421 | 7.07 | 0.755 |
 
 ## Multi-Seed Results at Default Cache Budget
 
@@ -33,7 +33,8 @@ help copy tables and figure references into the project report.
 - Bandwidth sensitivity: `docs/figures/latency_vs_bandwidth.png`
 - File-size variability sensitivity: `docs/figures/latency_vs_file_size_variability.png`
 - P95 latency by strategy: `docs/figures/main_p95_latency.png`
+- Bandwidth fairness by strategy: `docs/figures/main_bandwidth_fairness.png`
 
 ## Suggested Discussion Sentence
 
-In the default simulation, caching-aware strategies improve cache hit ratio and reduce backhaul load compared with random caching. The demand-aware bandwidth allocation variant achieves the lowest average latency in the default scenario, while the reported 95th percentile latency helps check whether this average gain also improves tail performance. The multi-seed experiment shows that the same trend remains visible across random network realizations.
+In the default simulation, caching-aware strategies improve cache hit ratio and reduce backhaul load compared with random caching. The demand-aware bandwidth allocation variant achieves the lowest average latency in the default scenario, while the reported 95th percentile latency and Jain's bandwidth fairness index help check whether this average gain also improves tail performance and preserves a balanced resource distribution. The multi-seed experiment shows that the same trend remains visible across random network realizations.

@@ -246,7 +246,8 @@ metrics, which helps distinguish stable performance trends from artifacts of a
 single random network realization.
 
 The main metrics are average latency, 95th percentile latency, cache hit ratio,
-backhaul traffic, and average wireless transmission rate.
+backhaul traffic, average wireless transmission rate, and Jain's bandwidth
+fairness index.
 
 ## 8. Results and Discussion
 
@@ -276,6 +277,10 @@ deviation bands are small enough to support the observed trend.
 Also discuss 95th percentile latency as a simple tail-latency metric. This helps
 show whether a strategy improves only average behavior or also reduces high
 latency requests.
+
+Discuss Jain's bandwidth fairness index when comparing equal bandwidth and
+demand-aware bandwidth allocation. This helps show whether a lower average
+latency comes with a less uniform resource distribution.
 
 ### 8.2 Cache Hit Ratio
 

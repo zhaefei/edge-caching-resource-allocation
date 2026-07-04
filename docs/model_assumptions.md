@@ -16,6 +16,7 @@ system simulator.
 - A simplified SINR model with thermal noise and a coarse interference term.
 - Shannon-capacity-based wireless transmission rate.
 - Backhaul delay when requested content is not cached locally.
+- Jain's fairness index as a simple resource-allocation diagnostic.
 - Heuristic caching and bandwidth allocation strategies.
 
 ## Why These Assumptions Are Reasonable
@@ -64,6 +65,8 @@ specified assumptions.
 - Backhaul latency is modeled with a fixed component and transfer delay.
 - Bandwidth allocation is heuristic rather than solved as a full optimization
   problem.
+- Fairness is evaluated as a diagnostic metric, not optimized as a formal
+  objective.
 
 ## How to Discuss the Project
 
