@@ -233,6 +233,10 @@ The main metrics are average latency, 95th percentile latency, cache hit ratio,
 backhaul load, average wireless rate, Jain's bandwidth fairness index, wireless
 delay, and backhaul delay.
 
+For reproducibility, the scripts also save local metadata JSON files containing
+the simulation configuration, Python version, Git commit, and dirty-worktree
+status at run time.
+
 ## 7. Results and Discussion
 
 Report-ready tables are generated in `report/generated_results.md`. The tables

@@ -249,6 +249,9 @@ The main metrics are average latency, 95th percentile latency, cache hit ratio,
 backhaul traffic, average wireless transmission rate, and Jain's bandwidth
 fairness index.
 
+The scripts should also save reproducibility metadata, including the simulation
+configuration, Python version, Git commit, and dirty-worktree status.
+
 ## 8. Results and Discussion
 
 After running the simulation, insert the generated figures from

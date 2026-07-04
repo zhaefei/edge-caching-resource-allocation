@@ -262,6 +262,7 @@ edge-caching-resource-allocation/
 |   |-- resource_allocation.py
 |   |-- metrics.py
 |   |-- visualization.py
+|   |-- reproducibility.py
 |   `-- simulation.py
 |-- experiments/
 |   |-- run_backhaul_sensitivity_experiment.py
@@ -309,6 +310,7 @@ python main.py
 This generates:
 
 - `results/data/main_summary.csv`
+- `results/data/default_run_metadata.json`
 - `results/figures/network_topology.png`
 - `results/figures/content_popularity_zipf.png`
 - `results/figures/main_average_latency.png`
@@ -325,6 +327,10 @@ Run all experiments:
 ```bash
 python run_all_experiments.py
 ```
+
+This also writes `results/data/all_experiments_metadata.json`, which records the
+main configuration, Python version, Git commit, and whether the working tree was
+dirty when the experiments were run.
 
 Or run each experiment separately:
 
@@ -398,7 +404,9 @@ results/data/
 ```
 
 Because the random seed is fixed in `config.py`, the results are reproducible
-unless you change the configuration.
+unless you change the configuration. The local metadata JSON files in
+`results/data/` record the simulation configuration and execution environment;
+they are ignored by Git because they change on each run.
 
 For a more robust view of trends, run:
 

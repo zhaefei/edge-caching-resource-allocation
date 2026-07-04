@@ -7,6 +7,9 @@ assumptions.
 
 from __future__ import annotations
 
+import json
+from pathlib import Path
+import tempfile
 import unittest
 from dataclasses import replace
 
@@ -27,6 +30,7 @@ from src.request_model import (
     generate_request_trace,
     zipf_probabilities,
 )
+from src.reproducibility import write_run_metadata
 from src.resource_allocation import (
     demand_aware_bandwidth_allocation,
     equal_bandwidth_allocation,
@@ -272,6 +276,18 @@ class SimulationSanityTests(unittest.TestCase):
         self.assertAlmostEqual(metrics["backhaul_traffic_mbits"], 8.0)
         self.assertAlmostEqual(metrics["avg_requested_file_size_mbits"], 5.0)
         self.assertAlmostEqual(metrics["bandwidth_fairness_index"], 1.0)
+
+    def test_run_metadata_is_written_as_json(self) -> None:
+        with tempfile.TemporaryDirectory() as tmp_dir:
+            output_path = Path(tmp_dir) / "metadata.json"
+            write_run_metadata(self.config, output_path, run_name="unit_test")
+
+            metadata = json.loads(output_path.read_text(encoding="utf-8"))
+
+        self.assertEqual(metadata["run_name"], "unit_test")
+        self.assertEqual(metadata["config"]["seed"], self.config.seed)
+        self.assertIn("python_version", metadata)
+        self.assertIn("git_commit", metadata)
 
 
 if __name__ == "__main__":

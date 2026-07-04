@@ -5,6 +5,7 @@ import numpy as np
 from config import SimulationConfig
 from src.network import generate_network
 from src.request_model import generate_request_trace
+from src.reproducibility import write_run_metadata
 from src.simulation import run_strategy_comparison
 from src.visualization import (
     ensure_results_dirs,
@@ -22,6 +23,11 @@ def main() -> None:
 
     data_dir, figure_dir = ensure_results_dirs(config.results_dir)
     results.to_csv(data_dir / "main_summary.csv", index=False)
+    write_run_metadata(
+        config,
+        data_dir / "default_run_metadata.json",
+        run_name="default_simulation",
+    )
 
     rng = np.random.default_rng(config.seed)
     network = generate_network(config, rng)
