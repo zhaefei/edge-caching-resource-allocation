@@ -13,7 +13,7 @@ help copy tables and figure references into the project report.
 | Greedy caching + equal BW | 1206.02 | 2823.16 | 0.579 | 0.421 | 5.60 |
 | Greedy caching + demand-aware BW | 1204.33 | 3230.34 | 0.579 | 0.421 | 7.07 |
 
-## Multi-Seed Results at Default Cache Capacity
+## Multi-Seed Results at Default Cache Budget
 
 | Strategy | Avg. latency mean +/- std (ms) | Cache hit ratio mean +/- std | Mean backhaul load ratio |
 | --- | --- | --- | --- |
