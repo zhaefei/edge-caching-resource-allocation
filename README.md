@@ -363,8 +363,9 @@ For a quick project health check, run:
 python check_project.py
 ```
 
-This runs the sanity tests, executes the default simulation, and regenerates the
-key findings summary.
+This runs the sanity tests, executes the default simulation, regenerates the
+multi-seed summary used by the report assets, writes key findings, and verifies
+that the main output files were created.
 
 ## Summarizing Results
 
