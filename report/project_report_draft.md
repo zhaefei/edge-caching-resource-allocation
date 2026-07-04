@@ -245,9 +245,9 @@ local popularity, and greedy caching all improve performance by increasing the
 cache hit ratio and reducing backhaul traffic.
 
 Compared with random caching, greedy caching with demand-aware bandwidth
-allocation reduces average latency by **4.1%** in the default configuration.
-The cache hit ratio improves by **35.2 percentage points**, and backhaul traffic
-decreases by **43.3%**. These results should be interpreted within the simplified
+allocation reduces average latency by **4.2%** in the default configuration.
+The cache hit ratio improves by **41.2 percentage points**, and backhaul traffic
+decreases by **44.7%**. These results should be interpreted within the simplified
 simulation assumptions rather than as universal 5G/6G performance guarantees.
 The simulator also reports 95th percentile latency so that the discussion is not
 limited to average performance.
@@ -278,7 +278,7 @@ network and request realizations:
 ![Multi-seed latency vs cache capacity](../docs/figures/multi_seed_latency_vs_cache_capacity.png)
 
 At the default cache budget equivalent to 8 average-size files, the same best
-strategy reduces mean latency by **5.6%** relative to random caching across the
+strategy reduces mean latency by **5.2%** relative to random caching across the
 multi-seed experiment.
 The shaded regions show that random placement and request traces introduce
 variation, but the overall trend remains consistent.

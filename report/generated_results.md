@@ -17,11 +17,11 @@ help copy tables and figure references into the project report.
 
 | Strategy | Avg. latency mean +/- std (ms) | Cache hit ratio mean +/- std | Mean backhaul load ratio |
 | --- | --- | --- | --- |
-| Greedy caching + demand-aware BW | 1182.81 +/- 39.48 | 0.555 +/- 0.005 | 0.445 |
-| Greedy caching + equal BW | 1200.02 +/- 55.44 | 0.555 +/- 0.005 | 0.445 |
-| Local popularity caching + equal BW | 1200.02 +/- 55.44 | 0.555 +/- 0.005 | 0.445 |
-| Popularity caching + equal BW | 1200.25 +/- 55.37 | 0.554 +/- 0.005 | 0.446 |
-| Random caching + equal BW | 1253.27 +/- 54.41 | 0.146 +/- 0.050 | 0.854 |
+| Greedy caching + demand-aware BW | 1162.75 +/- 83.11 | 0.572 +/- 0.015 | 0.428 |
+| Greedy caching + equal BW | 1176.65 +/- 87.15 | 0.572 +/- 0.015 | 0.428 |
+| Local popularity caching + equal BW | 1177.44 +/- 86.98 | 0.554 +/- 0.021 | 0.446 |
+| Popularity caching + equal BW | 1177.57 +/- 87.30 | 0.554 +/- 0.024 | 0.446 |
+| Random caching + equal BW | 1226.41 +/- 90.15 | 0.176 +/- 0.034 | 0.824 |
 
 ## Figure References
 

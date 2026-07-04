@@ -115,7 +115,7 @@ def main() -> None:
         "",
         _default_results_table(main_results),
         "",
-        "## Multi-Seed Results at Default Cache Capacity",
+        "## Multi-Seed Results at Default Cache Budget",
         "",
         _multi_seed_table(multi_seed_results, config.cache_capacity),
         "",

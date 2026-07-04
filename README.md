@@ -425,8 +425,8 @@ Typical trends should include:
 
 With the default configuration used to generate the example figures, greedy
 caching with demand-aware bandwidth allocation reduces average latency by about
-4.1% relative to random caching, improves cache hit ratio by about 35.2
-percentage points, and reduces backhaul traffic by about 43.3%. These values
+4.2% relative to random caching, improves cache hit ratio by about 41.2
+percentage points, and reduces backhaul traffic by about 44.7%. These values
 should be interpreted as simulation results under simplified assumptions, not
 as universal 5G/6G performance guarantees.
 

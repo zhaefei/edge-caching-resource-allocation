@@ -116,7 +116,8 @@ def main() -> None:
                 [
                     "",
                     (
-                        f"- In the multi-seed experiment at cache capacity {config.cache_capacity}, "
+                        "- In the multi-seed experiment at the default cache budget "
+                        f"equivalent to {config.cache_capacity} average-size files, "
                         "the same best strategy reduces mean latency by "
                         f"{_format_pct(multi_seed_reduction)} relative to random caching."
                     ),
