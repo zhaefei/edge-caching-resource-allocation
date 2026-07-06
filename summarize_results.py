@@ -22,6 +22,7 @@ def main() -> None:
     main_summary_path = data_dir / "main_summary.csv"
     multi_seed_summary_path = data_dir / "multi_seed_cache_capacity_summary.csv"
     file_size_variability_path = data_dir / "file_size_variability_experiment.csv"
+    spatial_locality_path = data_dir / "spatial_locality_experiment.csv"
 
     if not main_summary_path.exists():
         raise FileNotFoundError(
@@ -152,6 +153,48 @@ def main() -> None:
                     (
                         f"- In the file-size variability sweep at sigma {max_sigma:.1f}, "
                         f"{best_sigma_row['strategy']} achieves the lowest average latency."
+                    ),
+                ]
+            )
+
+    if spatial_locality_path.exists():
+        locality_results = pd.read_csv(spatial_locality_path)
+        local_rows = locality_results[
+            locality_results["strategy"] == "Local popularity caching + equal BW"
+        ]
+        global_rows = locality_results[
+            locality_results["strategy"] == "Popularity caching + equal BW"
+        ]
+        if not local_rows.empty and not global_rows.empty:
+            comparison = local_rows.merge(
+                global_rows,
+                on="spatial_locality_strength",
+                suffixes=("_local", "_global"),
+            )
+            max_strength_row = comparison.sort_values(
+                "spatial_locality_strength"
+            ).iloc[-1]
+            hit_ratio_gain_pp = (
+                max_strength_row["cache_hit_ratio_local"]
+                - max_strength_row["cache_hit_ratio_global"]
+            ) * 100.0
+            latency_reduction_pct = (
+                (
+                    max_strength_row["avg_latency_ms_global"]
+                    - max_strength_row["avg_latency_ms_local"]
+                )
+                / max_strength_row["avg_latency_ms_global"]
+                * 100.0
+            )
+            lines.extend(
+                [
+                    "",
+                    (
+                        "- In the spatial-locality sweep at strength "
+                        f"{max_strength_row['spatial_locality_strength']:.1f}, "
+                        "local popularity caching outperforms global popularity "
+                        f"caching by {hit_ratio_gain_pp:.1f} hit-ratio percentage "
+                        f"points and {_format_pct(latency_reduction_pct)} lower latency."
                     ),
                 ]
             )

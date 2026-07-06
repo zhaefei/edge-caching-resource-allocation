@@ -17,6 +17,7 @@ REQUIRED_OUTPUTS = [
     Path("results/data/default_run_metadata.json"),
     Path("results/data/key_findings.md"),
     Path("results/data/multi_seed_cache_capacity_summary.csv"),
+    Path("results/data/spatial_locality_experiment.csv"),
     Path("results/figures/network_topology.png"),
     Path("results/figures/content_popularity_zipf.png"),
     Path("results/figures/main_average_latency.png"),
@@ -25,6 +26,7 @@ REQUIRED_OUTPUTS = [
     Path("results/figures/main_backhaul_traffic.png"),
     Path("results/figures/main_wireless_rate.png"),
     Path("results/figures/main_bandwidth_fairness.png"),
+    Path("results/figures/latency_vs_spatial_locality.png"),
     Path("report/generated_results.md"),
 ]
 
@@ -61,6 +63,10 @@ def main() -> None:
     _run_step(
         "Running multi-seed cache capacity summary",
         [python, "experiments/run_multi_seed_cache_capacity_experiment.py"],
+    )
+    _run_step(
+        "Running spatial locality sensitivity experiment",
+        [python, "experiments/run_spatial_locality_experiment.py"],
     )
     _run_step(
         "Generating key findings summary",

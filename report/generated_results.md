@@ -29,11 +29,16 @@ help copy tables and figure references into the project report.
 - Zipf content popularity: `docs/figures/content_popularity_zipf.png`
 - Latency vs cache capacity: `docs/figures/latency_vs_cache_capacity.png`
 - Multi-seed latency trend: `docs/figures/multi_seed_latency_vs_cache_capacity.png`
+- Spatial locality sensitivity: `docs/figures/latency_vs_spatial_locality.png`
 - Backhaul sensitivity: `docs/figures/latency_vs_backhaul_latency.png`
 - Bandwidth sensitivity: `docs/figures/latency_vs_bandwidth.png`
 - File-size variability sensitivity: `docs/figures/latency_vs_file_size_variability.png`
 - P95 latency by strategy: `docs/figures/main_p95_latency.png`
 - Bandwidth fairness by strategy: `docs/figures/main_bandwidth_fairness.png`
+
+## Spatial Locality Discussion Sentence
+
+When server-specific demand becomes stronger, local popularity caching benefits more from using nearby request traces instead of one global ranking. At the strongest tested locality setting (0.8), local popularity caching lowers average latency from 1230.55 ms to 1227.80 ms.
 
 ## Suggested Discussion Sentence
 
