@@ -42,6 +42,39 @@ def plot_metric_bar(
     plt.close()
 
 
+def plot_latency_breakdown(
+    results: pd.DataFrame,
+    output_path: Path,
+) -> None:
+    """Plot wireless and backhaul components of average request latency."""
+
+    plt.figure(figsize=(10, 5))
+    strategy_names = results["strategy"]
+    wireless_delay = results["avg_wireless_delay_ms"]
+    backhaul_delay = results["avg_backhaul_delay_ms"]
+
+    plt.bar(
+        strategy_names,
+        wireless_delay,
+        label="Wireless transmission delay",
+        color="#4c78a8",
+    )
+    plt.bar(
+        strategy_names,
+        backhaul_delay,
+        bottom=wireless_delay,
+        label="Backhaul delay",
+        color="#f58518",
+    )
+    plt.ylabel("Average Latency Component (ms)")
+    plt.xticks(rotation=20, ha="right")
+    plt.grid(axis="y", alpha=0.3)
+    plt.legend()
+    plt.tight_layout()
+    plt.savefig(output_path, dpi=200)
+    plt.close()
+
+
 def plot_network_topology(
     network: NetworkState,
     area_size_m: float,

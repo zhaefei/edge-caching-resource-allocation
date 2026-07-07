@@ -273,6 +273,13 @@ scenario, demand-aware bandwidth allocation changes Jain's bandwidth fairness
 index from **0.981** under equal bandwidth allocation to **0.755**, which shows
 a clear latency-fairness tradeoff.
 
+![Latency component breakdown](../docs/figures/main_latency_breakdown.png)
+
+The latency component breakdown separates wireless transmission delay from
+backhaul delay. This helps explain why caching-aware strategies mainly reduce
+the backhaul component, while bandwidth allocation has a more direct effect on
+the wireless transmission component.
+
 ### 7.2 Latency vs Cache Capacity
 
 The following figure shows how latency changes as edge cache capacity increases:

@@ -26,6 +26,7 @@ REQUIRED_OUTPUTS = [
     Path("results/figures/main_backhaul_traffic.png"),
     Path("results/figures/main_wireless_rate.png"),
     Path("results/figures/main_bandwidth_fairness.png"),
+    Path("results/figures/main_latency_breakdown.png"),
     Path("results/figures/latency_vs_spatial_locality.png"),
     Path("report/generated_results.md"),
 ]

@@ -10,6 +10,7 @@ from src.simulation import run_strategy_comparison
 from src.visualization import (
     ensure_results_dirs,
     plot_content_popularity,
+    plot_latency_breakdown,
     plot_metric_bar,
     plot_network_topology,
 )
@@ -77,6 +78,10 @@ def main() -> None:
         metric="bandwidth_fairness_index",
         ylabel="Jain's Bandwidth Fairness Index",
         output_path=figure_dir / "main_bandwidth_fairness.png",
+    )
+    plot_latency_breakdown(
+        results,
+        output_path=figure_dir / "main_latency_breakdown.png",
     )
 
     print("\nDefault simulation results:")

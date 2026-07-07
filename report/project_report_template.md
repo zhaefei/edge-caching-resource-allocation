@@ -285,6 +285,10 @@ Discuss Jain's bandwidth fairness index when comparing equal bandwidth and
 demand-aware bandwidth allocation. This helps show whether a lower average
 latency comes with a less uniform resource distribution.
 
+Include a latency component breakdown if available. Separating wireless delay
+from backhaul delay makes it easier to explain which part of the system is
+improved by caching and which part is improved by bandwidth allocation.
+
 ### 8.2 Cache Hit Ratio
 
 Discuss how cache hit ratio changes with cache capacity. The hit ratio should

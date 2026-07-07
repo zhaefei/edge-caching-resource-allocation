@@ -35,6 +35,7 @@ help copy tables and figure references into the project report.
 - File-size variability sensitivity: `docs/figures/latency_vs_file_size_variability.png`
 - P95 latency by strategy: `docs/figures/main_p95_latency.png`
 - Bandwidth fairness by strategy: `docs/figures/main_bandwidth_fairness.png`
+- Latency component breakdown: `docs/figures/main_latency_breakdown.png`
 
 ## Spatial Locality Discussion Sentence
 
