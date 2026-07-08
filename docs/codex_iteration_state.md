@@ -10,6 +10,7 @@ Last updated: 2026-07-08
 - Next iteration to run: Iteration 2
 - Total target iterations: 14
 - Execution rule: complete exactly one iteration per run
+- Iteration 1 documentation supplement completed before starting Iteration 2.
 
 ## Iteration Checklist
 
@@ -37,6 +38,8 @@ Scope completed:
 - Ran the existing unit test suite.
 - Ran the existing project health check.
 - Confirmed that generated result summaries are reproducible from the current scripts.
+- Added the missing Iteration 1 documentation deliverables:
+  `docs/v2_roadmap.md` and `docs/experiment_plan_v2.md`.
 
 Validation commands:
 

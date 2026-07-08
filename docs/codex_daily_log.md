@@ -2,6 +2,25 @@
 
 ## 2026-07-08
 
+Iteration 1 documentation supplement:
+
+- Added `docs/v2_roadmap.md` to summarize the 14-iteration upgrade plan and the final v2.0 portfolio target.
+- Added `docs/experiment_plan_v2.md` to define the final experiment set before starting Iteration 2.
+- Kept the next planned iteration as Iteration 2.
+- No core source code was modified for this documentation supplement.
+
+Validation:
+
+```bash
+python -m unittest discover -s tests
+```
+
+Result:
+
+- Unit tests passed: 12 tests.
+
+---
+
 Iteration completed: Iteration 1 - Project health check and iteration state setup.
 
 Summary:
