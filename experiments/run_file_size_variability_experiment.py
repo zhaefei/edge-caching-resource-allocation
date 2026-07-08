@@ -12,6 +12,7 @@ PROJECT_ROOT = Path(__file__).resolve().parents[1]
 sys.path.insert(0, str(PROJECT_ROOT))
 
 from config import SimulationConfig
+from src.reproducibility import write_run_metadata
 from src.simulation import run_strategy_comparison
 from src.visualization import ensure_results_dirs, plot_experiment_line
 
@@ -30,6 +31,20 @@ def main() -> None:
     all_results = pd.concat(frames, ignore_index=True)
     data_dir, figure_dir = ensure_results_dirs(base_config.results_dir)
     all_results.to_csv(data_dir / "file_size_variability_experiment.csv", index=False)
+    write_run_metadata(
+        base_config,
+        data_dir / "file_size_variability_experiment_metadata.json",
+        run_name="file_size_variability_experiment",
+        extra_metadata={
+            "sweep_parameter": "file_size_sigma",
+            "sweep_values": file_size_sigmas,
+            "output_files": [
+                "results/data/file_size_variability_experiment.csv",
+                "results/figures/latency_vs_file_size_variability.png",
+                "results/figures/backhaul_vs_file_size_variability.png",
+            ],
+        },
+    )
 
     plot_experiment_line(
         all_results,

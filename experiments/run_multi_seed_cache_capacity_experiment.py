@@ -17,6 +17,7 @@ PROJECT_ROOT = Path(__file__).resolve().parents[1]
 sys.path.insert(0, str(PROJECT_ROOT))
 
 from config import SimulationConfig
+from src.reproducibility import write_run_metadata
 from src.simulation import run_strategy_comparison
 from src.visualization import ensure_results_dirs, plot_experiment_mean_std
 
@@ -63,6 +64,22 @@ def main() -> None:
     summary.to_csv(
         data_dir / "multi_seed_cache_capacity_summary.csv",
         index=False,
+    )
+    write_run_metadata(
+        base_config,
+        data_dir / "multi_seed_cache_capacity_metadata.json",
+        run_name="multi_seed_cache_capacity_experiment",
+        extra_metadata={
+            "sweep_parameter": "cache_capacity",
+            "sweep_values": cache_capacities,
+            "seeds": seeds,
+            "output_files": [
+                "results/data/multi_seed_cache_capacity_raw.csv",
+                "results/data/multi_seed_cache_capacity_summary.csv",
+                "results/figures/multi_seed_latency_vs_cache_capacity.png",
+                "results/figures/multi_seed_hit_ratio_vs_cache_capacity.png",
+            ],
+        },
     )
 
     plot_experiment_mean_std(

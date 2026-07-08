@@ -12,6 +12,7 @@ PROJECT_ROOT = Path(__file__).resolve().parents[1]
 sys.path.insert(0, str(PROJECT_ROOT))
 
 from config import SimulationConfig
+from src.reproducibility import write_run_metadata
 from src.simulation import run_strategy_comparison
 from src.visualization import ensure_results_dirs, plot_experiment_line
 
@@ -30,6 +31,20 @@ def main() -> None:
     all_results = pd.concat(frames, ignore_index=True)
     data_dir, figure_dir = ensure_results_dirs(base_config.results_dir)
     all_results.to_csv(data_dir / "zipf_experiment.csv", index=False)
+    write_run_metadata(
+        base_config,
+        data_dir / "zipf_experiment_metadata.json",
+        run_name="zipf_experiment",
+        extra_metadata={
+            "sweep_parameter": "zipf_alpha",
+            "sweep_values": zipf_alphas,
+            "output_files": [
+                "results/data/zipf_experiment.csv",
+                "results/figures/latency_vs_zipf_alpha.png",
+                "results/figures/hit_ratio_vs_zipf_alpha.png",
+            ],
+        },
+    )
 
     plot_experiment_line(
         all_results,

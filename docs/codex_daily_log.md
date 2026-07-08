@@ -43,14 +43,33 @@ Results:
 
 - Unit tests passed: 12 tests in the final post-change test run.
 - Project health check passed.
-- Health check verified 16 expected output files.
+
+## 2026-07-08 (Iteration 2)
+
+Iteration completed: Iteration 2 - Repository structure cleanup and reproducibility baseline.
+
+Summary:
+
+- Added per-experiment metadata JSON outputs so standalone sweeps record sweep
+  values, generated artifacts, and Git state instead of only saving CSV files.
+- Updated the default run and all-experiments metadata to include richer output
+  context.
+- Tightened the project health check and test coverage around metadata writing.
+
+Validation:
+
+- `python -m unittest discover -s tests`
+- `python check_project.py`
+- Unit tests passed: 12 tests.
+- Health check verified 22 expected output files.
 
 Observed risks / notes:
 
-- The working tree contains unrelated uncommitted changes around a user-activity experiment and reporting integration.
-- Those unrelated changes appear to add one test, which is why the final unit test count is 12.
-- Those changes should be reviewed before Iteration 2 to avoid mixing scopes.
+- Metadata JSON files remain intentionally untracked because they capture local
+  execution time and Git dirty state for each run.
+- The broader experiment sweep scripts now share a clearer reproducibility
+  pattern, which should make future channel-model work easier to validate.
 
 Next iteration:
 
-- Iteration 2: Repository structure cleanup and reproducibility baseline.
+- Iteration 3: Design wireless channel model interface.

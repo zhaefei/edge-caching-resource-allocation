@@ -292,12 +292,22 @@ class SimulationSanityTests(unittest.TestCase):
     def test_run_metadata_is_written_as_json(self) -> None:
         with tempfile.TemporaryDirectory() as tmp_dir:
             output_path = Path(tmp_dir) / "metadata.json"
-            write_run_metadata(self.config, output_path, run_name="unit_test")
+            write_run_metadata(
+                self.config,
+                output_path,
+                run_name="unit_test",
+                extra_metadata={
+                    "sweep_parameter": "cache_capacity",
+                    "sweep_values": [2, 4, 6],
+                },
+            )
 
             metadata = json.loads(output_path.read_text(encoding="utf-8"))
 
         self.assertEqual(metadata["run_name"], "unit_test")
         self.assertEqual(metadata["config"]["seed"], self.config.seed)
+        self.assertEqual(metadata["sweep_parameter"], "cache_capacity")
+        self.assertEqual(metadata["sweep_values"], [2, 4, 6])
         self.assertIn("python_version", metadata)
         self.assertIn("git_commit", metadata)
 

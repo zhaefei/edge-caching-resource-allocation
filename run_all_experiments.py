@@ -44,6 +44,20 @@ def main() -> None:
         config,
         config.results_dir / "data" / "all_experiments_metadata.json",
         run_name="all_experiments",
+        extra_metadata={
+            "included_runs": [
+                "default_simulation",
+                "cache_capacity_experiment",
+                "file_size_variability_experiment",
+                "user_density_experiment",
+                "user_activity_experiment",
+                "zipf_experiment",
+                "spatial_locality_experiment",
+                "backhaul_sensitivity_experiment",
+                "bandwidth_sensitivity_experiment",
+                "multi_seed_cache_capacity_experiment",
+            ],
+        },
     )
     print("\nAll experiments completed.")
 

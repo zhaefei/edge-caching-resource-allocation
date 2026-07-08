@@ -45,11 +45,15 @@ def _git_output(args: list[str]) -> str:
     return completed.stdout.strip()
 
 
-def collect_run_metadata(config: SimulationConfig, run_name: str) -> dict[str, Any]:
+def collect_run_metadata(
+    config: SimulationConfig,
+    run_name: str,
+    extra_metadata: dict[str, Any] | None = None,
+) -> dict[str, Any]:
     """Collect configuration and environment details for one simulation run."""
 
     git_status = _git_output(["status", "--porcelain"])
-    return {
+    metadata = {
         "run_name": run_name,
         "generated_at_utc": datetime.now(timezone.utc)
         .replace(microsecond=0)
@@ -60,16 +64,20 @@ def collect_run_metadata(config: SimulationConfig, run_name: str) -> dict[str, A
         "git_dirty": git_status not in ("", "unknown"),
         "config": _json_safe(asdict(config)),
     }
+    if extra_metadata:
+        metadata.update(_json_safe(extra_metadata))
+    return metadata
 
 
 def write_run_metadata(
     config: SimulationConfig,
     output_path: Path,
     run_name: str,
+    extra_metadata: dict[str, Any] | None = None,
 ) -> None:
     """Write a JSON metadata file for reproducible local experiments."""
 
-    metadata = collect_run_metadata(config, run_name)
+    metadata = collect_run_metadata(config, run_name, extra_metadata=extra_metadata)
     output_path.parent.mkdir(parents=True, exist_ok=True)
     output_path.write_text(
         json.dumps(metadata, indent=2, sort_keys=True) + "\n",

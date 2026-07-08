@@ -366,6 +366,10 @@ python experiments/run_user_density_experiment.py
 python experiments/run_zipf_experiment.py
 ```
 
+Each experiment script also writes a matching metadata JSON file in
+`results/data/` that records the run configuration, sweep parameter values, Git
+commit, and generated output filenames.
+
 ## Running Sanity Tests
 
 The project includes lightweight tests based on Python's standard `unittest`
@@ -387,7 +391,8 @@ python check_project.py
 
 This runs the sanity tests, executes the default simulation, regenerates the
 multi-seed and spatial-locality summaries used by the report assets, writes key
-findings, and verifies that the main output files were created.
+findings, and verifies that the main output files and key metadata files were
+created.
 
 ## Summarizing Results
 

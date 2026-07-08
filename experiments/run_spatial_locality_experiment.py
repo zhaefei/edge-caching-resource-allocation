@@ -12,6 +12,7 @@ PROJECT_ROOT = Path(__file__).resolve().parents[1]
 sys.path.insert(0, str(PROJECT_ROOT))
 
 from config import SimulationConfig
+from src.reproducibility import write_run_metadata
 from src.simulation import run_strategy_comparison
 from src.visualization import ensure_results_dirs, plot_experiment_line
 
@@ -33,6 +34,20 @@ def main() -> None:
     all_results = pd.concat(frames, ignore_index=True)
     data_dir, figure_dir = ensure_results_dirs(base_config.results_dir)
     all_results.to_csv(data_dir / "spatial_locality_experiment.csv", index=False)
+    write_run_metadata(
+        base_config,
+        data_dir / "spatial_locality_experiment_metadata.json",
+        run_name="spatial_locality_experiment",
+        extra_metadata={
+            "sweep_parameter": "spatial_locality_strength",
+            "sweep_values": locality_strengths,
+            "output_files": [
+                "results/data/spatial_locality_experiment.csv",
+                "results/figures/latency_vs_spatial_locality.png",
+                "results/figures/hit_ratio_vs_spatial_locality.png",
+            ],
+        },
+    )
 
     plot_experiment_line(
         all_results,

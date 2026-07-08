@@ -28,6 +28,21 @@ def main() -> None:
         config,
         data_dir / "default_run_metadata.json",
         run_name="default_simulation",
+        extra_metadata={
+            "output_files": [
+                "results/data/main_summary.csv",
+                "results/figures/network_topology.png",
+                "results/figures/content_popularity_zipf.png",
+                "results/figures/main_average_latency.png",
+                "results/figures/main_p95_latency.png",
+                "results/figures/main_cache_hit_ratio.png",
+                "results/figures/main_backhaul_traffic.png",
+                "results/figures/main_wireless_rate.png",
+                "results/figures/main_bandwidth_fairness.png",
+                "results/figures/main_latency_breakdown.png",
+            ],
+            "strategy_count": 5,
+        },
     )
 
     rng = np.random.default_rng(config.seed)
