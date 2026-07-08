@@ -116,6 +116,18 @@ class SimulationSanityTests(unittest.TestCase):
                     places=5,
                 )
 
+    def test_demand_aware_bandwidth_tracks_user_request_skew(self) -> None:
+        config = replace(self.config, num_users=3, num_edge_servers=1)
+        network = generate_network(config, np.random.default_rng(config.seed))
+        user_ids = np.array([0, 0, 0, 0, 1], dtype=int)
+
+        bandwidth = demand_aware_bandwidth_allocation(config, network, user_ids)
+
+        self.assertGreater(bandwidth[0], bandwidth[1])
+        self.assertGreater(bandwidth[1], bandwidth[2])
+        self.assertGreater(bandwidth[2], 0.0)
+        self.assertAlmostEqual(float(np.sum(bandwidth)), config.bandwidth_hz, places=5)
+
     def test_jain_fairness_index_bounds(self) -> None:
         self.assertAlmostEqual(jain_fairness_index(np.array([1.0, 1.0, 1.0])), 1.0)
         self.assertGreater(jain_fairness_index(np.array([3.0, 1.0, 0.0])), 0.0)

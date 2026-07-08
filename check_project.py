@@ -18,6 +18,7 @@ REQUIRED_OUTPUTS = [
     Path("results/data/key_findings.md"),
     Path("results/data/multi_seed_cache_capacity_summary.csv"),
     Path("results/data/spatial_locality_experiment.csv"),
+    Path("results/data/user_activity_experiment.csv"),
     Path("results/figures/network_topology.png"),
     Path("results/figures/content_popularity_zipf.png"),
     Path("results/figures/main_average_latency.png"),
@@ -28,6 +29,8 @@ REQUIRED_OUTPUTS = [
     Path("results/figures/main_bandwidth_fairness.png"),
     Path("results/figures/main_latency_breakdown.png"),
     Path("results/figures/latency_vs_spatial_locality.png"),
+    Path("results/figures/latency_vs_user_activity.png"),
+    Path("results/figures/fairness_vs_user_activity.png"),
     Path("report/generated_results.md"),
 ]
 
@@ -68,6 +71,10 @@ def main() -> None:
     _run_step(
         "Running spatial locality sensitivity experiment",
         [python, "experiments/run_spatial_locality_experiment.py"],
+    )
+    _run_step(
+        "Running user activity skew experiment",
+        [python, "experiments/run_user_activity_experiment.py"],
     )
     _run_step(
         "Generating key findings summary",

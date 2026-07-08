@@ -325,6 +325,13 @@ larger share of total latency. As bandwidth increases, wireless delay decreases,
 and the remaining latency difference among strategies is more strongly related
 to cache misses and backhaul delay.
 
+The user-activity-skew experiment helps interpret the demand-aware bandwidth
+policy itself. When activity becomes more uneven, a small group of users
+generates a larger share of requests, so prioritizing those users can reduce
+request-weighted latency more noticeably. The same figure should be read
+together with Jain's fairness index because the lower-latency operating point
+is obtained by assigning bandwidth less uniformly across users.
+
 ## 8. Limitations
 
 This project intentionally simplifies many aspects of real 5G/6G networks:

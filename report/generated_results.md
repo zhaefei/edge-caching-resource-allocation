@@ -30,6 +30,8 @@ help copy tables and figure references into the project report.
 - Latency vs cache capacity: `docs/figures/latency_vs_cache_capacity.png`
 - Multi-seed latency trend: `docs/figures/multi_seed_latency_vs_cache_capacity.png`
 - Spatial locality sensitivity: `docs/figures/latency_vs_spatial_locality.png`
+- User activity skew sensitivity: `docs/figures/latency_vs_user_activity.png`
+- User activity fairness sensitivity: `docs/figures/fairness_vs_user_activity.png`
 - Backhaul sensitivity: `docs/figures/latency_vs_backhaul_latency.png`
 - Bandwidth sensitivity: `docs/figures/latency_vs_bandwidth.png`
 - File-size variability sensitivity: `docs/figures/latency_vs_file_size_variability.png`
@@ -40,6 +42,10 @@ help copy tables and figure references into the project report.
 ## Spatial Locality Discussion Sentence
 
 When server-specific demand becomes stronger, local popularity caching benefits more from using nearby request traces instead of one global ranking. At the strongest tested locality setting (0.8), local popularity caching lowers average latency from 1230.55 ms to 1227.80 ms.
+
+## User Activity Skew Discussion Sentence
+
+When user demand becomes more uneven, demand-aware bandwidth allocation becomes easier to justify because a small set of active users account for a larger fraction of requests. At the strongest tested activity skew (1.2), greedy caching with demand-aware bandwidth lowers average latency from 1094.92 ms under equal bandwidth to 1056.81 ms, with bandwidth fairness changing from 0.981 to 0.145.
 
 ## Suggested Discussion Sentence
 

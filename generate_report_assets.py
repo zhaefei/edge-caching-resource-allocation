@@ -95,6 +95,7 @@ def main() -> None:
     main_summary_path = data_dir / "main_summary.csv"
     multi_seed_path = data_dir / "multi_seed_cache_capacity_summary.csv"
     spatial_locality_path = data_dir / "spatial_locality_experiment.csv"
+    user_activity_path = data_dir / "user_activity_experiment.csv"
 
     if not main_summary_path.exists():
         raise FileNotFoundError(
@@ -108,10 +109,15 @@ def main() -> None:
         raise FileNotFoundError(
             "Missing spatial locality experiment. Run `python run_all_experiments.py` first."
         )
+    if not user_activity_path.exists():
+        raise FileNotFoundError(
+            "Missing user activity experiment. Run `python run_all_experiments.py` first."
+        )
 
     main_results = pd.read_csv(main_summary_path)
     multi_seed_results = pd.read_csv(multi_seed_path)
     spatial_locality_results = pd.read_csv(spatial_locality_path)
+    user_activity_results = pd.read_csv(user_activity_path)
     locality_local = spatial_locality_results[
         spatial_locality_results["strategy"] == "Local popularity caching + equal BW"
     ]
@@ -125,6 +131,20 @@ def main() -> None:
     )
     strongest_locality = locality_comparison.sort_values(
         "spatial_locality_strength"
+    ).iloc[-1]
+    activity_equal = user_activity_results[
+        user_activity_results["strategy"] == "Greedy caching + equal BW"
+    ]
+    activity_demand = user_activity_results[
+        user_activity_results["strategy"] == "Greedy caching + demand-aware BW"
+    ]
+    activity_comparison = activity_equal.merge(
+        activity_demand,
+        on="user_activity_alpha",
+        suffixes=("_equal", "_demand"),
+    )
+    strongest_activity_skew = activity_comparison.sort_values(
+        "user_activity_alpha"
     ).iloc[-1]
 
     content = [
@@ -148,6 +168,8 @@ def main() -> None:
         "- Latency vs cache capacity: `docs/figures/latency_vs_cache_capacity.png`",
         "- Multi-seed latency trend: `docs/figures/multi_seed_latency_vs_cache_capacity.png`",
         "- Spatial locality sensitivity: `docs/figures/latency_vs_spatial_locality.png`",
+        "- User activity skew sensitivity: `docs/figures/latency_vs_user_activity.png`",
+        "- User activity fairness sensitivity: `docs/figures/fairness_vs_user_activity.png`",
         "- Backhaul sensitivity: `docs/figures/latency_vs_backhaul_latency.png`",
         "- Bandwidth sensitivity: `docs/figures/latency_vs_bandwidth.png`",
         "- File-size variability sensitivity: `docs/figures/latency_vs_file_size_variability.png`",
@@ -166,6 +188,24 @@ def main() -> None:
             f"{_format_float(float(strongest_locality['avg_latency_ms_global']), 2)} ms "
             "to "
             f"{_format_float(float(strongest_locality['avg_latency_ms_local']), 2)} ms."
+        ),
+        "",
+        "## User Activity Skew Discussion Sentence",
+        "",
+        (
+            "When user demand becomes more uneven, demand-aware bandwidth "
+            "allocation becomes easier to justify because a small set of active "
+            "users account for a larger fraction of requests. At the strongest "
+            f"tested activity skew ({strongest_activity_skew['user_activity_alpha']:.1f}), "
+            "greedy caching with demand-aware bandwidth lowers average latency "
+            "from "
+            f"{_format_float(float(strongest_activity_skew['avg_latency_ms_equal']), 2)} ms "
+            "under equal bandwidth to "
+            f"{_format_float(float(strongest_activity_skew['avg_latency_ms_demand']), 2)} ms, "
+            "with bandwidth fairness changing from "
+            f"{_format_float(float(strongest_activity_skew['bandwidth_fairness_index_equal']), 3)} "
+            "to "
+            f"{_format_float(float(strongest_activity_skew['bandwidth_fairness_index_demand']), 3)}."
         ),
         "",
         "## Suggested Discussion Sentence",

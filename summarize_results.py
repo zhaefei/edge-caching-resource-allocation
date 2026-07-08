@@ -23,6 +23,7 @@ def main() -> None:
     multi_seed_summary_path = data_dir / "multi_seed_cache_capacity_summary.csv"
     file_size_variability_path = data_dir / "file_size_variability_experiment.csv"
     spatial_locality_path = data_dir / "spatial_locality_experiment.csv"
+    user_activity_path = data_dir / "user_activity_experiment.csv"
 
     if not main_summary_path.exists():
         raise FileNotFoundError(
@@ -195,6 +196,47 @@ def main() -> None:
                         "local popularity caching outperforms global popularity "
                         f"caching by {hit_ratio_gain_pp:.1f} hit-ratio percentage "
                         f"points and {_format_pct(latency_reduction_pct)} lower latency."
+                    ),
+                ]
+            )
+
+    if user_activity_path.exists():
+        activity_results = pd.read_csv(user_activity_path)
+        greedy_equal = activity_results[
+            activity_results["strategy"] == "Greedy caching + equal BW"
+        ]
+        greedy_demand = activity_results[
+            activity_results["strategy"] == "Greedy caching + demand-aware BW"
+        ]
+        if not greedy_equal.empty and not greedy_demand.empty:
+            comparison = greedy_equal.merge(
+                greedy_demand,
+                on="user_activity_alpha",
+                suffixes=("_equal", "_demand"),
+            )
+            strongest_skew = comparison.sort_values("user_activity_alpha").iloc[-1]
+            latency_reduction_pct = (
+                (
+                    strongest_skew["avg_latency_ms_equal"]
+                    - strongest_skew["avg_latency_ms_demand"]
+                )
+                / strongest_skew["avg_latency_ms_equal"]
+                * 100.0
+            )
+            fairness_change = (
+                strongest_skew["bandwidth_fairness_index_demand"]
+                - strongest_skew["bandwidth_fairness_index_equal"]
+            )
+            lines.extend(
+                [
+                    "",
+                    (
+                        "- In the user-activity sweep at alpha "
+                        f"{strongest_skew['user_activity_alpha']:.1f}, demand-aware "
+                        "bandwidth allocation under the same greedy cache placement "
+                        f"reduces latency by {_format_pct(latency_reduction_pct)} "
+                        "relative to equal bandwidth, while changing Jain's "
+                        f"fairness index by {fairness_change:+.3f}."
                     ),
                 ]
             )
