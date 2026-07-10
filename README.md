@@ -44,6 +44,10 @@ The simulated network contains:
 
 The default parameters are defined in `config.py`.
 
+The wireless-rate calculation now resolves through a small channel-model entry
+point via `SimulationConfig.wireless_channel_model`, which keeps later channel
+extensions isolated from the caching and experiment workflow.
+
 The modeling assumptions and scope are documented in:
 
 - `docs/model_assumptions.md`
@@ -277,6 +281,7 @@ edge-caching-resource-allocation/
 |   |-- request_model.py
 |   |-- caching_algorithms.py
 |   |-- resource_allocation.py
+|   |-- wireless_channel.py
 |   |-- metrics.py
 |   |-- visualization.py
 |   |-- reproducibility.py

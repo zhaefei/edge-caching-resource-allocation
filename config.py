@@ -30,6 +30,7 @@ class SimulationConfig:
     local_preference_boost: float = 3.0
 
     # Wireless channel and resource model
+    wireless_channel_model: str = "baseline_distance"
     bandwidth_hz: float = 20e6  # total downlink bandwidth per edge server
     tx_power_watt: float = 0.2
     noise_density_w_per_hz: float = 10 ** ((-174.0 - 30.0) / 10.0)

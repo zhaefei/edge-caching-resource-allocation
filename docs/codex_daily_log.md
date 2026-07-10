@@ -73,3 +73,28 @@ Observed risks / notes:
 Next iteration:
 
 - Iteration 3: Design wireless channel model interface.
+
+## 2026-07-10 (Iteration 3)
+
+Iteration completed: Iteration 3 - Design wireless channel model interface.
+
+Summary:
+
+- Added a dedicated wireless-channel abstraction in `src/wireless_channel.py`
+  so later path-loss and fading work can be swapped in without rewriting
+  network generation or metrics code.
+- Refactored `src/network.py` to resolve the configured channel model when
+  generating channel gains and computing user rates.
+- Kept the default behavior aligned with the previous distance-based baseline.
+- Added focused tests for default model resolution and unsupported model names.
+
+Validation:
+
+- `python -m unittest discover -s tests`
+- `python check_project.py`
+- Unit tests: 14 tests passed.
+- Health check: passed and verified 22 output files.
+
+Next iteration:
+
+- Iteration 4: Implement path loss wireless channel model.

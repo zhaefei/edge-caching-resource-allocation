@@ -2,12 +2,12 @@
 
 Project: `edge-caching-resource-allocation`
 
-Last updated: 2026-07-08
+Last updated: 2026-07-10
 
 ## Current Status
 
-- Current completed iteration: Iteration 2
-- Next iteration to run: Iteration 3
+- Current completed iteration: Iteration 3
+- Next iteration to run: Iteration 4
 - Total target iterations: 14
 - Execution rule: complete exactly one iteration per run
 - Iteration 1 documentation supplement completed before starting Iteration 2.
@@ -16,7 +16,7 @@ Last updated: 2026-07-08
 
 - [x] Iteration 1: Project health check and iteration state setup.
 - [x] Iteration 2: Repository structure cleanup and reproducibility baseline.
-- [ ] Iteration 3: Design wireless channel model interface.
+- [x] Iteration 3: Design wireless channel model interface.
 - [ ] Iteration 4: Implement path loss wireless channel model.
 - [ ] Iteration 5: Implement optional fading and tests.
 - [ ] Iteration 6: Add wireless channel experiment.
@@ -82,4 +82,28 @@ python check_project.py
 Validation result:
 
 - Unit tests: 12 tests passed in the final post-change test run.
+- Health check: passed and verified 22 output files.
+
+## Iteration 3 Notes
+
+Scope completed:
+
+- Added `src/wireless_channel.py` with a minimal `WirelessChannelModel`
+  abstraction and a default `BaselineDistanceChannelModel`.
+- Refactored network generation and user-rate calculation so the simulator
+  resolves the wireless channel model through one configuration entry point.
+- Preserved the existing rate behavior while making later channel extensions
+  isolated from caching and experiment code.
+- Added tests for default model resolution and invalid model names.
+
+Validation commands:
+
+```bash
+python -m unittest discover -s tests
+python check_project.py
+```
+
+Validation result:
+
+- Unit tests: 14 tests passed in the final post-change test run.
 - Health check: passed and verified 22 output files.

@@ -61,6 +61,9 @@ specified assumptions.
   rather than a learned or measured traffic dataset.
 - File sizes use a simple bounded lognormal profile rather than measured traffic traces.
 - The channel model uses large-scale path loss without detailed fading.
+- The simulator now resolves wireless behavior through a small channel-model
+  interface so future path-loss and fading variants can be compared without
+  changing the caching workflow.
 - Interference is represented by a simple scaling factor.
 - Backhaul latency is modeled with a fixed component and transfer delay.
 - Bandwidth allocation is heuristic rather than solved as a full optimization

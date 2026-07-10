@@ -36,6 +36,10 @@ from src.resource_allocation import (
     equal_bandwidth_allocation,
 )
 from src.simulation import run_strategy_comparison
+from src.wireless_channel import (
+    BaselineDistanceChannelModel,
+    resolve_wireless_channel_model,
+)
 
 
 class SimulationSanityTests(unittest.TestCase):
@@ -288,6 +292,27 @@ class SimulationSanityTests(unittest.TestCase):
         self.assertAlmostEqual(metrics["backhaul_traffic_mbits"], 8.0)
         self.assertAlmostEqual(metrics["avg_requested_file_size_mbits"], 5.0)
         self.assertAlmostEqual(metrics["bandwidth_fairness_index"], 1.0)
+
+    def test_default_wireless_channel_model_is_resolved_and_used(self) -> None:
+        channel_model = resolve_wireless_channel_model(self.config)
+        user_bandwidth = equal_bandwidth_allocation(self.config, self.network)
+        rates = channel_model.compute_user_rates_mbps(
+            self.config,
+            self.network.channel_gains,
+            self.network.associations,
+            user_bandwidth,
+        )
+
+        self.assertIsInstance(channel_model, BaselineDistanceChannelModel)
+        self.assertEqual(self.network.channel_model_name, channel_model.name)
+        self.assertEqual(rates.shape, (self.config.num_users,))
+        self.assertTrue(np.all(rates > 0.0))
+
+    def test_unknown_wireless_channel_model_raises_clear_error(self) -> None:
+        config = replace(self.config, wireless_channel_model="unknown_model")
+
+        with self.assertRaisesRegex(ValueError, "Unsupported wireless channel model"):
+            resolve_wireless_channel_model(config)
 
     def test_run_metadata_is_written_as_json(self) -> None:
         with tempfile.TemporaryDirectory() as tmp_dir:
