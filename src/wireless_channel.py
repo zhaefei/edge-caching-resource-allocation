@@ -64,10 +64,10 @@ class WirelessChannelModel(ABC):
         return bandwidth * np.log2(1.0 + metrics.sinr_linear) / 1e6
 
 
-class BaselineDistanceChannelModel(WirelessChannelModel):
-    """Current large-scale distance model used as the default baseline."""
+class PathLossChannelModel(WirelessChannelModel):
+    """Large-scale distance path-loss channel model."""
 
-    name = "baseline_distance"
+    name = "path_loss"
 
     def compute_channel_gains(
         self,
@@ -80,7 +80,10 @@ class BaselineDistanceChannelModel(WirelessChannelModel):
             axis=2,
         )
         distances = np.maximum(distances, config.min_distance_m)
-        return config.reference_gain / (distances**config.path_loss_exponent)
+        reference_distance = max(config.path_loss_reference_distance_m, 1e-9)
+        return config.path_loss_reference_gain * (
+            reference_distance / distances
+        ) ** config.path_loss_exponent
 
     def compute_channel_metrics(
         self,
@@ -115,10 +118,19 @@ class BaselineDistanceChannelModel(WirelessChannelModel):
         )
 
 
+class BaselineDistanceChannelModel(PathLossChannelModel):
+    """Backward-compatible alias for the original distance-based baseline."""
+
+    name = "baseline_distance"
+
+
 def resolve_wireless_channel_model(
     config: SimulationConfig,
 ) -> WirelessChannelModel:
     """Return the configured wireless channel model."""
+
+    if config.wireless_channel_model == PathLossChannelModel.name:
+        return PathLossChannelModel()
 
     if config.wireless_channel_model == BaselineDistanceChannelModel.name:
         return BaselineDistanceChannelModel()

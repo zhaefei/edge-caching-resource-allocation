@@ -46,7 +46,9 @@ The default parameters are defined in `config.py`.
 
 The wireless-rate calculation now resolves through a small channel-model entry
 point via `SimulationConfig.wireless_channel_model`, which keeps later channel
-extensions isolated from the caching and experiment workflow.
+extensions isolated from the caching and experiment workflow. The default model
+is `path_loss`, a deterministic reference-distance path-loss model using
+`path_loss_reference_gain * (d_ref / distance)^path_loss_exponent`.
 
 The modeling assumptions and scope are documented in:
 
@@ -124,6 +126,16 @@ where `B_u` is the allocated bandwidth. The simplified SINR is
 Here `P` is transmit power, `g_{u,a_u}` is the channel gain between user `u` and
 its serving edge server, `sigma^2 B_u` is noise power, and `I_u` is a simplified
 interference term.
+
+The default path-loss channel gain between user `u` and server `k` is:
+
+```math
+g_{u,k} = g_0 \left(\frac{d_{\mathrm{ref}}}{\max(d_{u,k}, d_{\min})}\right)^\eta,
+```
+
+where `g_0` is `path_loss_reference_gain`, `d_ref` is
+`path_loss_reference_distance_m`, `d_min` avoids singular behavior at very
+small distances, and `eta` is the path-loss exponent.
 
 ### Latency Model
 

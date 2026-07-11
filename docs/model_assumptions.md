@@ -12,7 +12,7 @@ system simulator.
 - Randomly placed users in a square service area.
 - Grid-placed edge servers with limited cache capacity.
 - Nearest-edge-server user association.
-- Distance-based channel gain with path loss.
+- Distance-based channel gain with a configurable path-loss exponent.
 - A simplified SINR model with thermal noise and a coarse interference term.
 - Shannon-capacity-based wireless transmission rate.
 - Backhaul delay when requested content is not cached locally.
@@ -60,7 +60,9 @@ specified assumptions.
 - Spatial locality is modeled with simple server-specific popularity boosts
   rather than a learned or measured traffic dataset.
 - File sizes use a simple bounded lognormal profile rather than measured traffic traces.
-- The channel model uses large-scale path loss without detailed fading.
+- The default `path_loss` channel model uses large-scale deterministic path
+  loss without detailed fading:
+  `gain = path_loss_reference_gain * (d_ref / max(distance, min_distance))^path_loss_exponent`.
 - The simulator now resolves wireless behavior through a small channel-model
   interface so future path-loss and fading variants can be compared without
   changing the caching workflow.

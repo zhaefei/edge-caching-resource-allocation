@@ -79,6 +79,8 @@ user positions, edge server positions, and nearest-server association rule.
 Wireless transmission rate depends on allocated bandwidth, transmit power,
 channel gain, noise, and simplified interference. The system model is
 implemented in the `src/` directory of the repository.
+The default wireless channel model is a deterministic path-loss model, with
+optional channel variants planned for later iterations.
 
 ## 4. Problem Formulation
 
@@ -148,6 +150,16 @@ where `B_u` is the bandwidth allocated to user `u`. A simplified SINR model is:
 where `P` is transmit power, `g_{u,a_u}` is the channel gain from the serving
 edge server, `sigma^2 B_u` represents thermal noise over the allocated
 bandwidth, and `I_u` is simplified inter-cell interference.
+
+For the default path-loss channel model:
+
+```math
+g_{u,k} = g_0 \left(\frac{d_{\mathrm{ref}}}{\max(d_{u,k}, d_{\min})}\right)^\eta.
+```
+
+Here, `g_0` is the reference-distance gain, `d_ref` is the reference distance,
+`d_min` avoids singular behavior for very short distances, and `eta` is the
+path-loss exponent.
 
 ### 4.4 Latency Model
 

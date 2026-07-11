@@ -30,13 +30,14 @@ class SimulationConfig:
     local_preference_boost: float = 3.0
 
     # Wireless channel and resource model
-    wireless_channel_model: str = "baseline_distance"
+    wireless_channel_model: str = "path_loss"
     bandwidth_hz: float = 20e6  # total downlink bandwidth per edge server
     tx_power_watt: float = 0.2
     noise_density_w_per_hz: float = 10 ** ((-174.0 - 30.0) / 10.0)
     noise_figure_db: float = 7.0
     interference_factor: float = 0.15
-    reference_gain: float = 1e-3
+    path_loss_reference_distance_m: float = 1.0
+    path_loss_reference_gain: float = 1e-3
     path_loss_exponent: float = 3.4
     min_distance_m: float = 1.0
 

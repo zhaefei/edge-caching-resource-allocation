@@ -38,6 +38,7 @@ from src.resource_allocation import (
 from src.simulation import run_strategy_comparison
 from src.wireless_channel import (
     BaselineDistanceChannelModel,
+    PathLossChannelModel,
     resolve_wireless_channel_model,
 )
 
@@ -303,10 +304,39 @@ class SimulationSanityTests(unittest.TestCase):
             user_bandwidth,
         )
 
-        self.assertIsInstance(channel_model, BaselineDistanceChannelModel)
+        self.assertIsInstance(channel_model, PathLossChannelModel)
         self.assertEqual(self.network.channel_model_name, channel_model.name)
         self.assertEqual(rates.shape, (self.config.num_users,))
         self.assertTrue(np.all(rates > 0.0))
+
+    def test_path_loss_channel_gain_matches_formula(self) -> None:
+        config = replace(
+            self.config,
+            path_loss_reference_distance_m=1.0,
+            path_loss_reference_gain=1.0,
+            path_loss_exponent=2.0,
+            min_distance_m=1.0,
+        )
+        channel_model = PathLossChannelModel()
+        user_positions = np.array([[0.0, 0.0], [3.0, 4.0]], dtype=float)
+        server_positions = np.array([[0.0, 0.0]], dtype=float)
+
+        gains = channel_model.compute_channel_gains(
+            user_positions,
+            server_positions,
+            config,
+        )
+
+        self.assertAlmostEqual(float(gains[0, 0]), 1.0)
+        self.assertAlmostEqual(float(gains[1, 0]), 1.0 / 25.0)
+
+    def test_baseline_distance_alias_preserves_path_loss_behavior(self) -> None:
+        config = replace(self.config, wireless_channel_model="baseline_distance")
+        channel_model = resolve_wireless_channel_model(config)
+
+        self.assertIsInstance(channel_model, BaselineDistanceChannelModel)
+        self.assertIsInstance(channel_model, PathLossChannelModel)
+        self.assertEqual(channel_model.name, "baseline_distance")
 
     def test_unknown_wireless_channel_model_raises_clear_error(self) -> None:
         config = replace(self.config, wireless_channel_model="unknown_model")

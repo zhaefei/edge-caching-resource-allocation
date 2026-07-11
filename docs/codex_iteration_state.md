@@ -2,12 +2,12 @@
 
 Project: `edge-caching-resource-allocation`
 
-Last updated: 2026-07-10
+Last updated: 2026-07-11
 
 ## Current Status
 
-- Current completed iteration: Iteration 3
-- Next iteration to run: Iteration 4
+- Current completed iteration: Iteration 4
+- Next iteration to run: Iteration 5
 - Total target iterations: 14
 - Execution rule: complete exactly one iteration per run
 - Iteration 1 documentation supplement completed before starting Iteration 2.
@@ -17,7 +17,7 @@ Last updated: 2026-07-10
 - [x] Iteration 1: Project health check and iteration state setup.
 - [x] Iteration 2: Repository structure cleanup and reproducibility baseline.
 - [x] Iteration 3: Design wireless channel model interface.
-- [ ] Iteration 4: Implement path loss wireless channel model.
+- [x] Iteration 4: Implement path loss wireless channel model.
 - [ ] Iteration 5: Implement optional fading and tests.
 - [ ] Iteration 6: Add wireless channel experiment.
 - [ ] Iteration 7: Design Multi-Armed Bandit caching policy.
@@ -106,4 +106,29 @@ python check_project.py
 Validation result:
 
 - Unit tests: 14 tests passed in the final post-change test run.
+- Health check: passed and verified 22 output files.
+
+## Iteration 4 Notes
+
+Scope completed:
+
+- Replaced the ambiguous default wireless model name with the explicit
+  `path_loss` model in `SimulationConfig`.
+- Parameterized the default gain calculation by reference-distance gain and
+  path-loss exponent while preserving the previous numerical behavior.
+- Kept `baseline_distance` as a compatibility alias so older configs still
+  resolve cleanly.
+- Added tests for the default model, the legacy alias, and the path-loss gain
+  formula.
+
+Validation commands:
+
+```bash
+python -m unittest discover -s tests
+python check_project.py
+```
+
+Validation result:
+
+- Unit tests: 16 tests passed in the final post-change test run.
 - Health check: passed and verified 22 output files.

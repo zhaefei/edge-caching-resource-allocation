@@ -98,3 +98,35 @@ Validation:
 Next iteration:
 
 - Iteration 4: Implement path loss wireless channel model.
+
+## 2026-07-11 (Iteration 4)
+
+Iteration completed: Iteration 4 - Implement path loss wireless channel model.
+
+Summary:
+
+- Added a formal `PathLossChannelModel` as the default wireless channel model.
+- Changed the default `SimulationConfig.wireless_channel_model` from
+  `baseline_distance` to `path_loss`.
+- Preserved `baseline_distance` as a backward-compatible alias.
+- Added tests for the path-loss gain formula and alias behavior.
+- Updated README, model assumptions, and report templates with the path-loss
+  equation.
+
+Validation:
+
+- `python -m unittest discover -s tests`
+- `python -m compileall config.py src tests`
+- `python check_project.py`
+- Unit tests passed: 16 tests.
+- Health check verified 22 expected output files.
+
+Observed risks / notes:
+
+- The new `path_loss` model preserves the previous deterministic distance-based
+  numerical behavior, so existing generated results are not expected to change.
+- Optional fading is intentionally not implemented in this iteration.
+
+Next iteration:
+
+- Iteration 5: Implement optional fading and tests.
