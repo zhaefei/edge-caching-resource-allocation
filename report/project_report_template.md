@@ -79,8 +79,8 @@ user positions, edge server positions, and nearest-server association rule.
 Wireless transmission rate depends on allocated bandwidth, transmit power,
 channel gain, noise, and simplified interference. The system model is
 implemented in the `src/` directory of the repository.
-The default wireless channel model is a deterministic path-loss model, with
-optional channel variants planned for later iterations.
+The default wireless channel model is deterministic path loss. An optional
+seed-controlled fading snapshot is available for channel sensitivity analysis.
 
 ## 4. Problem Formulation
 
@@ -160,6 +160,10 @@ g_{u,k} = g_0 \left(\frac{d_{\mathrm{ref}}}{\max(d_{u,k}, d_{\min})}\right)^\eta
 Here, `g_0` is the reference-distance gain, `d_ref` is the reference distance,
 `d_min` avoids singular behavior for very short distances, and `eta` is the
 path-loss exponent.
+
+For the optional fading snapshot, multiply this gain by a clipped sample from a
+unit-mean exponential distribution. State clearly that this is a simplified
+Rayleigh-fading power snapshot rather than a time-varying channel model.
 
 ### 4.4 Latency Model
 
@@ -341,7 +345,8 @@ This simulation intentionally simplifies many aspects of real 5G/6G systems:
 - Users are static during one simulation run.
 - File sizes are generated synthetically rather than taken from real measured
   traffic traces.
-- Channel fading is not modeled in detail.
+- Optional fading is a single independent snapshot and has no temporal
+  correlation or mobility model.
 - Interference is represented by a simplified factor.
 - Backhaul delay is modeled as a fixed term plus transfer time.
 - The greedy caching method is heuristic and does not guarantee global
@@ -355,7 +360,7 @@ still preserving the main engineering tradeoffs.
 Future improvements could include:
 
 - User mobility and time-varying association
-- Small-scale fading and more realistic path-loss models
+- Time-correlated fading and more realistic path-loss models
 - Measured content-size traces and content update dynamics
 - Multi-armed bandit or reinforcement learning based caching
 - Fairness-aware bandwidth allocation

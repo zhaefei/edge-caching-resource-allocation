@@ -40,6 +40,9 @@ class SimulationConfig:
     path_loss_reference_gain: float = 1e-3
     path_loss_exponent: float = 3.4
     min_distance_m: float = 1.0
+    fading_seed_offset: int = 1000
+    fading_min_power_gain: float = 0.25
+    fading_max_power_gain: float = 4.0
 
     # Content and backhaul model. A file is interpreted as a video/data chunk.
     file_size_mbits: float = 5.0

@@ -49,6 +49,10 @@ point via `SimulationConfig.wireless_channel_model`, which keeps later channel
 extensions isolated from the caching and experiment workflow. The default model
 is `path_loss`, a deterministic reference-distance path-loss model using
 `path_loss_reference_gain * (d_ref / distance)^path_loss_exponent`.
+An optional `path_loss_fading` variant applies a clipped exponential per-link
+power factor, corresponding to a lightweight Rayleigh-fading snapshot. It uses
+the main simulation seed, so channel comparisons remain reproducible without
+changing the caching code path.
 
 The modeling assumptions and scope are documented in:
 
@@ -136,6 +140,11 @@ g_{u,k} = g_0 \left(\frac{d_{\mathrm{ref}}}{\max(d_{u,k}, d_{\min})}\right)^\eta
 where `g_0` is `path_loss_reference_gain`, `d_ref` is
 `path_loss_reference_distance_m`, `d_min` avoids singular behavior at very
 small distances, and `eta` is the path-loss exponent.
+
+For the optional fading snapshot, the gain becomes
+`g_fading = g_path_loss * clip(X, f_min, f_max)`, where `X` follows a unit-mean
+exponential distribution. This is a deliberately simple, seed-controlled
+representation of Rayleigh fading power rather than a time-varying channel.
 
 ### Latency Model
 
@@ -529,6 +538,6 @@ edge computing, Zipf-distributed requests, and wireless rate modeling. See:
 - Add mobility and time-varying user association.
 - Add a simple multi-armed bandit caching policy.
 - Compare with convex optimization or integer programming for small networks.
-- Use more realistic path-loss and fading models.
+- Add mobility, time-varying fading, and channel-coherence effects.
 - Include energy consumption or fairness-aware allocation objectives.
 - Validate assumptions against 3GPP-inspired parameter settings.

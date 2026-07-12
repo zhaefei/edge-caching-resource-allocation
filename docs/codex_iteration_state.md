@@ -2,12 +2,12 @@
 
 Project: `edge-caching-resource-allocation`
 
-Last updated: 2026-07-11
+Last updated: 2026-07-12
 
 ## Current Status
 
-- Current completed iteration: Iteration 4
-- Next iteration to run: Iteration 5
+- Current completed iteration: Iteration 5
+- Next iteration to run: Iteration 6
 - Total target iterations: 14
 - Execution rule: complete exactly one iteration per run
 - Iteration 1 documentation supplement completed before starting Iteration 2.
@@ -18,7 +18,7 @@ Last updated: 2026-07-11
 - [x] Iteration 2: Repository structure cleanup and reproducibility baseline.
 - [x] Iteration 3: Design wireless channel model interface.
 - [x] Iteration 4: Implement path loss wireless channel model.
-- [ ] Iteration 5: Implement optional fading and tests.
+- [x] Iteration 5: Implement optional fading and tests.
 - [ ] Iteration 6: Add wireless channel experiment.
 - [ ] Iteration 7: Design Multi-Armed Bandit caching policy.
 - [ ] Iteration 8: Implement Multi-Armed Bandit caching policy.
@@ -132,3 +132,36 @@ Validation result:
 
 - Unit tests: 16 tests passed in the final post-change test run.
 - Health check: passed and verified 22 output files.
+
+## Iteration 5 Notes
+
+Scope completed:
+
+- Added an optional `path_loss_fading` wireless channel model that reuses the
+  same path-loss baseline and applies a bounded per-link fading power factor.
+- Kept `path_loss` as the default model so earlier figures and baseline
+  behavior remain stable unless the new model is explicitly selected.
+- Made fading realizations deterministic from the main simulation seed plus a
+  small config offset so repeated runs stay reproducible.
+- Added focused tests for model resolution, deterministic and seed-dependent
+  fading behavior, parameter validation, bounded factors, and positive rates.
+- Corrected report text that still described fading as unimplemented future
+  work.
+
+Validation commands:
+
+```bash
+python -m unittest discover -s tests
+python -W error -m unittest discover -s tests
+python -m compileall config.py src experiments tests
+python -m pip check
+python check_project.py
+```
+
+Validation result:
+
+- Unit tests: 22 tests passed in the final post-change test run.
+- Health check: passed and verified 22 output files.
+- Dependency check: no broken requirements found.
+- Optional fading scenario: repeated runs were identical and all reported
+  numerical metrics were finite.

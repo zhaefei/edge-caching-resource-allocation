@@ -130,3 +130,46 @@ Observed risks / notes:
 Next iteration:
 
 - Iteration 5: Implement optional fading and tests.
+
+## 2026-07-12 (Iteration 5)
+
+Iteration completed: Iteration 5 - Implement optional fading and tests.
+
+Summary:
+
+- Added a separate `path_loss_fading` wireless channel model instead of
+  changing the default baseline.
+- Kept `path_loss` as the default deterministic model so previously generated
+  results remain interpretable.
+- Implemented reproducible bounded fading factors using the simulation seed and
+  a small seed offset.
+- Added focused tests covering model resolution, determinism, seed-dependent
+  variation, parameter validation, bounded fading gains, and positive rates.
+- Updated README and model assumptions so the optional fading scope is explicit.
+- Corrected stale report wording that still listed fading as future work.
+
+Validation:
+
+- `python -m unittest discover -s tests`
+- `python -W error -m unittest discover -s tests`
+- `python -m compileall config.py src experiments tests`
+- `python -m pip check`
+- `python check_project.py`
+- Unit tests passed: 22 tests.
+- Health check verified 22 expected output files.
+- Dependency check found no broken requirements.
+- A repeated optional-fading simulation produced identical, finite metrics.
+
+Observed risks / notes:
+
+- The fading variant uses a lightweight bounded random power multiplier rather
+  than a full time-varying channel process, which is intentional for scope
+  control at this project level.
+- Existing baseline experiments were regenerated during the final health check;
+  their default behavior remains unchanged because fading is opt-in.
+- The project-wide review found no remaining test, compilation, dependency, or
+  output-generation errors after the parameter-validation fix.
+
+Next iteration:
+
+- Iteration 6: Add wireless channel experiment.

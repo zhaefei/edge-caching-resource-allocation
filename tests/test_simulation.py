@@ -39,6 +39,7 @@ from src.simulation import run_strategy_comparison
 from src.wireless_channel import (
     BaselineDistanceChannelModel,
     PathLossChannelModel,
+    PathLossWithFadingChannelModel,
     resolve_wireless_channel_model,
 )
 
@@ -330,6 +331,27 @@ class SimulationSanityTests(unittest.TestCase):
         self.assertAlmostEqual(float(gains[0, 0]), 1.0)
         self.assertAlmostEqual(float(gains[1, 0]), 1.0 / 25.0)
 
+    def test_path_loss_rejects_nonpositive_physical_parameters(self) -> None:
+        model = PathLossChannelModel()
+        user_positions = np.array([[0.0, 0.0]], dtype=float)
+        server_positions = np.array([[1.0, 0.0]], dtype=float)
+        invalid_updates = [
+            {"path_loss_reference_distance_m": 0.0},
+            {"path_loss_reference_gain": 0.0},
+            {"path_loss_exponent": 0.0},
+            {"min_distance_m": 0.0},
+        ]
+
+        for updates in invalid_updates:
+            with self.subTest(updates=updates):
+                config = replace(self.config, **updates)
+                with self.assertRaisesRegex(ValueError, "must all be positive"):
+                    model.compute_channel_gains(
+                        user_positions,
+                        server_positions,
+                        config,
+                    )
+
     def test_baseline_distance_alias_preserves_path_loss_behavior(self) -> None:
         config = replace(self.config, wireless_channel_model="baseline_distance")
         channel_model = resolve_wireless_channel_model(config)
@@ -337,6 +359,114 @@ class SimulationSanityTests(unittest.TestCase):
         self.assertIsInstance(channel_model, BaselineDistanceChannelModel)
         self.assertIsInstance(channel_model, PathLossChannelModel)
         self.assertEqual(channel_model.name, "baseline_distance")
+
+    def test_path_loss_fading_model_is_resolved_and_deterministic(self) -> None:
+        config = replace(self.config, wireless_channel_model="path_loss_fading")
+        channel_model = resolve_wireless_channel_model(config)
+
+        gains_first = channel_model.compute_channel_gains(
+            self.network.user_positions,
+            self.network.server_positions,
+            config,
+        )
+        gains_second = channel_model.compute_channel_gains(
+            self.network.user_positions,
+            self.network.server_positions,
+            config,
+        )
+
+        self.assertIsInstance(channel_model, PathLossWithFadingChannelModel)
+        self.assertTrue(np.array_equal(gains_first, gains_second))
+
+    def test_path_loss_fading_changes_with_simulation_seed(self) -> None:
+        model = PathLossWithFadingChannelModel()
+        config_first = replace(
+            self.config,
+            wireless_channel_model="path_loss_fading",
+            seed=101,
+        )
+        config_second = replace(config_first, seed=102)
+
+        gains_first = model.compute_channel_gains(
+            self.network.user_positions,
+            self.network.server_positions,
+            config_first,
+        )
+        gains_second = model.compute_channel_gains(
+            self.network.user_positions,
+            self.network.server_positions,
+            config_second,
+        )
+
+        self.assertFalse(np.array_equal(gains_first, gains_second))
+
+    def test_path_loss_fading_applies_bounded_link_variation(self) -> None:
+        config = replace(
+            self.config,
+            wireless_channel_model="path_loss_fading",
+            path_loss_reference_distance_m=1.0,
+            path_loss_reference_gain=1.0,
+            path_loss_exponent=2.0,
+            min_distance_m=1.0,
+            fading_min_power_gain=0.25,
+            fading_max_power_gain=4.0,
+        )
+        base_model = PathLossChannelModel()
+        fading_model = PathLossWithFadingChannelModel()
+        user_positions = np.array([[0.0, 0.0], [3.0, 4.0]], dtype=float)
+        server_positions = np.array([[0.0, 0.0]], dtype=float)
+
+        base_gains = base_model.compute_channel_gains(
+            user_positions,
+            server_positions,
+            config,
+        )
+        fading_gains = fading_model.compute_channel_gains(
+            user_positions,
+            server_positions,
+            config,
+        )
+        fading_factors = fading_gains / base_gains
+
+        self.assertTrue(np.all(fading_factors >= config.fading_min_power_gain))
+        self.assertTrue(np.all(fading_factors <= config.fading_max_power_gain))
+        self.assertFalse(np.allclose(fading_factors, np.ones_like(fading_factors)))
+
+    def test_path_loss_fading_network_produces_positive_user_rates(self) -> None:
+        config = replace(self.config, wireless_channel_model="path_loss_fading")
+        network = generate_network(config, np.random.default_rng(config.seed))
+        user_bandwidth = equal_bandwidth_allocation(config, network)
+        channel_model = resolve_wireless_channel_model(config)
+
+        rates = channel_model.compute_user_rates_mbps(
+            config,
+            network.channel_gains,
+            network.associations,
+            user_bandwidth,
+        )
+
+        self.assertEqual(network.channel_model_name, "path_loss_fading")
+        self.assertEqual(rates.shape, (config.num_users,))
+        self.assertTrue(np.all(rates > 0.0))
+
+    def test_path_loss_fading_rejects_invalid_bounds(self) -> None:
+        model = PathLossWithFadingChannelModel()
+        user_positions = np.array([[0.0, 0.0]], dtype=float)
+        server_positions = np.array([[1.0, 0.0]], dtype=float)
+        invalid_bounds = [
+            {"fading_min_power_gain": 0.0},
+            {"fading_min_power_gain": 2.0, "fading_max_power_gain": 1.0},
+        ]
+
+        for updates in invalid_bounds:
+            with self.subTest(updates=updates):
+                config = replace(self.config, **updates)
+                with self.assertRaisesRegex(ValueError, "Fading bounds"):
+                    model.compute_channel_gains(
+                        user_positions,
+                        server_positions,
+                        config,
+                    )
 
     def test_unknown_wireless_channel_model_raises_clear_error(self) -> None:
         config = replace(self.config, wireless_channel_model="unknown_model")

@@ -63,6 +63,10 @@ specified assumptions.
 - The default `path_loss` channel model uses large-scale deterministic path
   loss without detailed fading:
   `gain = path_loss_reference_gain * (d_ref / max(distance, min_distance))^path_loss_exponent`.
+- An optional `path_loss_fading` variant multiplies the same path-loss baseline
+  by a clipped sample from a unit-mean exponential power distribution. This
+  corresponds to one seed-controlled Rayleigh-fading snapshot, not a
+  time-varying channel process.
 - The simulator now resolves wireless behavior through a small channel-model
   interface so future path-loss and fading variants can be compared without
   changing the caching workflow.
