@@ -2,12 +2,12 @@
 
 Project: `edge-caching-resource-allocation`
 
-Last updated: 2026-07-12
+Last updated: 2026-07-13
 
 ## Current Status
 
-- Current completed iteration: Iteration 5
-- Next iteration to run: Iteration 6
+- Current completed iteration: Iteration 6
+- Next iteration to run: Iteration 7
 - Total target iterations: 14
 - Execution rule: complete exactly one iteration per run
 - Iteration 1 documentation supplement completed before starting Iteration 2.
@@ -19,7 +19,7 @@ Last updated: 2026-07-12
 - [x] Iteration 3: Design wireless channel model interface.
 - [x] Iteration 4: Implement path loss wireless channel model.
 - [x] Iteration 5: Implement optional fading and tests.
-- [ ] Iteration 6: Add wireless channel experiment.
+- [x] Iteration 6: Add wireless channel experiment.
 - [ ] Iteration 7: Design Multi-Armed Bandit caching policy.
 - [ ] Iteration 8: Implement Multi-Armed Bandit caching policy.
 - [ ] Iteration 9: Add MAB comparison experiment.
@@ -165,3 +165,36 @@ Validation result:
 - Dependency check: no broken requirements found.
 - Optional fading scenario: repeated runs were identical and all reported
   numerical metrics were finite.
+
+## Iteration 6 Notes
+
+Scope completed:
+
+- Added a controlled wireless channel experiment that sweeps path-loss exponent
+  for deterministic path loss and optional snapshot fading.
+- Preserved all five caching/resource-allocation strategies in the generated
+  CSV while using one fixed focal strategy for readable channel comparison
+  figures.
+- Integrated the experiment into the all-experiments runner and project health
+  check.
+- Added tests for experiment structure, reproducibility, finite metrics, and
+  channel-model plot labels.
+
+Validation commands:
+
+```bash
+python -m unittest discover -s tests
+python -m compileall config.py src experiments tests run_all_experiments.py check_project.py
+python experiments/run_wireless_channel_experiment.py
+python run_all_experiments.py
+python check_project.py
+```
+
+Validation result:
+
+- Unit tests: 24 tests passed.
+- Compilation check: passed.
+- Standalone channel experiment: passed and produced 50 metric rows plus two
+  non-empty figures.
+- All-experiments runner: passed with the channel experiment included.
+- Health check: passed and verified 26 expected output files.

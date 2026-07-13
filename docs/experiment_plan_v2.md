@@ -65,16 +65,24 @@ Purpose:
 - Compare latency and wireless rate under different channel-model assumptions or
   channel parameters.
 
-Planned variables may include:
+Implemented variables:
 
-- Path-loss exponent
-- Optional fading enabled/disabled
-- Fading strength or random-seed sensitivity
+- Path-loss exponent values from 2.6 to 4.2
+- Deterministic path loss versus optional snapshot fading
+- Fixed simulation and fading seeds for controlled comparison
+
+The CSV retains all caching and bandwidth strategies. The two main figures use
+greedy caching with demand-aware bandwidth allocation as one fixed focal
+strategy, so differences between curves come from the channel assumptions
+rather than a change of caching policy.
 
 Expected interpretation:
 
 - Worse channel conditions should reduce wireless rate and increase wireless
   transmission delay.
+- The path-loss-exponent trend need not be monotonic because the exponent
+  attenuates both the serving signal and inter-cell interference; results
+  should be discussed as a simplified interference/noise tradeoff.
 - Channel sensitivity helps separate wireless bottlenecks from caching and
   backhaul effects.
 
@@ -119,4 +127,3 @@ Final summaries should include:
 - Jain's bandwidth fairness index where bandwidth allocation is compared
 
 All reported numerical results should come from generated CSV files.
-

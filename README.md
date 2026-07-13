@@ -230,6 +230,7 @@ The experiment scripts generate:
 - Cache hit ratio vs spatial locality strength
 - Latency vs backhaul latency
 - Latency and wireless rate vs edge server bandwidth
+- Latency and wireless rate vs path-loss exponent, with optional fading
 - Bandwidth fairness by strategy
 - Wireless/backhaul latency component breakdown
 
@@ -316,6 +317,7 @@ edge-caching-resource-allocation/
 |   |-- run_spatial_locality_experiment.py
 |   |-- run_user_activity_experiment.py
 |   |-- run_user_density_experiment.py
+|   |-- run_wireless_channel_experiment.py
 |   `-- run_zipf_experiment.py
 |-- docs/
 |   |-- model_assumptions.md
@@ -389,6 +391,7 @@ python experiments/run_multi_seed_cache_capacity_experiment.py
 python experiments/run_spatial_locality_experiment.py
 python experiments/run_user_activity_experiment.py
 python experiments/run_user_density_experiment.py
+python experiments/run_wireless_channel_experiment.py
 python experiments/run_zipf_experiment.py
 ```
 
@@ -492,6 +495,8 @@ Typical trends should include:
   relative value of edge caching should become easier to observe.
 - When edge server bandwidth is larger, wireless transmission delay should
   decrease, making backhaul and caching effects easier to separate.
+- The wireless channel experiment should show how path-loss exponent and a
+  reproducible fading snapshot change wireless rate and end-to-end latency.
 - As the number of users grows, wireless bandwidth per user decreases, which can
   increase average latency.
 - Demand-aware bandwidth allocation may reduce request-weighted latency when

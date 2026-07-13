@@ -173,3 +173,42 @@ Observed risks / notes:
 Next iteration:
 
 - Iteration 6: Add wireless channel experiment.
+
+## 2026-07-13 (Iteration 6)
+
+Iteration completed: Iteration 6 - Add wireless channel experiment.
+
+Summary:
+
+- Added a reproducible experiment comparing deterministic path loss and
+  optional fading across five path-loss exponents.
+- Saved all strategy metrics to CSV and generated focused latency/rate figures.
+- Integrated the new experiment with the all-experiments runner and health
+  check.
+- Added focused experiment tests and documented the controlled comparison.
+
+Validation:
+
+- `python -m unittest discover -s tests`
+- `python -m compileall config.py src experiments tests run_all_experiments.py check_project.py`
+- `python experiments/run_wireless_channel_experiment.py`
+- `python run_all_experiments.py`
+- `python check_project.py`
+- Unit tests passed: 24 tests.
+- Compilation check passed.
+- Standalone experiment produced 50 metric rows and two non-empty figures.
+- The all-experiments runner completed with the new experiment included.
+- Health check verified 26 expected output files.
+
+Observed risks / notes:
+
+- Fading remains one seed-controlled snapshot per topology rather than a
+  time-varying process.
+- The main figures intentionally hold the caching/resource strategy fixed so
+  they isolate channel-model sensitivity.
+- Path-loss sensitivity is not assumed to be monotonic because desired and
+  interfering links are both attenuated as the exponent changes.
+
+Next iteration:
+
+- Iteration 7: Design Multi-Armed Bandit caching policy.

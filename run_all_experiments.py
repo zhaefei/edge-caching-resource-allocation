@@ -20,6 +20,9 @@ from experiments.run_spatial_locality_experiment import (
 )
 from experiments.run_user_activity_experiment import main as run_user_activity
 from experiments.run_user_density_experiment import main as run_user_density
+from experiments.run_wireless_channel_experiment import (
+    main as run_wireless_channel,
+)
 from experiments.run_zipf_experiment import main as run_zipf
 from generate_report_assets import main as generate_report_assets
 from summarize_results import main as summarize_results
@@ -36,6 +39,7 @@ def main() -> None:
     run_spatial_locality()
     run_backhaul_sensitivity()
     run_bandwidth_sensitivity()
+    run_wireless_channel()
     run_multi_seed_cache_capacity()
     summarize_results()
     generate_report_assets()
@@ -55,6 +59,7 @@ def main() -> None:
                 "spatial_locality_experiment",
                 "backhaul_sensitivity_experiment",
                 "bandwidth_sensitivity_experiment",
+                "wireless_channel_experiment",
                 "multi_seed_cache_capacity_experiment",
             ],
         },
