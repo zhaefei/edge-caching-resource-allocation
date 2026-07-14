@@ -94,12 +94,26 @@ Purpose:
   random, popularity-based, local popularity, and greedy latency-aware caching
   strategies.
 
+Planned protocol:
+
+- Use the UCB-style semi-bandit policy specified in
+  `docs/mab_caching_design.md`.
+- Train request-aware policies on the first 60% of one common request trace and
+  evaluate fixed final caches on the held-out 40%.
+- Use equal bandwidth for every policy in the primary comparison so the
+  experiment isolates caching behavior.
+- Label global popularity caching as prior-informed because it uses the Zipf
+  probabilities supplied by the request generator.
+- Record fixed seeds, epoch size, exploration coefficient, epoch count, and arm
+  coverage in addition to network metrics.
+
 Expected interpretation:
 
 - The MAB policy should be presented as a lightweight adaptive baseline, not as a
   novel or optimal caching algorithm.
-- Results should focus on whether online request feedback can approach or
-  improve simple static baselines under the simplified simulator assumptions.
+- Results should examine how online selected-arm feedback compares with static
+  baselines under the simplified simulator assumptions; improvement is not
+  assumed in advance.
 
 ## 7. Multi-Seed v2 Summary Experiment
 

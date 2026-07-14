@@ -48,7 +48,8 @@ novel 5G/6G standard, production system, or state-of-the-art optimizer.
 
 7. **Design Multi-Armed Bandit caching policy**  
    Document a simple, understandable MAB caching design and how it fits into the
-   existing caching strategy interface.
+   existing caching strategy interface. The completed design is recorded in
+   `docs/mab_caching_design.md`.
 
 8. **Implement Multi-Armed Bandit caching policy**  
    Add the MAB policy with deterministic seeds and focused tests.
@@ -82,4 +83,3 @@ novel 5G/6G standard, production system, or state-of-the-art optimizer.
 The roadmap intentionally avoids heavy dependencies, deep learning frameworks,
 full 3GPP system-level simulation, and claims of algorithmic novelty. Each
 iteration should make a small, reviewable change and run the relevant tests.
-

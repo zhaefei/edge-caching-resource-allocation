@@ -212,3 +212,38 @@ Observed risks / notes:
 Next iteration:
 
 - Iteration 7: Design Multi-Armed Bandit caching policy.
+
+## 2026-07-14 (Iteration 7)
+
+Iteration completed: Iteration 7 - Design Multi-Armed Bandit caching policy.
+
+Summary:
+
+- Added `docs/mab_caching_design.md` with the complete UCB-style caching design.
+- Defined arms, epochs, capacity-feasible actions, reward, UCB score density,
+  online updates, final cache selection, and reproducible tie handling.
+- Chose a held-out 60/40 evaluation protocol and equal bandwidth for the primary
+  caching comparison.
+- Added implementation and test requirements for Iterations 8 and 9 without
+  adding code or claiming results early.
+
+Validation:
+
+- `python -m unittest discover -s tests`
+- `python check_project.py`
+- Unit tests passed: 24 tests.
+- Health check verified 26 expected output files.
+- No core source code was changed.
+
+Observed risks / notes:
+
+- The policy is a teaching-oriented semi-bandit heuristic, not an exact
+  combinatorial optimizer.
+- Stationary Zipf demand may favor static popularity methods; MAB improvement is
+  not assumed.
+- Miss request identities are observable in practice, but the proposed baseline
+  intentionally updates only selected arms to preserve a clear bandit model.
+
+Next iteration:
+
+- Iteration 8: Implement Multi-Armed Bandit caching policy.

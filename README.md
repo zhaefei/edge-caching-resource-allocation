@@ -194,6 +194,14 @@ heuristics rather than solving the full combinatorial optimization problem.
    - Uses the same greedy caching result.
    - Allocates more bandwidth to users that generate more requests.
 
+### Planned Learning-Based Extension
+
+The v2 roadmap includes a lightweight UCB-style MAB caching baseline. Its
+design, reward definition, capacity-aware action rule, and held-out evaluation
+protocol are documented in
+[`docs/mab_caching_design.md`](docs/mab_caching_design.md). The policy is not yet
+listed among implemented algorithms; implementation begins in Iteration 8.
+
 ## Metrics
 
 The simulator computes:
@@ -320,6 +328,7 @@ edge-caching-resource-allocation/
 |   |-- run_wireless_channel_experiment.py
 |   `-- run_zipf_experiment.py
 |-- docs/
+|   |-- mab_caching_design.md
 |   |-- model_assumptions.md
 |   `-- figures/
 |-- results/
@@ -541,7 +550,7 @@ edge computing, Zipf-distributed requests, and wireless rate modeling. See:
 ## Possible Future Improvements
 
 - Add mobility and time-varying user association.
-- Add a simple multi-armed bandit caching policy.
+- Implement the documented UCB-style multi-armed bandit caching policy.
 - Compare with convex optimization or integer programming for small networks.
 - Add mobility, time-varying fading, and channel-coherence effects.
 - Include energy consumption or fairness-aware allocation objectives.

@@ -2,12 +2,12 @@
 
 Project: `edge-caching-resource-allocation`
 
-Last updated: 2026-07-13
+Last updated: 2026-07-14
 
 ## Current Status
 
-- Current completed iteration: Iteration 6
-- Next iteration to run: Iteration 7
+- Current completed iteration: Iteration 7
+- Next iteration to run: Iteration 8
 - Total target iterations: 14
 - Execution rule: complete exactly one iteration per run
 - Iteration 1 documentation supplement completed before starting Iteration 2.
@@ -20,7 +20,7 @@ Last updated: 2026-07-13
 - [x] Iteration 4: Implement path loss wireless channel model.
 - [x] Iteration 5: Implement optional fading and tests.
 - [x] Iteration 6: Add wireless channel experiment.
-- [ ] Iteration 7: Design Multi-Armed Bandit caching policy.
+- [x] Iteration 7: Design Multi-Armed Bandit caching policy.
 - [ ] Iteration 8: Implement Multi-Armed Bandit caching policy.
 - [ ] Iteration 9: Add MAB comparison experiment.
 - [ ] Iteration 10: Add multi-seed v2 experiment runner.
@@ -198,3 +198,31 @@ Validation result:
   non-empty figures.
 - All-experiments runner: passed with the channel experiment included.
 - Health check: passed and verified 26 expected output files.
+
+## Iteration 7 Notes
+
+Scope completed:
+
+- Specified an independent per-server UCB-style combinatorial semi-bandit with
+  capacity-aware file selection.
+- Defined the avoided-backhaul-latency reward, UCB exploration term, reward per
+  Mbit ranking, online mean update, and final exploitation cache.
+- Defined a 60/40 chronological training/evaluation split that prevents MAB and
+  request-aware baselines from learning from evaluation requests.
+- Documented the proposed implementation interface, reproducibility parameters,
+  Iteration 8 tests, Iteration 9 comparison, and explicit limitations.
+- Kept this iteration documentation-only; no MAB source code or numerical
+  performance claim was added.
+
+Validation commands:
+
+```bash
+python -m unittest discover -s tests
+python check_project.py
+```
+
+Validation result:
+
+- Unit tests: 24 tests passed.
+- Health check: passed and verified 26 expected output files.
+- Core source code: unchanged in this design-only iteration.
