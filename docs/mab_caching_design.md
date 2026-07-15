@@ -3,8 +3,9 @@
 ## Status and Scope
 
 This document specifies the lightweight learning-based caching extension for
-Iterations 8 and 9. Iteration 7 is design-only: no MAB implementation or MAB
-numerical result is claimed yet.
+Iterations 8 and 9. The policy and focused tests were implemented in Iteration
+8. The controlled comparison remains scheduled for Iteration 9, so no MAB
+performance result is claimed yet.
 
 The proposed policy is a UCB-style combinatorial semi-bandit baseline. It is
 intended to demonstrate online learning, exploration versus exploitation, and
@@ -124,10 +125,10 @@ caching policy. Holding bandwidth allocation fixed isolates the effect of cache
 learning. A later result may add demand-aware bandwidth as a separate analysis,
 but it should not be mixed into the primary MAB caching comparison.
 
-## Proposed Implementation Interface
+## Implementation Interface
 
-Iteration 8 should add a beginner-readable function to
-`src/caching_algorithms.py` with an interface equivalent to:
+Iteration 8 added a beginner-readable function to
+`src/caching_algorithms.py` with this interface:
 
 ```python
 def mab_ucb_caching(
@@ -141,12 +142,13 @@ def mab_ucb_caching(
     ...
 ```
 
-The diagnostic object should contain at least the selection counts, estimated
-mean rewards, number of completed epochs, and fraction of arms explored. Cache
-selection itself should remain a function rather than a large framework or
-class hierarchy.
+The diagnostic object contains the selection counts, estimated mean rewards,
+number of completed epochs, and fraction of cache-feasible arms explored.
+Oversized files are excluded from the coverage denominator because they cannot
+be selected under the configured budget. Cache selection itself remains a
+function rather than a large framework or class hierarchy.
 
-Suggested configuration fields for Iteration 8 are:
+The reproducible configuration fields are:
 
 - `mab_training_fraction = 0.60`
 - `mab_update_interval = 200`
@@ -175,7 +177,7 @@ for each edge server k:
 return final caches and learning diagnostics
 ```
 
-## Iteration 8 Test Plan
+## Iteration 8 Verification
 
 - Fixed seeds produce exactly the same caches and diagnostics.
 - Every cache respects the heterogeneous file-size budget.
@@ -184,7 +186,9 @@ return final caches and learning diagnostics
 - An arm's incremental mean update matches a hand-calculated example.
 - Empty local epochs and servers with no requests do not produce NaN values.
 - Oversized files are skipped consistently with existing caching policies.
-- Evaluation requests are not passed into the learning function.
+- The learning interface accepts only the caller-provided training arrays;
+  evaluation requests remain outside the policy and are reserved for the
+  Iteration 9 experiment.
 
 ## Iteration 9 Comparison Plan
 

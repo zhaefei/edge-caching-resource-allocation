@@ -247,3 +247,42 @@ Observed risks / notes:
 Next iteration:
 
 - Iteration 8: Implement Multi-Armed Bandit caching policy.
+
+## 2026-07-15 (Iteration 8)
+
+Iteration completed: Iteration 8 - Implement Multi-Armed Bandit caching policy.
+
+Summary:
+
+- Added the documented independent per-server UCB-style caching learner.
+- Added capacity-aware exploration and final exploitation packing for variable
+  file sizes, along with deterministic seeded tie handling.
+- Added learning diagnostics for selection counts, estimated rewards, epoch
+  count, and arm coverage.
+- Added eight focused tests for deterministic behavior, capacity and identifier
+  validity, controlled learning, empty demand, oversized files, running-mean
+  correctness, and invalid hyperparameters.
+
+Validation:
+
+- `python -m unittest discover -s tests`
+- `python -W error -m unittest discover -s tests`
+- `python -m compileall config.py src experiments tests`
+- `python check_project.py`
+- Unit tests passed: 32 tests.
+- Warning-strict unit tests passed: 32 tests.
+- Compilation check passed.
+- Health check verified 26 expected output files.
+
+Observed risks / notes:
+
+- The policy deliberately uses selected-arm feedback rather than updating from
+  visible cache misses, matching the documented teaching-oriented semi-bandit.
+- The stationary request generator may favor static popularity baselines, so
+  the upcoming comparison does not assume that MAB will perform best.
+- MAB is not yet included in the default result table; a fair comparison first
+  requires the shared chronological training/evaluation protocol.
+
+Next iteration:
+
+- Iteration 9: Add MAB comparison experiment.

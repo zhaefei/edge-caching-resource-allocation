@@ -194,13 +194,16 @@ heuristics rather than solving the full combinatorial optimization problem.
    - Uses the same greedy caching result.
    - Allocates more bandwidth to users that generate more requests.
 
-### Planned Learning-Based Extension
+### Learning-Based Extension
 
-The v2 roadmap includes a lightweight UCB-style MAB caching baseline. Its
-design, reward definition, capacity-aware action rule, and held-out evaluation
-protocol are documented in
-[`docs/mab_caching_design.md`](docs/mab_caching_design.md). The policy is not yet
-listed among implemented algorithms; implementation begins in Iteration 8.
+The simulator also implements a lightweight UCB-style MAB caching policy with
+independent per-server learners, capacity-aware file packing, deterministic tie
+handling, and inspectable learning diagnostics. Its design, reward definition,
+and held-out evaluation protocol are documented in
+[`docs/mab_caching_design.md`](docs/mab_caching_design.md). The policy is kept
+out of the default five-strategy comparison until the planned experiment can
+train every request-aware policy on the same chronological prefix and evaluate
+all fixed caches on the same held-out suffix.
 
 ## Metrics
 
@@ -550,7 +553,8 @@ edge computing, Zipf-distributed requests, and wireless rate modeling. See:
 ## Possible Future Improvements
 
 - Add mobility and time-varying user association.
-- Implement the documented UCB-style multi-armed bandit caching policy.
+- Evaluate the UCB-style multi-armed bandit policy against request-aware
+  baselines with a common chronological train/evaluation split.
 - Compare with convex optimization or integer programming for small networks.
 - Add mobility, time-varying fading, and channel-coherence effects.
 - Include energy consumption or fairness-aware allocation objectives.

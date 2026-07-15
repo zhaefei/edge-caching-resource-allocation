@@ -29,6 +29,12 @@ class SimulationConfig:
     spatial_locality_strength: float = 0.35
     local_preference_boost: float = 3.0
 
+    # Lightweight UCB-style cache learning
+    mab_training_fraction: float = 0.60
+    mab_update_interval: int = 200
+    mab_exploration_weight: float = 1.0
+    mab_seed_offset: int = 3000
+
     # Wireless channel and resource model
     wireless_channel_model: str = "path_loss"
     bandwidth_hz: float = 20e6  # total downlink bandwidth per edge server

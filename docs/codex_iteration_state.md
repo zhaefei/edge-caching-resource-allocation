@@ -2,12 +2,12 @@
 
 Project: `edge-caching-resource-allocation`
 
-Last updated: 2026-07-14
+Last updated: 2026-07-15
 
 ## Current Status
 
-- Current completed iteration: Iteration 7
-- Next iteration to run: Iteration 8
+- Current completed iteration: Iteration 8
+- Next iteration to run: Iteration 9
 - Total target iterations: 14
 - Execution rule: complete exactly one iteration per run
 - Iteration 1 documentation supplement completed before starting Iteration 2.
@@ -21,7 +21,7 @@ Last updated: 2026-07-14
 - [x] Iteration 5: Implement optional fading and tests.
 - [x] Iteration 6: Add wireless channel experiment.
 - [x] Iteration 7: Design Multi-Armed Bandit caching policy.
-- [ ] Iteration 8: Implement Multi-Armed Bandit caching policy.
+- [x] Iteration 8: Implement Multi-Armed Bandit caching policy.
 - [ ] Iteration 9: Add MAB comparison experiment.
 - [ ] Iteration 10: Add multi-seed v2 experiment runner.
 - [ ] Iteration 11: Generate final figures and result summaries.
@@ -226,3 +226,37 @@ Validation result:
 - Unit tests: 24 tests passed.
 - Health check: passed and verified 26 expected output files.
 - Core source code: unchanged in this design-only iteration.
+
+## Iteration 8 Notes
+
+Scope completed:
+
+- Added a deterministic UCB-style combinatorial semi-bandit policy with one
+  independent learner per edge server.
+- Implemented epoch-based selected-arm reward updates, seeded tie handling,
+  score-per-Mbit capacity packing, and a fixed exploitation cache for later
+  held-out evaluation.
+- Added diagnostics for arm selection counts, estimated mean rewards, completed
+  epochs, and explored-arm fraction.
+- Added focused validation and tests covering reproducibility, heterogeneous
+  cache budgets, oversized files, empty demand, a controlled learnable trace,
+  the incremental mean update, and invalid hyperparameters.
+- Kept the policy out of the default comparison so Iteration 9 can apply the
+  documented 60/40 chronological split consistently to every request-aware
+  strategy.
+
+Validation commands:
+
+```bash
+python -m unittest discover -s tests
+python -W error -m unittest discover -s tests
+python -m compileall config.py src experiments tests
+python check_project.py
+```
+
+Validation result:
+
+- Unit tests: 32 tests passed.
+- Warning-strict unit tests: 32 tests passed.
+- Compilation check: passed.
+- Health check: passed and verified 26 expected output files.

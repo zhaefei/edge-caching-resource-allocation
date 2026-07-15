@@ -76,6 +76,10 @@ specified assumptions.
   problem.
 - Fairness is evaluated as a diagnostic metric, not optimized as a formal
   objective.
+- The UCB-style caching extension updates only files selected during each
+  training epoch and uses avoided backhaul latency per local request as reward.
+- MAB training returns a fixed final cache; held-out comparison and numerical
+  claims are deferred to the dedicated MAB experiment.
 
 ## How to Discuss the Project
 

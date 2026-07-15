@@ -88,6 +88,9 @@ Expected interpretation:
 
 ## 6. MAB Caching Comparison Experiment
 
+Implementation status: the UCB-style caching policy and focused unit tests were
+completed in Iteration 8. The held-out comparison remains Iteration 9 work.
+
 Purpose:
 
 - Compare a simple Multi-Armed Bandit caching policy against the existing
