@@ -7,7 +7,7 @@ Iterations 8 and 9. The policy and focused tests were implemented in Iteration
 8. The controlled comparison remains scheduled for Iteration 9, so no MAB
 performance result is claimed yet.
 
-The proposed policy is a UCB-style combinatorial semi-bandit baseline. It is
+The implemented policy is a UCB-style combinatorial semi-bandit baseline. It is
 intended to demonstrate online learning, exploration versus exploitation, and
 storage-aware cache selection at an undergraduate research level. It is not a
 new bandit algorithm and is not expected to be optimal.
@@ -35,8 +35,8 @@ where `s_f` is the file size and `S_cache` is the storage budget of one edge
 server. Selecting several files makes this a small combinatorial semi-bandit
 rather than a single-arm bandit.
 
-The implementation will rank files and reuse the project's existing ordered
-budget-packing helper. It will not introduce an integer-programming solver.
+The implementation ranks files and reuses the project's existing ordered
+budget-packing helper. It does not introduce an integer-programming solver.
 
 ## Observed Reward
 

@@ -272,6 +272,8 @@ Validation:
 - Unit tests passed: 32 tests.
 - Warning-strict unit tests passed: 32 tests.
 - Compilation check passed.
+- Default-scale MAB smoke check passed; all server cache budgets were respected
+  and the learning diagnostics were finite.
 - Health check verified 26 expected output files.
 
 Observed risks / notes:

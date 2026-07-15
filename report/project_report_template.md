@@ -372,7 +372,7 @@ Future improvements could include:
 - User mobility and time-varying association
 - Time-correlated fading and more realistic path-loss models
 - Measured content-size traces and content update dynamics
-- Multi-armed bandit or reinforcement learning based caching
+- Non-stationary demand tests or a lightweight contextual-bandit extension
 - Fairness-aware bandwidth allocation
 - Energy consumption analysis
 - Comparison with exact optimization for small problem instances

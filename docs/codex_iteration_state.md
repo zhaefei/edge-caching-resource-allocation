@@ -259,4 +259,10 @@ Validation result:
 - Unit tests: 32 tests passed.
 - Warning-strict unit tests: 32 tests passed.
 - Compilation check: passed.
+- Default-scale MAB smoke check: passed with all cache budgets respected and
+  finite learning diagnostics.
 - Health check: passed and verified 26 expected output files.
+
+Next iteration:
+
+- Iteration 9: Add MAB comparison experiment.
