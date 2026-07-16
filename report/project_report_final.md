@@ -1,6 +1,6 @@
 # Edge Caching and Resource Allocation for Latency Reduction in 5G/6G Wireless Networks
 
-- **Author:** [Applicant Name]
+- **Author:** Erfei Zha
 - **Field:** Electrical Engineering and Communications Engineering
 - **Project type:** Undergraduate-level reproducible simulation study
 - **Version:** 2.0
