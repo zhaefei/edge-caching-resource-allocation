@@ -329,3 +329,46 @@ Observed result and limits:
 Next iteration:
 
 - Iteration 10: Add multi-seed v2 experiment runner.
+
+## 2026-07-16 (Iteration 10)
+
+Iteration completed: Iteration 10 - Add multi-seed v2 experiment runner.
+
+Summary:
+
+- Repeated the final held-out five-strategy comparison over fixed seeds 11, 22,
+  33, 44, and 55.
+- Saved every raw strategy/seed row plus mean and sample standard deviation
+  summaries for latency, hit ratio, backhaul, and wireless-rate metrics.
+- Added within-seed differences relative to random caching and documented the
+  direction of improvement for latency and hit ratio.
+- Saved raw and summarized MAB learning diagnostics without introducing a new
+  dependency or optimization method.
+- Added three focused tests and integrated five new outputs into full project
+  reproduction.
+
+Validation:
+
+- `python -m unittest tests.test_multi_seed_v2_experiment`
+- `python -m unittest discover -s tests`
+- `python -W error -m unittest discover -s tests`
+- `python -m compileall config.py src experiments tests run_all_experiments.py check_project.py`
+- `python experiments/run_multi_seed_v2_experiment.py`
+- `python run_all_experiments.py`
+- `python check_project.py`
+- Focused tests passed: 3 tests.
+- Full and warning-strict suites passed: 38 tests each.
+- Health check verified 36 expected output files.
+
+Observed result and limits:
+
+- MAB average latency across five seeds was 1183.254 +/- 75.278 ms.
+- Its same-seed difference from random caching was -45.051 +/- 5.966 ms for
+  average latency and +0.3628 +/- 0.0233 for cache hit ratio.
+- The result supports a reproducible trend under these configured seeds but is
+  not a claim of universal superiority. MAB was also not the lowest-latency
+  strategy in the mean table.
+
+Next iteration:
+
+- Iteration 11: Generate final figures and result summaries.

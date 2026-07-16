@@ -80,8 +80,11 @@ specified assumptions.
   training epoch and uses avoided backhaul latency per local request as reward.
 - MAB training returns a fixed final cache. The dedicated comparison uses one
   chronological 60/40 split and equal bandwidth for every caching policy.
-- Current MAB comparison values come from one fixed seed; cross-seed stability
-  claims are deferred to the multi-seed v2 experiment.
+- The primary MAB comparison uses one fixed seed, while the v2 summary repeats
+  the same held-out protocol over five fixed seeds and reports sample standard
+  deviations and paired differences relative to random caching.
+- Five seeds provide a lightweight robustness check, not exhaustive statistical
+  evidence across deployment environments.
 
 ## How to Discuss the Project
 

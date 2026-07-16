@@ -5,8 +5,8 @@
 This document specifies the lightweight learning-based caching extension for
 Iterations 8 and 9. The policy and focused tests were implemented in Iteration
 8. Iteration 9 added the controlled held-out comparison and reproducible output
-artifacts. Its current numerical result is a single-seed observation rather
-than a cross-seed performance claim.
+artifacts. Iteration 10 repeats the same protocol over five fixed seeds and
+reports raw values, sample standard deviations, and paired baseline differences.
 
 The implemented policy is a UCB-style combinatorial semi-bandit baseline. It is
 intended to demonstrate online learning, exploration versus exploitation, and
@@ -220,3 +220,5 @@ stationary Zipf trace; that is a valid result and should not be hidden.
   tuned on the evaluation data.
 - A short training trace may not provide enough epochs to explore every arm;
   arm coverage must therefore be reported rather than assumed.
+- The five-seed summary is a lightweight robustness check and does not establish
+  general performance across all network deployments.

@@ -16,6 +16,7 @@ from experiments.run_mab_comparison_experiment import main as run_mab_comparison
 from experiments.run_multi_seed_cache_capacity_experiment import (
     main as run_multi_seed_cache_capacity,
 )
+from experiments.run_multi_seed_v2_experiment import main as run_multi_seed_v2
 from experiments.run_spatial_locality_experiment import (
     main as run_spatial_locality,
 )
@@ -42,6 +43,7 @@ def main() -> None:
     run_bandwidth_sensitivity()
     run_wireless_channel()
     run_mab_comparison()
+    run_multi_seed_v2()
     run_multi_seed_cache_capacity()
     summarize_results()
     generate_report_assets()
@@ -63,6 +65,7 @@ def main() -> None:
                 "bandwidth_sensitivity_experiment",
                 "wireless_channel_experiment",
                 "mab_comparison_experiment",
+                "multi_seed_v2_experiment",
                 "multi_seed_cache_capacity_experiment",
             ],
         },

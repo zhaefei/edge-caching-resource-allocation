@@ -27,6 +27,11 @@ REQUIRED_OUTPUTS = [
     Path("results/data/mab_comparison_experiment.csv"),
     Path("results/data/mab_comparison_diagnostics.csv"),
     Path("results/data/mab_comparison_metadata.json"),
+    Path("results/data/multi_seed_v2_raw.csv"),
+    Path("results/data/multi_seed_v2_summary.csv"),
+    Path("results/data/multi_seed_v2_mab_diagnostics.csv"),
+    Path("results/data/multi_seed_v2_mab_diagnostics_summary.csv"),
+    Path("results/data/multi_seed_v2_metadata.json"),
     Path("results/figures/network_topology.png"),
     Path("results/figures/content_popularity_zipf.png"),
     Path("results/figures/main_average_latency.png"),
@@ -95,6 +100,10 @@ def main() -> None:
     _run_step(
         "Running held-out MAB caching comparison",
         [python, "experiments/run_mab_comparison_experiment.py"],
+    )
+    _run_step(
+        "Running multi-seed v2 strategy summary",
+        [python, "experiments/run_multi_seed_v2_experiment.py"],
     )
     _run_step(
         "Generating key findings summary",

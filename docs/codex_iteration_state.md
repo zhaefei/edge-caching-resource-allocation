@@ -6,8 +6,8 @@ Last updated: 2026-07-16
 
 ## Current Status
 
-- Current completed iteration: Iteration 9
-- Next iteration to run: Iteration 10
+- Current completed iteration: Iteration 10
+- Next iteration to run: Iteration 11
 - Total target iterations: 14
 - Execution rule: complete exactly one iteration per run
 - Iteration 1 documentation supplement completed before starting Iteration 2.
@@ -23,7 +23,7 @@ Last updated: 2026-07-16
 - [x] Iteration 7: Design Multi-Armed Bandit caching policy.
 - [x] Iteration 8: Implement Multi-Armed Bandit caching policy.
 - [x] Iteration 9: Add MAB comparison experiment.
-- [ ] Iteration 10: Add multi-seed v2 experiment runner.
+- [x] Iteration 10: Add multi-seed v2 experiment runner.
 - [ ] Iteration 11: Generate final figures and result summaries.
 - [ ] Iteration 12: Update README and model assumptions.
 - [ ] Iteration 13: Write final mini research report.
@@ -319,3 +319,57 @@ Single-seed observation:
 Next iteration:
 
 - Iteration 10: Add multi-seed v2 experiment runner.
+
+## Iteration 10 Notes
+
+Scope completed:
+
+- Added a reusable multi-seed runner for the final five-policy held-out strategy
+  set using fixed seeds 11, 22, 33, 44, and 55.
+- Preserved all 25 strategy/seed metric rows and summarized average latency,
+  median latency, P95 latency, cache hit ratio, backhaul traffic/load, and
+  wireless rate with means and sample standard deviations (`ddof=1`).
+- Added within-seed metric differences relative to random caching so network
+  realization variation can be separated from policy variation.
+- Saved raw and summary MAB learning diagnostics across seeds, including arm
+  coverage, selected updates, epoch count, and final cache utilization.
+- Added five data/metadata outputs and integrated them into the all-experiments
+  runner and health check. Final v2 figures remain Iteration 11 work.
+- Added focused tests for exact aggregation, paired differences, reproducibility,
+  common wireless conditions, and seed-list validation.
+
+Validation commands:
+
+```bash
+python -m unittest tests.test_multi_seed_v2_experiment
+python -m unittest discover -s tests
+python -W error -m unittest discover -s tests
+python -m compileall config.py src experiments tests run_all_experiments.py check_project.py
+python experiments/run_multi_seed_v2_experiment.py
+python run_all_experiments.py
+python check_project.py
+```
+
+Validation result:
+
+- Focused tests: 3 tests passed.
+- Unit tests: 38 tests passed.
+- Warning-strict unit tests: 38 tests passed.
+- Compilation check: passed.
+- Standalone multi-seed v2 and all-experiments reproduction: passed.
+- Health check: passed and verified 36 expected output files.
+
+Five-seed observation:
+
+- UCB-style MAB average latency was 1183.254 ms with a 75.278 ms cross-seed
+  sample standard deviation.
+- Relative to the same-seed random baseline, MAB changed average latency by
+  -45.051 +/- 5.966 ms and cache hit ratio by +0.3628 +/- 0.0233.
+- MAB explored all cache-feasible arms for every seed and used 98.69% of the
+  cache budget on average.
+- These five seeds provide a lightweight robustness check, not general evidence
+  across all wireless deployments.
+
+Next iteration:
+
+- Iteration 11: Generate final figures and result summaries.

@@ -327,6 +327,7 @@ edge-caching-resource-allocation/
 |   |-- run_file_size_variability_experiment.py
 |   |-- run_mab_comparison_experiment.py
 |   |-- run_multi_seed_cache_capacity_experiment.py
+|   |-- run_multi_seed_v2_experiment.py
 |   |-- run_spatial_locality_experiment.py
 |   |-- run_user_activity_experiment.py
 |   |-- run_user_density_experiment.py
@@ -403,6 +404,7 @@ python experiments/run_cache_capacity_experiment.py
 python experiments/run_file_size_variability_experiment.py
 python experiments/run_mab_comparison_experiment.py
 python experiments/run_multi_seed_cache_capacity_experiment.py
+python experiments/run_multi_seed_v2_experiment.py
 python experiments/run_spatial_locality_experiment.py
 python experiments/run_user_activity_experiment.py
 python experiments/run_user_density_experiment.py
@@ -416,8 +418,9 @@ commit, and generated output filenames.
 
 The MAB comparison additionally writes `mab_comparison_diagnostics.csv`, which
 records the chronological split, policy seed, epoch count, arm coverage, and
-final cache utilization. Its single-seed output is exploratory; robust claims
-are reserved for the planned multi-seed summary.
+final cache utilization. The v2 multi-seed runner repeats the same held-out
+protocol over five fixed seeds and saves raw results, mean and sample standard
+deviation summaries, and within-seed differences relative to random caching.
 
 ## Running Sanity Tests
 
