@@ -11,3 +11,14 @@ results/data/*.json
 results/figures/*.png
 !results/data/.gitkeep
 !results/figures/.gitkeep
+!results/data/main_summary.csv
+!results/data/mab_comparison_experiment.csv
+!results/data/mab_comparison_diagnostics.csv
+!results/data/multi_seed_v2_raw.csv
+!results/data/multi_seed_v2_summary.csv
+!results/data/multi_seed_v2_mab_diagnostics.csv
+!results/data/multi_seed_v2_mab_diagnostics_summary.csv
+!results/data/key_findings.md
+!results/figures/v2_strategy_latency_mean_std.png
+!results/figures/v2_strategy_hit_ratio_mean_std.png
+!results/figures/v2_paired_latency_vs_random.png

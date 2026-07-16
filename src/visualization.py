@@ -9,6 +9,7 @@ import matplotlib
 matplotlib.use("Agg")
 
 import matplotlib.pyplot as plt
+import numpy as np
 import pandas as pd
 
 from src.network import NetworkState
@@ -227,3 +228,54 @@ def plot_experiment_mean_std(
     plt.tight_layout()
     plt.savefig(output_path, dpi=200)
     plt.close()
+
+
+def plot_strategy_errorbar(
+    results: pd.DataFrame,
+    mean_column: str,
+    std_column: str,
+    xlabel: str,
+    title: str,
+    output_path: Path,
+    label_column: str = "strategy",
+    reference_value: float | None = None,
+) -> None:
+    """Plot strategy means with sample-standard-deviation error bars."""
+
+    means = pd.to_numeric(results[mean_column], errors="raise").to_numpy(float)
+    standard_deviations = (
+        pd.to_numeric(results[std_column], errors="raise")
+        .fillna(0.0)
+        .to_numpy(float)
+    )
+    if not np.all(np.isfinite(means)) or not np.all(
+        np.isfinite(standard_deviations)
+    ):
+        raise ValueError("strategy error-bar values must be finite")
+    if np.any(standard_deviations < 0.0):
+        raise ValueError("strategy standard deviations must be non-negative")
+
+    labels = results[label_column].astype(str).tolist()
+    y_positions = np.arange(len(results))
+    figure, axis = plt.subplots(figsize=(9, 5.5))
+    axis.errorbar(
+        means,
+        y_positions,
+        xerr=standard_deviations,
+        fmt="o",
+        markersize=7,
+        capsize=4,
+        linewidth=1.8,
+        color="#4c78a8",
+        ecolor="#6b7280",
+    )
+    if reference_value is not None:
+        axis.axvline(reference_value, color="#b42318", linestyle="--", linewidth=1.4)
+    axis.set_yticks(y_positions, labels)
+    axis.invert_yaxis()
+    axis.set_xlabel(xlabel)
+    axis.set_title(title)
+    axis.grid(axis="x", alpha=0.3)
+    figure.tight_layout()
+    figure.savefig(output_path, dpi=200)
+    plt.close(figure)

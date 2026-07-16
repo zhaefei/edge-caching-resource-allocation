@@ -32,6 +32,7 @@ REQUIRED_OUTPUTS = [
     Path("results/data/multi_seed_v2_mab_diagnostics.csv"),
     Path("results/data/multi_seed_v2_mab_diagnostics_summary.csv"),
     Path("results/data/multi_seed_v2_metadata.json"),
+    Path("results/data/final_v2_figures_metadata.json"),
     Path("results/figures/network_topology.png"),
     Path("results/figures/content_popularity_zipf.png"),
     Path("results/figures/main_average_latency.png"),
@@ -48,6 +49,12 @@ REQUIRED_OUTPUTS = [
     Path("results/figures/rate_vs_path_loss_exponent.png"),
     Path("results/figures/mab_comparison_average_latency.png"),
     Path("results/figures/mab_comparison_cache_hit_ratio.png"),
+    Path("results/figures/v2_strategy_latency_mean_std.png"),
+    Path("results/figures/v2_strategy_hit_ratio_mean_std.png"),
+    Path("results/figures/v2_paired_latency_vs_random.png"),
+    Path("docs/figures/v2_strategy_latency_mean_std.png"),
+    Path("docs/figures/v2_strategy_hit_ratio_mean_std.png"),
+    Path("docs/figures/v2_paired_latency_vs_random.png"),
     Path("report/generated_results.md"),
 ]
 
@@ -104,6 +111,10 @@ def main() -> None:
     _run_step(
         "Running multi-seed v2 strategy summary",
         [python, "experiments/run_multi_seed_v2_experiment.py"],
+    )
+    _run_step(
+        "Generating final v2 figures",
+        [python, "generate_final_figures.py"],
     )
     _run_step(
         "Generating key findings summary",

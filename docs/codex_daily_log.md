@@ -372,3 +372,44 @@ Observed result and limits:
 Next iteration:
 
 - Iteration 11: Generate final figures and result summaries.
+
+## 2026-07-16 (Iteration 11)
+
+Iteration completed: Iteration 11 - Generate final figures and result summaries.
+
+Summary:
+
+- Generated final five-seed latency, hit-ratio, and paired latency-difference
+  figures and mirrored them into the GitHub-facing documentation directory.
+- Reworked `key_findings.md` into clearly separated evidence levels and added
+  explicit undergraduate-model and five-seed interpretation limits.
+- Added held-out MAB, five-seed v2, and MAB diagnostic tables to the generated
+  report assets.
+- Began tracking a curated set of final CSV, Markdown, and PNG artifacts while
+  continuing to ignore transient experiment outputs and timestamped metadata.
+- Added three focused tests for final plotting and source-backed findings.
+
+Validation:
+
+- `python -m unittest tests.test_final_results_generation`
+- `python -m unittest discover -s tests`
+- `python -W error -m unittest discover -s tests`
+- `python -m compileall config.py src experiments tests main.py run_all_experiments.py check_project.py summarize_results.py generate_report_assets.py generate_final_figures.py`
+- `python run_all_experiments.py`
+- `python check_project.py`
+- Focused tests passed: 3 tests.
+- Full and warning-strict suites passed: 41 tests each.
+- Visual inspection passed for all three final figures.
+- Health check verified 43 expected output files.
+
+Observed result and limits:
+
+- Absolute five-seed latency error bars overlap because each seed changes the
+  common topology and request realization for all policies.
+- The paired MAB latency difference relative to random is -45.051 +/- 5.966 ms.
+- Final findings state that MAB is a useful adaptive baseline, not the best or a
+  universally superior policy.
+
+Next iteration:
+
+- Iteration 12: Update README and model assumptions.

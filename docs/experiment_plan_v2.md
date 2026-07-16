@@ -172,3 +172,19 @@ Final summaries should include:
 - Jain's bandwidth fairness index where bandwidth allocation is compared
 
 All reported numerical results should come from generated CSV files.
+
+## Iteration 11 Final Result Assets
+
+The final v2 visualization and summary pass generates:
+
+- `results/figures/v2_strategy_latency_mean_std.png`
+- `results/figures/v2_strategy_hit_ratio_mean_std.png`
+- `results/figures/v2_paired_latency_vs_random.png`
+- Matching GitHub-facing copies under `docs/figures/`
+- `results/data/key_findings.md`
+- Updated tables and discussion text in `report/generated_results.md`
+
+The absolute mean/std figures show cross-seed scenario variation. The paired
+latency figure subtracts the same-seed random baseline, which better isolates
+cache-policy differences without claiming statistical significance from only
+five seeds.

@@ -1,0 +1,6 @@
+simulation_seed,mab_policy_seed,configured_training_fraction,actual_training_fraction,training_request_count,evaluation_request_count,mab_update_interval,mab_exploration_weight,completed_epochs,explored_arm_fraction,selected_arm_updates,final_cached_file_count_total,mean_final_cache_utilization
+11,3011,0.6,0.6,3000,2000,200,1.0,15,1.0,568,41,0.9957940041370683
+22,3022,0.6,0.6,3000,2000,200,1.0,15,1.0,552,39,0.9797622469061953
+33,3033,0.6,0.6,3000,2000,200,1.0,15,1.0,635,42,0.9855652357218393
+44,3044,0.6,0.6,3000,2000,200,1.0,15,1.0,596,41,0.9872722747224429
+55,3055,0.6,0.6,3000,2000,200,1.0,15,1.0,668,46,0.9862807579343098

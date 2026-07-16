@@ -6,8 +6,8 @@ Last updated: 2026-07-16
 
 ## Current Status
 
-- Current completed iteration: Iteration 10
-- Next iteration to run: Iteration 11
+- Current completed iteration: Iteration 11
+- Next iteration to run: Iteration 12
 - Total target iterations: 14
 - Execution rule: complete exactly one iteration per run
 - Iteration 1 documentation supplement completed before starting Iteration 2.
@@ -24,7 +24,7 @@ Last updated: 2026-07-16
 - [x] Iteration 8: Implement Multi-Armed Bandit caching policy.
 - [x] Iteration 9: Add MAB comparison experiment.
 - [x] Iteration 10: Add multi-seed v2 experiment runner.
-- [ ] Iteration 11: Generate final figures and result summaries.
+- [x] Iteration 11: Generate final figures and result summaries.
 - [ ] Iteration 12: Update README and model assumptions.
 - [ ] Iteration 13: Write final mini research report.
 - [ ] Iteration 14: Final reproduction check, cleanup, and portfolio summary.
@@ -373,3 +373,59 @@ Five-seed observation:
 Next iteration:
 
 - Iteration 11: Generate final figures and result summaries.
+
+## Iteration 11 Notes
+
+Scope completed:
+
+- Added a final figure generator for five-seed latency mean/std, cache-hit-ratio
+  mean/std, and paired average-latency differences relative to random caching.
+- Used horizontal error-bar plots with concise labels, explicit sample standard
+  deviation semantics, and a zero reference line for paired differences.
+- Mirrored the three final figures from `results/figures/` to `docs/figures/`
+  so the next README iteration can display them directly on GitHub.
+- Expanded `results/data/key_findings.md` into source-backed default, single-seed
+  MAB, five-seed v2, sensitivity, and interpretation-boundary sections.
+- Expanded `report/generated_results.md` with held-out and five-seed strategy
+  tables, MAB diagnostics, final figure references, and cautious discussion text.
+- Curated the final default/MAB/v2 CSV files, findings, and three result figures
+  for Git tracking while leaving transient experiment files ignored.
+- Added focused tests for data validation, figure generation/mirroring, and
+  findings derived from synthetic CSV inputs.
+
+Validation commands:
+
+```bash
+python -m unittest tests.test_final_results_generation
+python -m unittest discover -s tests
+python -W error -m unittest discover -s tests
+python -m compileall config.py src experiments tests main.py run_all_experiments.py check_project.py summarize_results.py generate_report_assets.py generate_final_figures.py
+python generate_final_figures.py
+python summarize_results.py
+python generate_report_assets.py
+python run_all_experiments.py
+python check_project.py
+```
+
+Validation result:
+
+- Focused tests: 3 tests passed.
+- Unit tests: 41 tests passed.
+- Warning-strict unit tests: 41 tests passed.
+- Compilation check: passed.
+- All-experiments reproduction: passed.
+- Visual inspection: all three final figures passed without clipping or overlap.
+- Health check: passed and verified 43 expected output files.
+
+Interpretation note:
+
+- Absolute latency error bars overlap substantially because topology/request
+  realization affects every policy in a seed.
+- The paired figure therefore reports within-seed differences from random
+  caching, where MAB records -45.051 +/- 5.966 ms across the five fixed seeds.
+- The summary explicitly states that MAB improves on random caching but does not
+  have the lowest mean latency among informed policies.
+
+Next iteration:
+
+- Iteration 12: Update README and model assumptions.

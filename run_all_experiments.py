@@ -26,6 +26,7 @@ from experiments.run_wireless_channel_experiment import (
     main as run_wireless_channel,
 )
 from experiments.run_zipf_experiment import main as run_zipf
+from generate_final_figures import main as generate_final_figures
 from generate_report_assets import main as generate_report_assets
 from summarize_results import main as summarize_results
 from src.reproducibility import write_run_metadata
@@ -45,6 +46,7 @@ def main() -> None:
     run_mab_comparison()
     run_multi_seed_v2()
     run_multi_seed_cache_capacity()
+    generate_final_figures()
     summarize_results()
     generate_report_assets()
     config = SimulationConfig()

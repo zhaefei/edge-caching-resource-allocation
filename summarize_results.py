@@ -14,13 +14,17 @@ def _format_pct(value: float) -> str:
     return f"{value:.1f}%"
 
 
-def main() -> None:
-    """Read saved CSV files and write a concise key findings summary."""
+def build_key_findings(config: SimulationConfig, data_dir: Path) -> str:
+    """Build a source-backed Markdown summary from generated CSV files."""
 
-    config = SimulationConfig()
-    data_dir, _ = ensure_results_dirs(config.results_dir)
     main_summary_path = data_dir / "main_summary.csv"
     multi_seed_summary_path = data_dir / "multi_seed_cache_capacity_summary.csv"
+    mab_comparison_path = data_dir / "mab_comparison_experiment.csv"
+    mab_diagnostics_path = data_dir / "mab_comparison_diagnostics.csv"
+    multi_seed_v2_path = data_dir / "multi_seed_v2_summary.csv"
+    multi_seed_v2_diagnostics_path = (
+        data_dir / "multi_seed_v2_mab_diagnostics_summary.csv"
+    )
     file_size_variability_path = data_dir / "file_size_variability_experiment.csv"
     spatial_locality_path = data_dir / "spatial_locality_experiment.csv"
     user_activity_path = data_dir / "user_activity_experiment.csv"
@@ -78,7 +82,9 @@ def main() -> None:
     lines = [
         "# Key Findings",
         "",
-        "These findings are generated from the default simulation outputs.",
+        "All numerical findings below are generated from repository CSV outputs.",
+        "",
+        "## Default Scenario",
         "",
         (
             "- Compared with random caching, greedy caching with demand-aware "
@@ -110,6 +116,94 @@ def main() -> None:
         ),
     ]
 
+    if mab_comparison_path.exists():
+        mab_results = pd.read_csv(mab_comparison_path)
+        random_mab_row = mab_results.loc[
+            mab_results["strategy"] == "Random caching + equal BW"
+        ].iloc[0]
+        greedy_mab_row = mab_results.loc[
+            mab_results["strategy"] == "Greedy caching + equal BW"
+        ].iloc[0]
+        mab_row = mab_results.loc[
+            mab_results["strategy"] == "UCB-style MAB caching + equal BW"
+        ].iloc[0]
+        lines.extend(
+            [
+                "",
+                "## Held-Out MAB Comparison (Seed 42)",
+                "",
+                (
+                    "- Under the common 60/40 chronological split and equal "
+                    "bandwidth, UCB-style MAB records "
+                    f"{mab_row['avg_latency_ms']:.3f} ms average latency and a "
+                    f"{mab_row['cache_hit_ratio']:.3f} cache hit ratio."
+                ),
+                (
+                    "- The corresponding random and greedy average latencies are "
+                    f"{random_mab_row['avg_latency_ms']:.3f} ms and "
+                    f"{greedy_mab_row['avg_latency_ms']:.3f} ms, respectively. "
+                    "MAB improves on random caching but is not the lowest-latency "
+                    "policy in this single-seed run."
+                ),
+            ]
+        )
+        if mab_diagnostics_path.exists():
+            diagnostics = pd.read_csv(mab_diagnostics_path).iloc[0]
+            lines.append(
+                "- MAB completes "
+                f"{int(diagnostics['completed_epochs'])} training epochs, explores "
+                f"{diagnostics['explored_arm_fraction']:.3f} of cache-feasible arms, "
+                "and uses "
+                f"{diagnostics['mean_final_cache_utilization'] * 100.0:.2f}% "
+                "of cache capacity on average."
+            )
+
+    if multi_seed_v2_path.exists():
+        multi_seed_v2 = pd.read_csv(multi_seed_v2_path)
+        mab_v2_row = multi_seed_v2.loc[
+            multi_seed_v2["strategy"] == "UCB-style MAB caching + equal BW"
+        ].iloc[0]
+        lowest_mean_row = multi_seed_v2.sort_values("avg_latency_ms_mean").iloc[0]
+        lines.extend(
+            [
+                "",
+                "## Five-Seed V2 Summary",
+                "",
+                (
+                    "- Across seeds 11, 22, 33, 44, and 55, UCB-style MAB "
+                    f"records {mab_v2_row['avg_latency_ms_mean']:.3f} +/- "
+                    f"{mab_v2_row['avg_latency_ms_std']:.3f} ms average latency "
+                    "(mean +/- sample standard deviation)."
+                ),
+                (
+                    "- Relative to the same-seed random baseline, MAB changes "
+                    "average latency by "
+                    f"{mab_v2_row['avg_latency_ms_delta_vs_random_mean']:+.3f} "
+                    f"+/- {mab_v2_row['avg_latency_ms_delta_vs_random_std']:.3f} "
+                    "ms and cache hit ratio by "
+                    f"{mab_v2_row['cache_hit_ratio_delta_vs_random_mean']:+.4f} "
+                    f"+/- {mab_v2_row['cache_hit_ratio_delta_vs_random_std']:.4f}."
+                ),
+                (
+                    f"- {lowest_mean_row['strategy']} has the lowest mean average "
+                    f"latency in this five-seed table at "
+                    f"{lowest_mean_row['avg_latency_ms_mean']:.3f} ms; the small "
+                    "differences among informed policies should not be presented "
+                    "as proof of universal ranking."
+                ),
+            ]
+        )
+        if multi_seed_v2_diagnostics_path.exists():
+            diagnostics_v2 = pd.read_csv(multi_seed_v2_diagnostics_path).iloc[0]
+            lines.append(
+                "- Across the five seeds, mean MAB arm coverage is "
+                f"{diagnostics_v2['explored_arm_fraction_mean']:.3f}, and mean "
+                "final cache utilization is "
+                f"{diagnostics_v2['mean_final_cache_utilization_mean'] * 100.0:.2f}%."
+            )
+
+    lines.extend(["", "## Sensitivity and Robustness Checks"])
+
     if multi_seed_summary_path.exists():
         multi_seed = pd.read_csv(multi_seed_summary_path)
         capacity_rows = multi_seed[multi_seed["cache_capacity"] == config.cache_capacity]
@@ -134,7 +228,7 @@ def main() -> None:
                     (
                         "- In the multi-seed experiment at the default cache budget "
                         f"equivalent to {config.cache_capacity} average-size files, "
-                        "the same best strategy reduces mean latency by "
+                        f"{best_seed_row['strategy']} reduces mean latency by "
                         f"{_format_pct(multi_seed_reduction)} relative to random caching."
                     ),
                 ]
@@ -241,10 +335,38 @@ def main() -> None:
                 ]
             )
 
-    output_path = data_dir / "key_findings.md"
-    output_path.write_text("\n".join(lines) + "\n", encoding="utf-8")
+    lines.extend(
+        [
+            "",
+            "## Interpretation Boundary",
+            "",
+            (
+                "- The simulator is an undergraduate-level research model, not a "
+                "3GPP-compliant system-level simulator or a production optimizer."
+            ),
+            (
+                "- Five fixed seeds provide a lightweight robustness check. They "
+                "do not establish statistical significance across real deployments."
+            ),
+            (
+                "- The UCB-style policy is a teaching-oriented adaptive baseline, "
+                "not a novel or guaranteed-optimal caching algorithm."
+            ),
+        ]
+    )
+    return "\n".join(lines) + "\n"
 
-    print("\n".join(lines))
+
+def main() -> None:
+    """Read saved CSV files and write a concise key findings summary."""
+
+    config = SimulationConfig()
+    data_dir, _ = ensure_results_dirs(config.results_dir)
+    content = build_key_findings(config, data_dir)
+    output_path = data_dir / "key_findings.md"
+    output_path.write_text(content, encoding="utf-8")
+
+    print(content.rstrip())
     print(f"\nSaved summary to {output_path}")
 
 
