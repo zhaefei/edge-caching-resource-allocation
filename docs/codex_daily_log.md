@@ -450,3 +450,30 @@ Remaining limits:
 Next iteration:
 
 - Iteration 13: Write final mini research report.
+
+## 2026-07-16 (Iteration 13)
+
+Iteration completed: Iteration 13 - Write final mini research report.
+
+Summary:
+
+- Added the 3,628-word final English report with a complete undergraduate-level
+  research narrative from motivation and equations through results and limits.
+- Added the held-out MAB protocol and five-seed comparison that were absent from
+  the earlier report draft.
+- Embedded seven tracked figures and used only numerical values generated from
+  repository CSV outputs.
+- Highlighted that demand-aware allocation improves mean latency while reducing
+  fairness and increasing P95 latency in the default run.
+- Preserved the original report template and draft for traceability.
+
+Validation:
+
+- `.venv\Scripts\python.exe -m unittest discover -s tests`
+- Full suite passed: 41 tests.
+- All final-report figure links resolved successfully.
+- Git whitespace check passed.
+
+Next iteration:
+
+- Iteration 14: Final reproduction check, cleanup, and portfolio summary.
