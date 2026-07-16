@@ -19,6 +19,34 @@ system simulator.
 - Jain's fairness index as a simple resource-allocation diagnostic.
 - Heuristic caching and bandwidth allocation strategies.
 
+## Default Scenario Snapshot
+
+The default values below define the main seed-42 scenario. Experiment scripts
+change only the parameter being studied unless their metadata states otherwise.
+
+| Component | Default value | Interpretation |
+| --- | ---: | --- |
+| Content library | 50 files | Finite catalogue of data/video chunks |
+| Users / edge servers | 100 / 4 | Static users and grid-placed servers |
+| Service area | 500 m x 500 m | Two-dimensional square region |
+| Requests | 5,000 | One reproducible synthetic request trace |
+| Zipf alpha | 0.9 | Moderate global popularity concentration |
+| Spatial-locality strength | 0.35 | Mixture weight for server-specific demand |
+| Mean file size | 5 Mbit | Bounded lognormal sizes from 1 to 12 Mbit |
+| Cache budget per server | 40 Mbit | Eight times the mean file size |
+| Server bandwidth | 20 MHz | Shared downlink bandwidth per edge server |
+| Transmit power | 0.2 W | Common power used for each server link |
+| Path-loss exponent | 3.4 | Large-scale distance attenuation |
+| Noise figure | 7 dB | Receiver noise penalty |
+| Interference factor | 0.15 | Scales non-serving received power |
+| Backhaul | 80 ms, 100 Mbit/s | Fixed latency plus transfer time |
+| Random seed | 42 | Default network, requests, and file sizes |
+
+These values are illustrative rather than calibrated to one carrier, frequency
+band, 3GPP deployment scenario, or measured dataset. The configuration is
+centralized in `config.py`, and sweep scripts record their changed values in
+run metadata.
+
 ## Why These Assumptions Are Reasonable
 
 The model keeps the main engineering tradeoffs visible:
@@ -70,7 +98,9 @@ specified assumptions.
 - The simulator now resolves wireless behavior through a small channel-model
   interface so future path-loss and fading variants can be compared without
   changing the caching workflow.
-- Interference is represented by a simple scaling factor.
+- Interference is the configured factor multiplied by the sum of received
+  powers from all non-serving edge servers. It does not model scheduling,
+  beamforming, frequency reuse, or correlated interference.
 - Backhaul latency is modeled with a fixed component and transfer delay.
 - Bandwidth allocation is heuristic rather than solved as a full optimization
   problem.
@@ -85,6 +115,47 @@ specified assumptions.
   deviations and paired differences relative to random caching.
 - Five seeds provide a lightweight robustness check, not exhaustive statistical
   evidence across deployment environments.
+
+## Evaluation Protocols
+
+### Default Five-Strategy Comparison
+
+The original comparison evaluates random, global popularity, local popularity,
+greedy, and greedy plus demand-aware bandwidth strategies on the same seed-42
+network and request trace. Local popularity, greedy caching, and demand-aware
+allocation inspect that trace. This experiment is useful for controlled
+strategy comparison, but it is not an out-of-sample learning evaluation.
+
+### Held-Out Caching Comparison
+
+The dedicated MAB experiment divides each chronological request trace into a
+60% training prefix and a 40% evaluation suffix. Local popularity and greedy
+caching use only the training prefix. MAB also trains only on the prefix and
+receives selected-arm feedback. The final caches remain fixed on the evaluation
+suffix, and every policy receives equal bandwidth so that the comparison
+isolates caching behavior.
+
+The random policy is a seeded baseline. The policy labelled
+`Prior-informed popularity caching` uses the known Zipf prior rather than the
+training requests; its information advantage is explicit in the label and it
+should not be described as a purely data-driven held-out policy.
+
+### Multi-Seed V2 Summary
+
+The final v2 experiment repeats the held-out protocol for seeds 11, 22, 33, 44,
+and 55. It reports arithmetic means and sample standard deviations (`ddof=1`).
+Paired differences are calculated as each strategy's metric minus the random
+baseline metric from the same seed. Pairing reduces confusion from comparing
+strategies on different random network realizations, but five fixed seeds are
+still too few to support broad statistical or deployment claims.
+
+## Reproducibility Boundary
+
+Network placement, request generation, file sizes, fading snapshots, random
+caching, and MAB tie handling use deterministic seeds or deterministic rules.
+CSV outputs are the source for every numerical statement in the README and
+generated report assets. Environment metadata is retained locally but ignored
+by Git because it changes between machines and runs.
 
 ## How to Discuss the Project
 

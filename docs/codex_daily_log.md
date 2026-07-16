@@ -413,3 +413,40 @@ Observed result and limits:
 Next iteration:
 
 - Iteration 12: Update README and model assumptions.
+
+## 2026-07-16 (Iteration 12)
+
+Iteration completed: Iteration 12 - Update README and model assumptions.
+
+Summary:
+
+- Turned the README into a result-backed portfolio entry with the implemented
+  MAB formulation, three clearly separated evaluation levels, final v2 figures,
+  and exact reproduction commands.
+- Documented the default scenario parameters, channel and interference
+  abstractions, information available to each held-out policy, multi-seed
+  pairing, and interpretation boundaries.
+- Replaced stale future-work language now that held-out MAB evaluation exists.
+- Removed one broken, untracked spatial-locality image reference and confirmed
+  that every remaining README link resolves locally.
+- Made no core source-code changes and reported only generated numerical values.
+
+Validation:
+
+- `.venv\Scripts\python.exe -m unittest discover -s tests`
+- `.venv\Scripts\python.exe check_project.py`
+- Full suite passed: 41 tests.
+- Health check regenerated and verified 43 expected output files.
+- README local-link check passed.
+
+Remaining limits:
+
+- The five-seed summary is a lightweight robustness check, not a statistical
+  significance claim.
+- The model remains intentionally simplified and is not 3GPP compliant.
+- The system WindowsApps `python` placeholder is inactive; the repository
+  virtual environment is healthy and uses Python 3.12.13.
+
+Next iteration:
+
+- Iteration 13: Write final mini research report.

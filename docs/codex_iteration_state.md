@@ -6,8 +6,8 @@ Last updated: 2026-07-16
 
 ## Current Status
 
-- Current completed iteration: Iteration 11
-- Next iteration to run: Iteration 12
+- Current completed iteration: Iteration 12
+- Next iteration to run: Iteration 13
 - Total target iterations: 14
 - Execution rule: complete exactly one iteration per run
 - Iteration 1 documentation supplement completed before starting Iteration 2.
@@ -25,7 +25,7 @@ Last updated: 2026-07-16
 - [x] Iteration 9: Add MAB comparison experiment.
 - [x] Iteration 10: Add multi-seed v2 experiment runner.
 - [x] Iteration 11: Generate final figures and result summaries.
-- [ ] Iteration 12: Update README and model assumptions.
+- [x] Iteration 12: Update README and model assumptions.
 - [ ] Iteration 13: Write final mini research report.
 - [ ] Iteration 14: Final reproduction check, cleanup, and portfolio summary.
 
@@ -429,3 +429,39 @@ Interpretation note:
 Next iteration:
 
 - Iteration 12: Update README and model assumptions.
+
+## Iteration 12 Notes
+
+Scope completed:
+
+- Updated the README with the implemented UCB-style score, separated default,
+  held-out, and five-seed evidence, and linked every numerical claim to
+  generated repository outputs.
+- Added the three final v2 figures, final result-generation commands, current
+  project structure, and a focused set of realistic future improvements.
+- Expanded the model assumptions with a default parameter table, precise
+  interference abstraction, held-out policy information boundaries, paired
+  multi-seed comparison semantics, and reproducibility limits.
+- Removed one stale README image reference whose target was not tracked, then
+  verified that every remaining local README link and image exists.
+- Kept this iteration documentation-only; no core simulation source or result
+  values were changed.
+
+Validation commands:
+
+```bash
+.venv\Scripts\python.exe -m unittest discover -s tests
+.venv\Scripts\python.exe check_project.py
+```
+
+Validation result:
+
+- Unit tests: 41 tests passed.
+- README local-link check: passed.
+- Health check: passed and verified 43 expected output files.
+- The system `python` command resolved to an inactive WindowsApps placeholder;
+  the repository virtual environment used Python 3.12.13 successfully.
+
+Next iteration:
+
+- Iteration 13: Write final mini research report.
