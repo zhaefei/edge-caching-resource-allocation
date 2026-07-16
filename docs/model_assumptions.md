@@ -78,8 +78,10 @@ specified assumptions.
   objective.
 - The UCB-style caching extension updates only files selected during each
   training epoch and uses avoided backhaul latency per local request as reward.
-- MAB training returns a fixed final cache; held-out comparison and numerical
-  claims are deferred to the dedicated MAB experiment.
+- MAB training returns a fixed final cache. The dedicated comparison uses one
+  chronological 60/40 split and equal bandwidth for every caching policy.
+- Current MAB comparison values come from one fixed seed; cross-seed stability
+  claims are deferred to the multi-seed v2 experiment.
 
 ## How to Discuss the Project
 

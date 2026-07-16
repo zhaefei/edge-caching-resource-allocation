@@ -89,7 +89,8 @@ Expected interpretation:
 ## 6. MAB Caching Comparison Experiment
 
 Implementation status: the UCB-style caching policy and focused unit tests were
-completed in Iteration 8. The held-out comparison remains Iteration 9 work.
+completed in Iteration 8. Iteration 9 added the reproducible held-out comparison,
+learning diagnostics, figures, and project-health integration.
 
 Purpose:
 
@@ -97,7 +98,7 @@ Purpose:
   random, popularity-based, local popularity, and greedy latency-aware caching
   strategies.
 
-Planned protocol:
+Implemented protocol:
 
 - Use the UCB-style semi-bandit policy specified in
   `docs/mab_caching_design.md`.
@@ -110,6 +111,14 @@ Planned protocol:
 - Record fixed seeds, epoch size, exploration coefficient, epoch count, and arm
   coverage in addition to network metrics.
 
+Outputs:
+
+- `results/data/mab_comparison_experiment.csv`
+- `results/data/mab_comparison_diagnostics.csv`
+- `results/data/mab_comparison_metadata.json`
+- `results/figures/mab_comparison_average_latency.png`
+- `results/figures/mab_comparison_cache_hit_ratio.png`
+
 Expected interpretation:
 
 - The MAB policy should be presented as a lightweight adaptive baseline, not as a
@@ -117,6 +126,8 @@ Expected interpretation:
 - Results should examine how online selected-arm feedback compares with static
   baselines under the simplified simulator assumptions; improvement is not
   assumed in advance.
+- Iteration 9 produces a single-seed controlled comparison. Stability claims
+  must wait for the multi-seed v2 experiment in Iteration 10.
 
 ## 7. Multi-Seed v2 Summary Experiment
 

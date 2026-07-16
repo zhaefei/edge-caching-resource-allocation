@@ -2,12 +2,12 @@
 
 Project: `edge-caching-resource-allocation`
 
-Last updated: 2026-07-15
+Last updated: 2026-07-16
 
 ## Current Status
 
-- Current completed iteration: Iteration 8
-- Next iteration to run: Iteration 9
+- Current completed iteration: Iteration 9
+- Next iteration to run: Iteration 10
 - Total target iterations: 14
 - Execution rule: complete exactly one iteration per run
 - Iteration 1 documentation supplement completed before starting Iteration 2.
@@ -22,7 +22,7 @@ Last updated: 2026-07-15
 - [x] Iteration 6: Add wireless channel experiment.
 - [x] Iteration 7: Design Multi-Armed Bandit caching policy.
 - [x] Iteration 8: Implement Multi-Armed Bandit caching policy.
-- [ ] Iteration 9: Add MAB comparison experiment.
+- [x] Iteration 9: Add MAB comparison experiment.
 - [ ] Iteration 10: Add multi-seed v2 experiment runner.
 - [ ] Iteration 11: Generate final figures and result summaries.
 - [ ] Iteration 12: Update README and model assumptions.
@@ -266,3 +266,56 @@ Validation result:
 Next iteration:
 
 - Iteration 9: Add MAB comparison experiment.
+
+## Iteration 9 Notes
+
+Scope completed:
+
+- Added a reusable chronological request splitter that keeps a non-empty
+  training prefix and held-out evaluation suffix without shuffling.
+- Added a dedicated five-policy caching comparison using one common network,
+  request trace, file-size profile, 60/40 split, and equal bandwidth allocation.
+- Limited local popularity, greedy, and UCB-style MAB learning to the training
+  prefix; every fixed cache is evaluated only on the common suffix.
+- Recorded policy information sources and separate MAB diagnostics, including
+  seeds, epoch count, explored-arm fraction, selected-arm updates, and final
+  cache utilization.
+- Added CSV, metadata, and two figure outputs, then integrated the experiment
+  into the all-experiments runner and project health check.
+- Added focused tests for exact chronological splitting, reproducibility,
+  capacity feasibility, common bandwidth conditions, and evaluation leakage.
+
+Validation commands:
+
+```bash
+python -m unittest tests.test_mab_comparison_experiment
+python -m unittest discover -s tests
+python -W error -m unittest discover -s tests
+python -m compileall config.py src experiments tests run_all_experiments.py check_project.py
+python experiments/run_mab_comparison_experiment.py
+python run_all_experiments.py
+python check_project.py
+```
+
+Validation result:
+
+- Focused tests: 3 tests passed.
+- Unit tests: 35 tests passed.
+- Warning-strict unit tests: 35 tests passed.
+- Compilation check: passed.
+- Standalone MAB comparison and all-experiments reproduction: passed.
+- Health check: passed and verified 31 expected output files.
+
+Single-seed observation:
+
+- With seed 42, UCB-style MAB produced 1234.346 ms average latency and a 0.555
+  cache hit ratio on the held-out suffix. Greedy caching produced 1231.400 ms
+  and 0.5815 under the same equal-bandwidth conditions.
+- MAB completed 15 epochs, explored all cache-feasible arms in this run, and
+  used 97.31% of the average cache budget.
+- These values are a reproducible single-seed observation, not a stability or
+  superiority claim.
+
+Next iteration:
+
+- Iteration 10: Add multi-seed v2 experiment runner.

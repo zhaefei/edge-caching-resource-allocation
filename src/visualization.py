@@ -29,12 +29,15 @@ def plot_metric_bar(
     metric: str,
     ylabel: str,
     output_path: Path,
+    title: str | None = None,
 ) -> None:
     """Create a bar chart for one metric across strategies."""
 
     plt.figure(figsize=(10, 5))
     plt.bar(results["strategy"], results[metric], color="#4c78a8")
     plt.ylabel(ylabel)
+    if title:
+        plt.title(title)
     plt.xticks(rotation=20, ha="right")
     plt.grid(axis="y", alpha=0.3)
     plt.tight_layout()

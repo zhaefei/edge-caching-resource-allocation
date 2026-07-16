@@ -4,8 +4,9 @@
 
 This document specifies the lightweight learning-based caching extension for
 Iterations 8 and 9. The policy and focused tests were implemented in Iteration
-8. The controlled comparison remains scheduled for Iteration 9, so no MAB
-performance result is claimed yet.
+8. Iteration 9 added the controlled held-out comparison and reproducible output
+artifacts. Its current numerical result is a single-seed observation rather
+than a cross-seed performance claim.
 
 The implemented policy is a UCB-style combinatorial semi-bandit baseline. It is
 intended to demonstrate online learning, exploration versus exploitation, and
@@ -105,8 +106,8 @@ cache placement evaluated on held-out requests.
 
 ## Training and Evaluation Protocol
 
-Iteration 9 should use one reproducible chronological split of the generated
-request trace:
+The Iteration 9 experiment uses one reproducible chronological split of the
+generated request trace:
 
 - First 60% of requests: cache-policy training
 - Final 40% of requests: metric evaluation
@@ -120,7 +121,7 @@ Because the current global popularity policy receives the Zipf probabilities
 used by the generator, it should be labeled as a static prior-informed baseline
 rather than a policy with the same feedback as MAB.
 
-The initial MAB comparison should use equal bandwidth allocation for every
+The initial MAB comparison uses equal bandwidth allocation for every
 caching policy. Holding bandwidth allocation fixed isolates the effect of cache
 learning. A later result may add demand-aware bandwidth as a separate analysis,
 but it should not be mixed into the primary MAB caching comparison.
@@ -187,12 +188,13 @@ return final caches and learning diagnostics
 - Empty local epochs and servers with no requests do not produce NaN values.
 - Oversized files are skipped consistently with existing caching policies.
 - The learning interface accepts only the caller-provided training arrays;
-  evaluation requests remain outside the policy and are reserved for the
-  Iteration 9 experiment.
+  the Iteration 9 leakage test confirms that changing evaluation requests does
+  not change learned caches or MAB diagnostics.
 
-## Iteration 9 Comparison Plan
+## Iteration 9 Comparison Implementation
 
-Use equal bandwidth allocation and compare final held-out metrics for:
+The experiment uses equal bandwidth allocation and compares final held-out
+metrics for:
 
 - Random caching
 - Global popularity caching
@@ -200,10 +202,10 @@ Use equal bandwidth allocation and compare final held-out metrics for:
 - Greedy latency-aware caching trained on the training segment
 - UCB-style MAB caching trained on the same segment
 
-Report average latency, P95 latency, cache hit ratio, backhaul load, and average
-wireless rate. Also report MAB arm coverage and epoch count as learning
-diagnostics. The MAB policy may underperform a static baseline in a stationary
-Zipf trace; that is a valid result and should not be hidden.
+The output reports average latency, P95 latency, cache hit ratio, backhaul load,
+and average wireless rate. It also records MAB arm coverage and epoch count as
+learning diagnostics. The MAB policy may underperform a static baseline in a
+stationary Zipf trace; that is a valid result and should not be hidden.
 
 ## Limitations
 
@@ -214,7 +216,7 @@ Zipf trace; that is a valid result and should not be hidden.
 - Independent server learners do not coordinate duplicate content placement.
 - UCB score-density packing is a heuristic for a capacity-constrained action;
   it is not an exact combinatorial-bandit optimizer.
-- Hyperparameters will be fixed for reproducibility rather than extensively
+- Hyperparameters are fixed for reproducibility rather than extensively
   tuned on the evaluation data.
 - A short training trace may not provide enough epochs to explore every arm;
   arm coverage must therefore be reported rather than assumed.

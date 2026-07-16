@@ -288,3 +288,44 @@ Observed risks / notes:
 Next iteration:
 
 - Iteration 9: Add MAB comparison experiment.
+
+## 2026-07-16 (Iteration 9)
+
+Iteration completed: Iteration 9 - Add MAB comparison experiment.
+
+Summary:
+
+- Added a reusable 60/40 chronological request split and a dedicated held-out
+  comparison for random, prior-informed popularity, local popularity, greedy,
+  and UCB-style MAB caching.
+- Ensured request-aware policies train only on the prefix and all fixed caches
+  use the same suffix and equal bandwidth for evaluation.
+- Added separate MAB learning diagnostics, reproducibility metadata, two
+  figures, all-experiments integration, and health-check coverage.
+- Added three focused tests, including a direct check that changing evaluation
+  requests does not change any learned cache or MAB diagnostic.
+
+Validation:
+
+- `python -m unittest tests.test_mab_comparison_experiment`
+- `python -m unittest discover -s tests`
+- `python -W error -m unittest discover -s tests`
+- `python -m compileall config.py src experiments tests run_all_experiments.py check_project.py`
+- `python experiments/run_mab_comparison_experiment.py`
+- `python run_all_experiments.py`
+- `python check_project.py`
+- Focused tests passed: 3 tests.
+- Full and warning-strict suites passed: 35 tests each.
+- Health check verified 31 expected output files.
+
+Observed result and limits:
+
+- At seed 42, MAB recorded 1234.346 ms average latency and a 0.555 hit ratio;
+  greedy recorded 1231.400 ms and 0.5815 under the same held-out protocol.
+- The MAB run completed 15 epochs with 1.0 cache-feasible arm coverage.
+- This is a single-seed observation. Iteration 10 must evaluate cross-seed
+  variation before the portfolio makes a stability claim.
+
+Next iteration:
+
+- Iteration 10: Add multi-seed v2 experiment runner.

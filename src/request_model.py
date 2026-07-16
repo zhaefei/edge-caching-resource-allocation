@@ -3,6 +3,7 @@
 from __future__ import annotations
 
 from dataclasses import dataclass
+from numbers import Real
 from typing import TYPE_CHECKING
 
 import numpy as np
@@ -23,6 +24,28 @@ class RequestTrace:
     popularity: np.ndarray
     user_activity: np.ndarray
     server_popularity: np.ndarray | None = None
+
+
+@dataclass(frozen=True)
+class ChronologicalRequestSplit:
+    """Training prefix and evaluation suffix from one request trace."""
+
+    training_user_ids: np.ndarray
+    training_file_ids: np.ndarray
+    evaluation_user_ids: np.ndarray
+    evaluation_file_ids: np.ndarray
+
+    @property
+    def training_request_count(self) -> int:
+        """Number of requests available to request-aware cache policies."""
+
+        return len(self.training_file_ids)
+
+    @property
+    def evaluation_request_count(self) -> int:
+        """Number of held-out requests used only for final metrics."""
+
+        return len(self.evaluation_file_ids)
 
 
 def zipf_probabilities(num_items: int, alpha: float) -> np.ndarray:
@@ -74,6 +97,38 @@ def generate_request_trace(
         popularity=popularity,
         user_activity=user_activity,
         server_popularity=server_popularity if network is not None else None,
+    )
+
+
+def split_requests_chronologically(
+    trace: RequestTrace,
+    training_fraction: float,
+) -> ChronologicalRequestSplit:
+    """Split one trace without shuffling so evaluation requests stay unseen."""
+
+    if (
+        isinstance(training_fraction, (bool, np.bool_))
+        or not isinstance(training_fraction, Real)
+        or not np.isfinite(training_fraction)
+        or not 0.0 < float(training_fraction) < 1.0
+    ):
+        raise ValueError("training_fraction must be finite and between 0 and 1")
+    if trace.user_ids.ndim != 1 or trace.file_ids.ndim != 1:
+        raise ValueError("request identifiers must be one-dimensional")
+    if len(trace.user_ids) != len(trace.file_ids):
+        raise ValueError("request user and file arrays must have equal length")
+    if len(trace.file_ids) < 2:
+        raise ValueError("chronological splitting requires at least two requests")
+
+    training_count = int(len(trace.file_ids) * float(training_fraction))
+    if training_count <= 0 or training_count >= len(trace.file_ids):
+        raise ValueError("training_fraction must leave non-empty train and evaluation sets")
+
+    return ChronologicalRequestSplit(
+        training_user_ids=trace.user_ids[:training_count],
+        training_file_ids=trace.file_ids[:training_count],
+        evaluation_user_ids=trace.user_ids[training_count:],
+        evaluation_file_ids=trace.file_ids[training_count:],
     )
 
 

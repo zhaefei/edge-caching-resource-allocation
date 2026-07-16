@@ -12,6 +12,7 @@ from experiments.run_cache_capacity_experiment import main as run_cache_capacity
 from experiments.run_file_size_variability_experiment import (
     main as run_file_size_variability,
 )
+from experiments.run_mab_comparison_experiment import main as run_mab_comparison
 from experiments.run_multi_seed_cache_capacity_experiment import (
     main as run_multi_seed_cache_capacity,
 )
@@ -40,6 +41,7 @@ def main() -> None:
     run_backhaul_sensitivity()
     run_bandwidth_sensitivity()
     run_wireless_channel()
+    run_mab_comparison()
     run_multi_seed_cache_capacity()
     summarize_results()
     generate_report_assets()
@@ -60,6 +62,7 @@ def main() -> None:
                 "backhaul_sensitivity_experiment",
                 "bandwidth_sensitivity_experiment",
                 "wireless_channel_experiment",
+                "mab_comparison_experiment",
                 "multi_seed_cache_capacity_experiment",
             ],
         },

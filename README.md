@@ -201,9 +201,10 @@ independent per-server learners, capacity-aware file packing, deterministic tie
 handling, and inspectable learning diagnostics. Its design, reward definition,
 and held-out evaluation protocol are documented in
 [`docs/mab_caching_design.md`](docs/mab_caching_design.md). The policy is kept
-out of the default five-strategy comparison until the planned experiment can
-train every request-aware policy on the same chronological prefix and evaluate
-all fixed caches on the same held-out suffix.
+out of the default five-strategy comparison to preserve the original baseline
+workflow. A dedicated held-out experiment trains every request-aware policy on
+the same chronological 60% prefix, evaluates all fixed caches on the same 40%
+suffix, and holds bandwidth allocation equal across policies.
 
 ## Metrics
 
@@ -324,6 +325,7 @@ edge-caching-resource-allocation/
 |   |-- run_bandwidth_sensitivity_experiment.py
 |   |-- run_cache_capacity_experiment.py
 |   |-- run_file_size_variability_experiment.py
+|   |-- run_mab_comparison_experiment.py
 |   |-- run_multi_seed_cache_capacity_experiment.py
 |   |-- run_spatial_locality_experiment.py
 |   |-- run_user_activity_experiment.py
@@ -399,6 +401,7 @@ python experiments/run_backhaul_sensitivity_experiment.py
 python experiments/run_bandwidth_sensitivity_experiment.py
 python experiments/run_cache_capacity_experiment.py
 python experiments/run_file_size_variability_experiment.py
+python experiments/run_mab_comparison_experiment.py
 python experiments/run_multi_seed_cache_capacity_experiment.py
 python experiments/run_spatial_locality_experiment.py
 python experiments/run_user_activity_experiment.py
@@ -410,6 +413,11 @@ python experiments/run_zipf_experiment.py
 Each experiment script also writes a matching metadata JSON file in
 `results/data/` that records the run configuration, sweep parameter values, Git
 commit, and generated output filenames.
+
+The MAB comparison additionally writes `mab_comparison_diagnostics.csv`, which
+records the chronological split, policy seed, epoch count, arm coverage, and
+final cache utilization. Its single-seed output is exploratory; robust claims
+are reserved for the planned multi-seed summary.
 
 ## Running Sanity Tests
 
@@ -431,8 +439,8 @@ python check_project.py
 ```
 
 This runs the sanity tests, executes the default simulation, regenerates the
-multi-seed and spatial-locality summaries used by the report assets, writes key
-findings, and verifies that the main output files and key metadata files were
+key multi-seed, spatial-locality, wireless-channel, and held-out MAB outputs,
+writes key findings, and verifies that the main result files and metadata were
 created.
 
 ## Summarizing Results

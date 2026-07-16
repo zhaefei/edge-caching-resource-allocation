@@ -24,6 +24,9 @@ REQUIRED_OUTPUTS = [
     Path("results/data/user_activity_experiment_metadata.json"),
     Path("results/data/wireless_channel_experiment.csv"),
     Path("results/data/wireless_channel_experiment_metadata.json"),
+    Path("results/data/mab_comparison_experiment.csv"),
+    Path("results/data/mab_comparison_diagnostics.csv"),
+    Path("results/data/mab_comparison_metadata.json"),
     Path("results/figures/network_topology.png"),
     Path("results/figures/content_popularity_zipf.png"),
     Path("results/figures/main_average_latency.png"),
@@ -38,6 +41,8 @@ REQUIRED_OUTPUTS = [
     Path("results/figures/fairness_vs_user_activity.png"),
     Path("results/figures/latency_vs_path_loss_exponent.png"),
     Path("results/figures/rate_vs_path_loss_exponent.png"),
+    Path("results/figures/mab_comparison_average_latency.png"),
+    Path("results/figures/mab_comparison_cache_hit_ratio.png"),
     Path("report/generated_results.md"),
 ]
 
@@ -86,6 +91,10 @@ def main() -> None:
     _run_step(
         "Running wireless channel sensitivity experiment",
         [python, "experiments/run_wireless_channel_experiment.py"],
+    )
+    _run_step(
+        "Running held-out MAB caching comparison",
+        [python, "experiments/run_mab_comparison_experiment.py"],
     )
     _run_step(
         "Generating key findings summary",
