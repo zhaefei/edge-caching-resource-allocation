@@ -1,10 +1,10 @@
 # Edge Caching and Resource Allocation for Latency Reduction in 5G/6G Wireless Networks
 
-**Author:** [Applicant Name]  
-**Field:** Electrical Engineering and Communications Engineering  
-**Project type:** Undergraduate-level reproducible simulation study  
-**Version:** 2.0  
-**Date:** July 2026
+- **Author:** [Applicant Name]
+- **Field:** Electrical Engineering and Communications Engineering
+- **Project type:** Undergraduate-level reproducible simulation study
+- **Version:** 2.0
+- **Date:** July 2026
 
 ## Abstract
 

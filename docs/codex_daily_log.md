@@ -477,3 +477,42 @@ Validation:
 Next iteration:
 
 - Iteration 14: Final reproduction check, cleanup, and portfolio summary.
+
+## 2026-07-16 (Iteration 14)
+
+Iteration completed: Iteration 14 - Final reproduction check, cleanup, and
+portfolio summary.
+
+Summary:
+
+- Added the final graduate-application portfolio summary with an evidence map,
+  carefully scoped application language, and reproducible findings.
+- Linked the final report, summary, generated tables, and key findings from the
+  README.
+- Extended the project health check to verify 49 final result and application
+  artifacts.
+- Marked the 14-step roadmap complete and cleaned legacy Markdown whitespace.
+- Reproduced every experiment and regenerated all final result assets.
+
+Validation:
+
+- `.venv\Scripts\python.exe run_all_experiments.py`
+- `.venv\Scripts\python.exe -W error -m unittest discover -s tests`
+- `.venv\Scripts\python.exe -m compileall -q config.py src experiments tests main.py run_all_experiments.py check_project.py summarize_results.py generate_report_assets.py generate_final_figures.py`
+- `.venv\Scripts\python.exe -m pip check`
+- `.venv\Scripts\python.exe check_project.py`
+- Full experiment reproduction passed.
+- Warning-strict suite passed: 41 tests.
+- Compilation passed; no broken dependencies were found.
+- Health check verified 49 artifact files.
+- Final document links and whitespace checks passed.
+
+Remaining limits:
+
+- The simulator remains intentionally undergraduate-scale and non-3GPP.
+- Five seeds do not support a statistical-significance claim.
+- Learning results justify MAB as a useful baseline, not a superior algorithm.
+
+Project status:
+
+- All 14 v2.0 iterations are complete.

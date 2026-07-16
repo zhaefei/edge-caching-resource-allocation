@@ -20,61 +20,82 @@ The final repository should be suitable for a graduate application portfolio. It
 should present the work as a solid simulation and research exploration, not as a
 novel 5G/6G standard, production system, or state-of-the-art optimizer.
 
+## Completion Status
+
+All 14 iterations were completed on 2026-07-16. The final repository includes
+the channel-model extension, held-out MAB comparison, five-seed v2 summary,
+curated results and figures, final English report, portfolio summary, and a
+health check that verifies the complete artifact set.
+
 ## 14-Iteration Upgrade Plan
 
-1. **Project health check and iteration state setup**  
+1. **Project health check and iteration state setup**
+
    Establish iteration tracking, run the current tests, and confirm the project
    has a clean reproducible baseline.
 
-2. **Repository structure cleanup and reproducibility baseline**  
+2. **Repository structure cleanup and reproducibility baseline**
+
    Review project organization, result directories, health checks, and metadata
    so later experiments remain easy to reproduce.
 
-3. **Design wireless channel model interface**  
+3. **Design wireless channel model interface**
+
    Introduce a small channel-model abstraction so the network model can support
    different channel assumptions without rewriting the simulator.
 
-4. **Implement path loss wireless channel model**  
+4. **Implement path loss wireless channel model**
+
    Move the existing path-loss behavior into the channel interface and keep the
    default model transparent and beginner-friendly.
 
-5. **Implement optional fading and tests**  
+5. **Implement optional fading and tests**
+
    Add optional lightweight fading with fixed seeds and tests, while keeping path
    loss as the default baseline.
 
-6. **Add wireless channel experiment**  
+6. **Add wireless channel experiment**
+
    Compare latency and rate behavior under different channel assumptions or
    parameters.
 
-7. **Design Multi-Armed Bandit caching policy**  
+7. **Design Multi-Armed Bandit caching policy**
+
    Document a simple, understandable MAB caching design and how it fits into the
    existing caching strategy interface. The completed design is recorded in
    `docs/mab_caching_design.md`.
 
-8. **Implement Multi-Armed Bandit caching policy**  
+8. **Implement Multi-Armed Bandit caching policy**
+
    Add the MAB policy with deterministic seeds and focused tests.
 
-9. **Add MAB comparison experiment**  
+9. **Add MAB comparison experiment**
+
    Compare MAB caching against random, popularity, local popularity, and greedy
    caching in a controlled experiment.
 
-10. **Add multi-seed v2 experiment runner**  
+10. **Add multi-seed v2 experiment runner**
+
     Extend multi-seed evaluation to cover the final v2 strategy set and report
     mean/std trends.
 
-11. **Generate final figures and result summaries**  
+11. **Generate final figures and result summaries**
+
     Regenerate final CSV outputs, figures, generated tables, and key findings
     from scripts.
 
-12. **Update README and model assumptions**  
+12. **Update README and model assumptions**
+
     Make README and `docs/model_assumptions.md` consistent with the final v2
     model and experiments.
 
-13. **Write final mini research report**  
+13. **Write final mini research report**
+
     Create `report/project_report_final.md` with academic but undergraduate-level
     tone, including equations, experiments, results, limitations, and references.
 
-14. **Final reproduction check, cleanup, and portfolio summary**  
+14. **Final reproduction check, cleanup, and portfolio summary**
+
     Run the full reproduction workflow, verify final deliverables, and write
     `docs/portfolio_summary.md`.
 

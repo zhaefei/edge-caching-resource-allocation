@@ -405,6 +405,7 @@ edge-caching-resource-allocation/
 |   |-- experiment_plan_v2.md
 |   |-- mab_caching_design.md
 |   |-- model_assumptions.md
+|   |-- portfolio_summary.md
 |   |-- v2_roadmap.md
 |   `-- figures/
 |-- results/
@@ -413,6 +414,7 @@ edge-caching-resource-allocation/
 |       `-- key_findings.md
 `-- report/
     |-- generated_results.md
+    |-- project_report_final.md
     |-- project_report_template.md
     |-- references.md
     `-- project_report_draft.md
@@ -647,9 +649,16 @@ portfolio because it connects several important areas:
 It is best presented as a solid undergraduate-level research exploration rather
 than as a novel optimization algorithm.
 
+Final application materials:
+
+- [Project report](report/project_report_final.md)
+- [Portfolio summary](docs/portfolio_summary.md)
+- [Generated result tables](report/generated_results.md)
+- [Source-backed key findings](results/data/key_findings.md)
+
 ## Selected References
 
-The report draft includes selected background references on edge caching, mobile
+The final report uses selected background references on edge caching, mobile
 edge computing, Zipf-distributed requests, and wireless rate modeling. See:
 
 - `report/references.md`

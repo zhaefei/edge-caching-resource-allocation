@@ -6,10 +6,11 @@ Last updated: 2026-07-16
 
 ## Current Status
 
-- Current completed iteration: Iteration 13
-- Next iteration to run: Iteration 14
+- Current completed iteration: Iteration 14
+- Next iteration to run: None - v2.0 plan complete
 - Total target iterations: 14
-- Execution rule: complete exactly one iteration per run
+- Execution rule: all planned iterations are complete; future work should use a
+  separately scoped maintenance or extension plan
 - Iteration 1 documentation supplement completed before starting Iteration 2.
 
 ## Iteration Checklist
@@ -27,7 +28,7 @@ Last updated: 2026-07-16
 - [x] Iteration 11: Generate final figures and result summaries.
 - [x] Iteration 12: Update README and model assumptions.
 - [x] Iteration 13: Write final mini research report.
-- [ ] Iteration 14: Final reproduction check, cleanup, and portfolio summary.
+- [x] Iteration 14: Final reproduction check, cleanup, and portfolio summary.
 
 ## Iteration 1 Notes
 
@@ -491,10 +492,57 @@ Validation commands:
 Validation result:
 
 - Unit tests: 41 tests passed.
-- Final report size: 3,628 words across 414 lines.
+- Final report size: 3,628 words.
 - All seven final-report figure links resolved to tracked repository assets.
-- Git whitespace check: passed.
+- Markdown structure and figure-link checks: passed.
 
 Next iteration:
 
 - Iteration 14: Final reproduction check, cleanup, and portfolio summary.
+
+## Iteration 14 Notes
+
+Scope completed:
+
+- Created `docs/portfolio_summary.md` with a concise project explanation,
+  evidence-based findings, application-ready CV/SOP/interview material, honest
+  scope boundaries, and an evidence map.
+- Added final report and portfolio links to the README without placing CV text
+  directly in the repository front page.
+- Expanded `check_project.py` from output-only checks to a 49-file final
+  artifact manifest covering core results and application documents.
+- Marked the v2 roadmap complete and removed legacy Markdown trailing
+  whitespace while preserving its content.
+- Reproduced the complete experiment suite and confirmed that tracked generated
+  outputs remained deterministic.
+
+Validation commands:
+
+```bash
+.venv\Scripts\python.exe run_all_experiments.py
+.venv\Scripts\python.exe -W error -m unittest discover -s tests
+.venv\Scripts\python.exe -m compileall -q config.py src experiments tests main.py run_all_experiments.py check_project.py summarize_results.py generate_report_assets.py generate_final_figures.py
+.venv\Scripts\python.exe -m pip check
+.venv\Scripts\python.exe check_project.py
+```
+
+Validation result:
+
+- Full experiment reproduction: passed.
+- Unit tests in warning-strict mode: 41 tests passed.
+- Compilation check: passed.
+- Dependency check: no broken requirements.
+- Health check: passed and verified 49 artifact files.
+- README, final-report, and portfolio-summary local-link checks: passed.
+- Trailing-whitespace and Git diff checks: passed.
+
+Remaining research limitations:
+
+- Five fixed seeds are a lightweight robustness check, not statistical proof.
+- Channel, mobility, traffic, backhaul, and scheduling models remain simplified.
+- MAB is an educational adaptive baseline and is not the best informed policy
+  in the reported mean-latency table.
+
+Completion status:
+
+- All 14 planned iterations are complete.

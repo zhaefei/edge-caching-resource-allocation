@@ -2,7 +2,7 @@
 
 This script is useful before committing changes. It runs the sanity tests,
 executes the default simulation, regenerates report inputs, and verifies that
-key output artifacts were created.
+the final result and portfolio artifacts exist.
 """
 
 from __future__ import annotations
@@ -12,7 +12,13 @@ import subprocess
 import sys
 
 
-REQUIRED_OUTPUTS = [
+REQUIRED_ARTIFACTS = [
+    Path("README.md"),
+    Path("docs/experiment_plan_v2.md"),
+    Path("docs/model_assumptions.md"),
+    Path("docs/portfolio_summary.md"),
+    Path("report/project_report_final.md"),
+    Path("report/references.md"),
     Path("results/data/main_summary.csv"),
     Path("results/data/default_run_metadata.json"),
     Path("results/data/key_findings.md"),
@@ -64,17 +70,20 @@ def _run_step(description: str, command: list[str]) -> None:
     subprocess.run(command, check=True)
 
 
-def _verify_outputs() -> None:
+def _verify_artifacts() -> None:
     missing = [
         str(path)
-        for path in REQUIRED_OUTPUTS
+        for path in REQUIRED_ARTIFACTS
         if not path.exists() or path.stat().st_size == 0
     ]
     if missing:
         missing_list = "\n".join(f"- {path}" for path in missing)
-        raise FileNotFoundError(f"Missing expected output files:\n{missing_list}")
+        raise FileNotFoundError(f"Missing expected artifact files:\n{missing_list}")
 
-    print(f"\n[check] Verified {len(REQUIRED_OUTPUTS)} output files", flush=True)
+    print(
+        f"\n[check] Verified {len(REQUIRED_ARTIFACTS)} artifact files",
+        flush=True,
+    )
 
 
 def main() -> None:
@@ -124,7 +133,7 @@ def main() -> None:
         "Generating report assets",
         [python, "generate_report_assets.py"],
     )
-    _verify_outputs()
+    _verify_artifacts()
 
     print("\nProject health check completed successfully.", flush=True)
 
