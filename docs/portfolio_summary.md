@@ -1,6 +1,8 @@
-# Graduate Application Portfolio Summary
+# Project Portfolio Summary
 
-## Project
+**Author:** Erfei Zha
+
+## Project Overview
 
 **Edge Caching and Resource Allocation for Latency Reduction in 5G/6G Wireless
 Networks**
@@ -11,8 +13,9 @@ network optimization. It studies how limited edge storage and shared downlink
 bandwidth affect content-delivery latency when user requests follow global and
 server-local popularity patterns.
 
-The work should be presented as an engineering research exploration, not as a
-novel 6G algorithm or a production network simulator.
+The scope is deliberately transparent: this is an engineering research
+exploration, not a novel 6G algorithm, a 3GPP-compliant system-level model, or a
+production network simulator.
 
 ## What Was Built
 
@@ -31,12 +34,12 @@ novel 6G algorithm or a production network simulator.
   wireless-channel sensitivity experiments.
 - A chronological 60/40 train/evaluation protocol and a final five-seed
   comparison with within-seed differences from random caching.
-- Reproducible CSV outputs, figures, run metadata, generated findings, and 41
+- Reproducible CSV outputs, figures, run metadata, generated findings, and 43
   standard-library unit tests.
 
-## Research Process Demonstrated
+## Research Workflow
 
-The project demonstrates the ability to move through a compact research cycle:
+The project follows a compact research cycle:
 
 1. Define a tractable system model and state its limitations.
 2. Translate communications concepts into equations and testable Python code.
@@ -68,47 +71,17 @@ All values below come from generated repository CSV files.
 Five seeds are a lightweight robustness check and do not establish statistical
 significance across real deployments.
 
-## Application-Ready Description
+## Engineering Interpretation
 
-### CV Entry
+Three conclusions are more important than a single policy ranking. First,
+caching can substantially reduce backhaul use while producing a smaller change
+in end-to-end latency when wireless transmission remains the bottleneck.
+Second, an allocation rule that improves request-weighted mean latency may
+worsen P95 latency and fairness, so these metrics must be read together. Third,
+a learning-based policy does not automatically outperform simpler informed
+heuristics; held-out evaluation is necessary before making that claim.
 
-**Edge Caching and Resource Allocation for 5G/6G Wireless Edge Networks**
-
-Independent Python simulation project
-
-- Built a reproducible wireless edge-network simulator combining
-  Zipf-distributed requests, heterogeneous file sizes, cache constraints,
-  path-loss/SINR rate modeling, and backhaul delay.
-- Compared random, popularity, local, greedy, and UCB-style caching under a
-  held-out request protocol; evaluated latency, hit ratio, backhaul load,
-  wireless rate, tail behavior, and Jain fairness.
-- Designed fixed-seed sensitivity and five-seed experiments with generated CSV
-  results, publication-style figures, metadata, and 41 unit tests.
-
-### Statement-of-Purpose Version
-
-I developed a reproducible Python simulation to study edge caching and radio
-resource allocation in a simplified 5G/6G wireless network. By connecting
-content popularity, cache constraints, path-loss-based transmission rates, and
-backhaul delay, I learned how system assumptions influence end-to-end latency.
-I also implemented a lightweight UCB-style caching policy and evaluated it with
-a chronological train/test split and multiple random seeds. The project
-strengthened my interest in wireless communications, edge computing, and
-careful simulation-based network optimization.
-
-### Short Interview Explanation
-
-The central question was whether storing popular content at edge servers could
-meaningfully reduce latency when the wireless link was still a bottleneck. I
-built a transparent model, compared simple caching policies, and separated
-wireless delay from backhaul delay. The main lesson was that caching greatly
-improved hit ratio and backhaul load, but total-latency gains were more modest.
-Demand-aware bandwidth improved mean latency while worsening fairness and tail
-latency, and the MAB policy beat random caching without beating all informed
-heuristics. Those mixed results helped me understand why a credible simulation
-must report assumptions and tradeoffs, not only its best metric.
-
-## Honest Scope Boundaries
+## Scope Boundaries
 
 - No claim of algorithmic novelty or state-of-the-art performance.
 - No claim of 3GPP compliance or prediction for a real operator deployment.
@@ -117,7 +90,7 @@ must report assumptions and tradeoffs, not only its best metric.
 - No claim that demand-aware allocation is uniformly better, because fairness
   and P95 latency can worsen.
 
-## Portfolio Evidence Map
+## Repository Evidence Map
 
 - Project overview and reproduction: [`README.md`](../README.md)
 - Final research report: [`report/project_report_final.md`](../report/project_report_final.md)
@@ -138,6 +111,5 @@ python -m unittest discover -s tests
 python check_project.py
 ```
 
-On the current Windows workspace, the same commands use
-`.venv\Scripts\python.exe` because the system WindowsApps Python placeholder is
-inactive.
+The continuous-integration workflow repeats strict tests and the complete
+project health check on Python 3.11 and 3.12.

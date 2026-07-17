@@ -7,13 +7,16 @@ the final result and portfolio artifacts exist.
 
 from __future__ import annotations
 
+from collections.abc import Iterable
 from pathlib import Path
+import re
 import subprocess
 import sys
 
 
 REQUIRED_ARTIFACTS = [
     Path("README.md"),
+    Path("LICENSE"),
     Path("docs/experiment_plan_v2.md"),
     Path("docs/model_assumptions.md"),
     Path("docs/portfolio_summary.md"),
@@ -21,6 +24,8 @@ REQUIRED_ARTIFACTS = [
     Path("report/references.md"),
     Path("results/data/main_summary.csv"),
     Path("results/data/default_run_metadata.json"),
+    Path("results/data/file_size_variability_experiment.csv"),
+    Path("results/data/file_size_variability_experiment_metadata.json"),
     Path("results/data/key_findings.md"),
     Path("results/data/multi_seed_cache_capacity_summary.csv"),
     Path("results/data/multi_seed_cache_capacity_metadata.json"),
@@ -48,6 +53,8 @@ REQUIRED_ARTIFACTS = [
     Path("results/figures/main_wireless_rate.png"),
     Path("results/figures/main_bandwidth_fairness.png"),
     Path("results/figures/main_latency_breakdown.png"),
+    Path("results/figures/latency_vs_file_size_variability.png"),
+    Path("results/figures/backhaul_vs_file_size_variability.png"),
     Path("results/figures/latency_vs_spatial_locality.png"),
     Path("results/figures/latency_vs_user_activity.png"),
     Path("results/figures/fairness_vs_user_activity.png"),
@@ -63,6 +70,14 @@ REQUIRED_ARTIFACTS = [
     Path("docs/figures/v2_paired_latency_vs_random.png"),
     Path("report/generated_results.md"),
 ]
+
+MARKDOWN_DOCUMENTS = (
+    Path("README.md"),
+    Path("docs/portfolio_summary.md"),
+    Path("report/project_report_final.md"),
+)
+MARKDOWN_LINK_PATTERN = re.compile(r"!?\[[^\]]*\]\(([^)]+)\)")
+EXTERNAL_LINK_PREFIXES = ("http://", "https://", "mailto:", "#")
 
 
 def _run_step(description: str, command: list[str]) -> None:
@@ -86,6 +101,40 @@ def _verify_artifacts() -> None:
     )
 
 
+def _verify_markdown_links(document_paths: Iterable[Path]) -> None:
+    """Verify that local links and images in key Markdown files resolve."""
+
+    missing: list[str] = []
+    checked_documents = 0
+
+    for document_path in document_paths:
+        checked_documents += 1
+        content = document_path.read_text(encoding="utf-8")
+        for match in MARKDOWN_LINK_PATTERN.finditer(content):
+            target = match.group(1).strip()
+            if not target or target.startswith(EXTERNAL_LINK_PREFIXES):
+                continue
+
+            path_without_fragment = target.split("#", maxsplit=1)[0]
+            if not path_without_fragment:
+                continue
+
+            linked_path = document_path.parent / path_without_fragment
+            if not linked_path.exists():
+                missing.append(f"{document_path}: {target}")
+
+    if missing:
+        missing_list = "\n".join(f"- {item}" for item in missing)
+        raise FileNotFoundError(
+            f"Missing local Markdown targets:\n{missing_list}"
+        )
+
+    print(
+        f"[check] Verified local links in {checked_documents} Markdown files",
+        flush=True,
+    )
+
+
 def main() -> None:
     python = sys.executable
 
@@ -96,6 +145,10 @@ def main() -> None:
     _run_step(
         "Running default simulation",
         [python, "main.py"],
+    )
+    _run_step(
+        "Running file-size variability experiment",
+        [python, "experiments/run_file_size_variability_experiment.py"],
     )
     _run_step(
         "Running multi-seed cache capacity summary",
@@ -134,6 +187,7 @@ def main() -> None:
         [python, "generate_report_assets.py"],
     )
     _verify_artifacts()
+    _verify_markdown_links(MARKDOWN_DOCUMENTS)
 
     print("\nProject health check completed successfully.", flush=True)
 

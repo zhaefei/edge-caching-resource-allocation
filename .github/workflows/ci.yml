@@ -4,9 +4,18 @@ on:
   push:
   pull_request:
 
+permissions:
+  contents: read
+
 jobs:
   test:
     runs-on: ubuntu-latest
+    strategy:
+      fail-fast: false
+      matrix:
+        python-version: ["3.11", "3.12"]
+    env:
+      MPLBACKEND: Agg
 
     steps:
       - name: Check out repository
@@ -15,18 +24,15 @@ jobs:
       - name: Set up Python
         uses: actions/setup-python@v5
         with:
-          python-version: "3.11"
+          python-version: ${{ matrix.python-version }}
 
       - name: Install dependencies
         run: |
           python -m pip install --upgrade pip
           pip install -r requirements.txt
 
-      - name: Run sanity tests
-        run: python -m unittest discover -s tests
+      - name: Run warning-strict tests
+        run: python -W error -m unittest discover -s tests
 
-      - name: Run default simulation
-        run: python main.py
-
-      - name: Generate key findings
-        run: python summarize_results.py
+      - name: Run complete project health check
+        run: python check_project.py
